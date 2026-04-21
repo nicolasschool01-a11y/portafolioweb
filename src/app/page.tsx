@@ -25,7 +25,7 @@ import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import { StickyCTA } from "@/components/landing/StickyCTA";
 import { PresentationSection } from "@/components/landing/PresentationSection";
-import { WhatsAppWidget } from "@/components/landing/WhatsAppWidget";
+
 import { TechTicker } from "@/components/landing/TechTicker";
 import { CookieConsent } from "@/components/landing/CookieConsent";
 import { CursorGlow } from "@/components/landing/CursorGlow";
@@ -143,7 +143,7 @@ export default function Home() {
           </main>
           <Footer />
           <CookieConsent />
-          <WhatsAppWidget />
+
           <StickyCTA />
           <CursorGlow />
           <SectionDots />

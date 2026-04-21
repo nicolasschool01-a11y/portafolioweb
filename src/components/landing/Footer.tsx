@@ -275,13 +275,8 @@ export function Footer() {
           transition={{ duration: 0.5 }}
           className="relative mb-12"
         >
-          {/* Rotating gradient border */}
-          <div className="absolute -inset-[1px] rounded-2xl overflow-hidden">
-            <div className="absolute inset-0 rounded-2xl animate-cta-gradient-spin opacity-60" style={{
-              background: "conic-gradient(from 0deg, transparent 0%, #10b981 10%, #14b8a6 20%, transparent 30%, transparent 70%, #10b981 80%, #14b8a6 90%, transparent 100%)",
-              filter: "blur(1px)",
-            }} />
-          </div>
+          {/* Gradient border — static for performance */}
+          <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-emerald-500/20 via-teal-500/10 to-emerald-500/20 pointer-events-none" />
           <motion.div
             className="relative rounded-2xl border border-white/[0.06] bg-gradient-to-r from-emerald-500/[0.06] via-card/80 to-teal-500/[0.06] p-6 sm:p-8 text-center overflow-hidden"
           >
