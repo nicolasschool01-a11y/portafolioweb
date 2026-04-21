@@ -56,6 +56,10 @@ upload/
 *.png
 *.jpg
 *.jpeg
+# Allow public assets (needed for production)
+!public/*.png
+!public/*.jpg
+!public/*.jpeg
 worklog*
 -p
 3000
