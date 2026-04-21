@@ -11,8 +11,8 @@ export function StickyCTA() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [showBttTooltip, setShowBttTooltip] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [isContactMode, setIsContactMode] = useState(false);
   const [isBouncing, setIsBouncing] = useState(false);
+  const [atFooter, setAtFooter] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,7 +25,8 @@ export function StickyCTA() {
       }
       setShowBackToTop(scrollTop > 400);
       setScrollProgress(progress);
-      setIsContactMode(progress >= 0.95);
+      // Hide the CTA stack when user reaches the footer area (last 5%)
+      setAtFooter(progress >= 0.92);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -58,81 +59,64 @@ export function StickyCTA() {
 
   return (
     <>
-      {/* Back-to-top / Contact button — appears after 400px scroll */}
-      <AnimatePresence mode="wait">
+      {/* Back-to-top button — always just a scroll-up button */}
+      <AnimatePresence>
         {showBackToTop && (
           <motion.button
-            key={isContactMode ? "contact" : "backtotop"}
+            key="backtotop"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={isContactMode ? scrollToContact : scrollToTop}
-            onMouseEnter={() => !isContactMode && setShowBttTooltip(true)}
+            onClick={scrollToTop}
+            onMouseEnter={() => setShowBttTooltip(true)}
             onMouseLeave={() => setShowBttTooltip(false)}
-            className={`fixed bottom-6 right-6 md:bottom-6 md:right-[200px] z-40 backdrop-blur-md border flex items-center justify-center transition-all duration-300 ${
-              isContactMode
-                ? "w-auto h-10 pl-3.5 pr-4 gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 border-emerald-500/30 text-white hover:shadow-emerald-500/25"
-                : "w-10 h-10 rounded-full bg-white/10 border-white/10 text-muted-foreground hover:text-foreground hover:bg-white/15 border-glow-emerald"
-            }`}
-            aria-label={isContactMode ? "Contactar" : "Volver arriba"}
+            className="fixed bottom-6 left-6 z-40 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-muted-foreground hover:text-foreground hover:bg-white/15 flex items-center justify-center transition-all duration-300"
+            aria-label="Volver arriba"
           >
-            {!isContactMode ? (
-              <>
-                {/* Progress ring showing scroll position */}
-                <svg
-                  className="absolute inset-0 w-full h-full -rotate-90"
-                  viewBox="0 0 40 40"
-                >
-                  <circle
-                    cx="20"
-                    cy="20"
-                    r={bttRadius}
-                    fill="none"
-                    stroke="rgba(255,255,255,0.06)"
-                    strokeWidth="2"
-                  />
-                  <circle
-                    cx="20"
-                    cy="20"
-                    r={bttRadius}
-                    fill="none"
-                    stroke="url(#bttScrollGradient)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeDasharray={bttCircumference}
-                    strokeDashoffset={bttStrokeDashoffset}
-                    className="transition-[stroke-dashoffset] duration-150 ease-out"
-                  />
-                  <defs>
-                    <linearGradient id="bttScrollGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#10b981" />
-                      <stop offset="100%" stopColor="#14b8a6" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-                <motion.div
-                  animate={isBouncing ? { y: [0, -6, 0] } : { y: 0 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                >
-                  <ChevronUp className="w-4 h-4 relative z-10" />
-                </motion.div>
-                {/* Scroll percentage text */}
-                <span className="absolute inset-0 flex items-center justify-center text-[7px] font-bold text-emerald-400/80">
-                  {Math.round(scrollProgress * 100)}
-                </span>
-              </>
-            ) : (
-              <>
-                <MessageCircle className="w-4 h-4" />
-                <span className="text-sm font-medium">Contactar</span>
-              </>
-            )}
+            {/* Progress ring showing scroll position */}
+            <svg
+              className="absolute inset-0 w-full h-full -rotate-90"
+              viewBox="0 0 40 40"
+            >
+              <circle
+                cx="20"
+                cy="20"
+                r={bttRadius}
+                fill="none"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="2"
+              />
+              <circle
+                cx="20"
+                cy="20"
+                r={bttRadius}
+                fill="none"
+                stroke="url(#bttScrollGradient)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeDasharray={bttCircumference}
+                strokeDashoffset={bttStrokeDashoffset}
+                className="transition-[stroke-dashoffset] duration-150 ease-out"
+              />
+              <defs>
+                <linearGradient id="bttScrollGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#10b981" />
+                  <stop offset="100%" stopColor="#14b8a6" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <motion.div
+              animate={isBouncing ? { y: [0, -6, 0] } : { y: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <ChevronUp className="w-4 h-4 relative z-10" />
+            </motion.div>
             {/* Tooltip: Volver arriba */}
             <AnimatePresence>
-              {showBttTooltip && !isContactMode && (
+              {showBttTooltip && (
                 <motion.div
                   initial={{ opacity: 0, y: 6, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -149,9 +133,9 @@ export function StickyCTA() {
         )}
       </AnimatePresence>
 
-      {/* Main CTA stack: Crear mi proyecto + Contactame */}
+      {/* Main CTA stack: Crear mi proyecto + Contactame — hide at footer */}
       <AnimatePresence>
-        {visible && (
+        {visible && !atFooter && (
           <motion.div
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -166,40 +150,10 @@ export function StickyCTA() {
               onClick={scrollToContact}
               onMouseEnter={() => setShowTooltip(true)}
               onMouseLeave={() => setShowTooltip(false)}
-              className="relative flex items-center gap-2.5 pl-4 pr-5 py-3.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 font-medium text-sm group"
+              className="relative flex items-center gap-2.5 pl-4 pr-5 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 font-medium text-sm group"
             >
               {/* Pulse ring animation */}
-              <span className="absolute inset-0 rounded-full animate-ping bg-emerald-500/20 pointer-events-none" style={{ animationDuration: '2s' }} />
-
-              {/* Progress ring background */}
-              <svg
-                className="absolute -top-0.5 -right-0.5 w-[38px] h-[38px] -rotate-90"
-                viewBox="0 0 38 38"
-              >
-                {/* Background track */}
-                <circle
-                  cx="19"
-                  cy="19"
-                  r={radius}
-                  fill="none"
-                  stroke="rgba(0,0,0,0.2)"
-                  strokeWidth="2"
-                />
-                {/* Progress arc */}
-                <circle
-                  cx="19"
-                  cy="19"
-                  r={radius}
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeDasharray={circumference}
-                  strokeDashoffset={strokeDashoffset}
-                  className="transition-[stroke-dashoffset] duration-150 ease-out"
-                  opacity="0.6"
-                />
-              </svg>
+              <span className="absolute inset-0 rounded-full animate-ping bg-emerald-500/20 pointer-events-none" style={{ animationDuration: '2.5s' }} />
 
               <MessageCircle className="w-4 h-4" />
               <span>Crear mi proyecto</span>
@@ -228,10 +182,10 @@ export function StickyCTA() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative flex items-center gap-2 pl-3.5 pr-4 py-3 rounded-full bg-[#25D366] hover:bg-[#20BD5A] text-white shadow-xl shadow-[#25D366]/25 hover:shadow-[#25D366]/40 transition-all duration-300 font-medium text-sm"
+              className="relative flex items-center gap-2 pl-3.5 pr-4 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20BD5A] text-white shadow-xl shadow-[#25D366]/25 hover:shadow-[#25D366]/40 transition-all duration-300 font-medium text-sm"
             >
               {/* Pulse ring animation */}
-              <span className="absolute inset-0 rounded-full animate-ping bg-[#25D366]/20 pointer-events-none" style={{ animationDuration: '2s' }} />
+              <span className="absolute inset-0 rounded-full animate-ping bg-[#25D366]/20 pointer-events-none" style={{ animationDuration: '2.5s' }} />
 
               {/* WhatsApp Icon */}
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -245,10 +199,10 @@ export function StickyCTA() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={handleDismiss}
-              className="w-9 h-9 rounded-full bg-card/80 backdrop-blur-sm border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-card transition-all duration-200 shadow-lg"
+              className="w-8 h-8 rounded-full bg-card/80 backdrop-blur-sm border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-card transition-all duration-200 shadow-lg"
               aria-label="Cerrar"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-3 h-3" />
             </motion.button>
           </motion.div>
         )}
@@ -256,4 +210,3 @@ export function StickyCTA() {
     </>
   );
 }
-
