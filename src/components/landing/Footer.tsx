@@ -230,7 +230,7 @@ export function Footer() {
               </button>
               <div className="flex items-center gap-2 text-sm text-muted-foreground/70">
                 <MapPin className="w-3.5 h-3.5" />
-                <span>Argentina</span>
+                <span>Uruguay</span>
               </div>
               {/* Availability indicator */}
               <div className="flex items-center gap-2 text-sm">
@@ -371,8 +371,8 @@ export function Footer() {
             <span>© {new Date().getFullYear()} NicoPrompt. Todos los derechos reservados.</span>
             <span className="hidden sm:inline text-white/10">·</span>
             <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/[0.03] border border-white/[0.06]">
-              <span>🇦🇷</span>
-              <span className="text-muted-foreground/50">Hecho en Argentina</span>
+              <span>🇺🇾</span>
+              <span className="text-muted-foreground/50">Hecho en Uruguay</span>
             </span>
             <span className="hidden sm:inline text-white/10">·</span>
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/[0.06] border border-emerald-500/[0.12] text-emerald-400/80 text-xs font-medium">

@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     "desarrollo rápido",
     "startup",
     "software a medida",
-    "Argentina",
+    "Uruguay",
   ],
   authors: [{ name: "NicoPrompt" }],
   icons: {
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     description:
       "Desarrollo aplicaciones, sistemas y webs a medida usando inteligencia artificial. MVPs rápidos, funcionales y listos para escalar.",
     type: "website",
-    locale: "es_AR",
+    locale: "es_UY",
     siteName: "NicoPrompt",
   },
   twitter: {
@@ -73,7 +73,7 @@ const jsonLd = {
   ],
   areaServed: {
     "@type": "Place",
-    name: "Argentina",
+    name: "Uruguay",
   },
   priceRange: "$$",
   aggregateRating: {

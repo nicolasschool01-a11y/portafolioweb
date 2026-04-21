@@ -146,18 +146,22 @@ export function EducationSection() {
         {/* Before vs After comparison */}
         <AnimateOnScroll delay={0.1}>
           <div className="relative mb-16 max-w-3xl mx-auto">
-            {/* Before/After labels */}
-            <div className="flex items-center justify-between px-1 mb-3 sm:mb-4">
+            {/* Before/After labels — only visible on desktop */}
+            <div className="hidden sm:flex items-center justify-between px-1 mb-3 sm:mb-4">
               <span className="text-[11px] uppercase tracking-widest font-semibold text-red-400/60">
                 Antes
               </span>
-              <div className="hidden sm:block" />
+              <div />
               <span className="text-[11px] uppercase tracking-widest font-semibold text-emerald-400/70">
                 Después
               </span>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 relative">
+              {/* Mobile label: Antes */}
+              <span className="sm:hidden text-[11px] uppercase tracking-widest font-semibold text-red-400/60 mb-1">
+                Antes
+              </span>
               {/* Sin Software */}
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
@@ -183,6 +187,10 @@ export function EducationSection() {
                 </ul>
               </motion.div>
 
+              {/* Mobile label: Después */}
+              <span className="sm:hidden text-[11px] uppercase tracking-widest font-semibold text-emerald-400/70 mt-2 mb-1">
+                Después
+              </span>
               {/* Con NicoPrompt — slightly larger on desktop */}
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
@@ -207,6 +215,7 @@ export function EducationSection() {
                   ))}
                 </ul>
               </motion.div>
+
 
               {/* Animated VS badge — centred between cards on desktop */}
               <div className="hidden sm:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
