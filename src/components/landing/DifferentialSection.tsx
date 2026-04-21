@@ -64,7 +64,7 @@ export function DifferentialSection() {
       <div className="absolute inset-0 grid-bg opacity-20" />
 
       {/* Background orbs */}
-      <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[80px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -145,18 +145,11 @@ export function DifferentialSection() {
           <AnimateOnScroll direction="right" delay={0.2}>
             <div className="relative">
               {/* NicoPrompt emerald pulse glow background */}
-              <motion.div
-                className="absolute -inset-6 rounded-3xl pointer-events-none"
+              <div
+                className="absolute -inset-6 rounded-3xl pointer-events-none will-change-auto"
                 style={{
                   background: "radial-gradient(ellipse at center, oklch(0.72 0.19 163 / 0.06) 0%, transparent 70%)",
-                }}
-                animate={{
-                  opacity: [0.4, 0.7, 0.4],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
+                  opacity: 0.5,
                 }}
               />
 
