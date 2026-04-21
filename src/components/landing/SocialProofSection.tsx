@@ -85,13 +85,13 @@ export function SocialProofSection() {
             <div className="flex flex-col lg:flex-row lg:items-stretch">
 
               {/* Project Screenshot - Full-fit container with parallax */}
-              <div className="relative w-full lg:w-1/2 shrink-0">
-                <div className="relative bg-[#0c0c14] overflow-hidden rounded-none lg:rounded-l-2xl h-full min-h-[400px] sm:min-h-[500px]">
+              <div className="relative w-full lg:w-[45%] shrink-0">
+                <div className="relative bg-[#0c0c14] overflow-hidden rounded-none lg:rounded-l-2xl h-full aspect-[9/16] lg:aspect-auto min-h-[550px] lg:min-h-full">
                     <ScreenshotParallax>
                       <img
-                        src="/project-brandishot.png"
+                        src="https://res.cloudinary.com/dvbkp3ml7/image/upload/v1776779603/INCRUSTA_LA_FOTO_202604211053_hzsykv.jpg"
                         alt="BrandiShot - Plataforma de Transformación de Menús con IA"
-                        className="absolute inset-0 w-full h-full object-contain object-top p-3"
+                        className="absolute inset-0 w-full h-full object-cover"
                         loading="lazy"
                       />
                     </ScreenshotParallax>
@@ -258,10 +258,10 @@ export function SocialProofSection() {
                   glowColor: "hover:shadow-black/30 hover:shadow-amber-500/10",
                 },
                 {
-                  icon: Users,
-                  name: "Mercado Pago",
-                  desc: "Pagos regional LATAM",
-                  glowColor: "hover:shadow-black/30 hover:shadow-sky-500/10",
+                  icon: Zap,
+                  name: "Vercel",
+                  desc: "Infraestructura Cloud & Edge Deployment",
+                  glowColor: "hover:shadow-black/30 hover:shadow-white/10",
                 },
                 {
                   icon: Zap,
@@ -271,19 +271,24 @@ export function SocialProofSection() {
                 },
               ].map((tech) => (
                 <StaggerItem key={tech.name}>
-                  <div className={`group p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.05] hover:border-white/[0.12] group-hover:border-white/[0.12] hover:scale-[1.03] transition-all duration-300 shadow-lg ${tech.glowColor}`}>
-                    <div className="flex items-start gap-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/20 transition-colors">
+                  <motion.div 
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    className={`group p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-300 shadow-lg relative overflow-hidden shimmer-sweep ${tech.glowColor}`}
+                  >
+                    <div className="flex items-start gap-2.5 relative z-10">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/20 group-hover:rotate-12 transition-all duration-500">
                         <tech.icon className="w-3.5 h-3.5 text-emerald-400" />
                       </div>
                       <div className="min-w-0">
-                        <h4 className="text-xs sm:text-sm font-semibold mb-0.5 truncate">{tech.name}</h4>
+                        <h4 className="text-xs sm:text-sm font-semibold mb-0.5 truncate group-hover:text-emerald-400 transition-colors">{tech.name}</h4>
                         <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2">
                           {tech.desc}
                         </p>
                       </div>
                     </div>
-                  </div>
+                    {/* Inner highlight */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </motion.div>
                 </StaggerItem>
               ))}
             </StaggerContainer>
@@ -293,6 +298,7 @@ export function SocialProofSection() {
         {/* Key Achievements */}
         <AnimateOnScroll delay={0.3}>
           <div className="mt-10 sm:mt-12 grid sm:grid-cols-3 gap-3 sm:gap-4">
+            {/* Key Achievements Grid */}
             {[
               {
                 icon: Globe,
@@ -310,18 +316,23 @@ export function SocialProofSection() {
                 desc: "Bots integrados (Telegram/Cron) para soporte y gestión de tickets.",
               },
             ].map((achievement) => (
-              <div
+              <motion.div
                 key={achievement.title}
-                className="group p-5 sm:p-6 rounded-xl bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/[0.06] hover:border-emerald-500/20 transition-all duration-300"
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-white/[0.04] to-transparent border border-white/[0.08] hover:border-emerald-500/30 transition-all duration-500 relative overflow-hidden shimmer-sweep shadow-lg hover:shadow-emerald-500/5"
               >
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-emerald-500/20 transition-colors">
-                  <achievement.icon className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
+                <div className="relative z-10">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-4 group-hover:bg-emerald-500/20 group-hover:rotate-6 transition-all duration-500">
+                    <achievement.icon className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400" />
+                  </div>
+                  <h4 className="text-sm sm:text-base font-bold mb-2 group-hover:text-emerald-400 transition-colors">{achievement.title}</h4>
+                  <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
+                    {achievement.desc}
+                  </p>
                 </div>
-                <h4 className="text-sm font-bold mb-1.5">{achievement.title}</h4>
-                <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
-                  {achievement.desc}
-                </p>
-              </div>
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
             ))}
           </div>
         </AnimateOnScroll>

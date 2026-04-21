@@ -20,6 +20,11 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState("");
   const [scrollProgress, setScrollProgress] = useState(0);
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -156,29 +161,31 @@ export function Navbar() {
               className="relative w-9 h-9 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center hover:bg-white/10 hover:scale-110 transition-all duration-300"
               aria-label="Cambiar tema"
             >
-              <AnimatePresence mode="wait">
-                {theme === "dark" ? (
-                  <motion.div
-                    key="sun"
-                    initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                    exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                  >
-                    <Sun className="w-4 h-4 text-amber-400" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="moon"
-                    initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                    exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                  >
-                    <Moon className="w-4 h-4 text-blue-400" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {mounted && (
+                <AnimatePresence mode="wait">
+                  {theme === "dark" ? (
+                    <motion.div
+                      key="sun"
+                      initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                      animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                      exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                    >
+                      <Sun className="w-4 h-4 text-amber-400" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="moon"
+                      initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                      animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                      exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                    >
+                      <Moon className="w-4 h-4 text-blue-400" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              )}
             </button>
             <Button
               onClick={() => scrollTo("#contacto")}
@@ -248,29 +255,31 @@ export function Navbar() {
                     className="flex items-center gap-3 w-full text-left px-4 py-3.5 text-sm text-muted-foreground hover:text-foreground rounded-xl hover:bg-white/5 min-h-[44px] transition-colors"
                   >
                     <div className="w-9 h-9 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
-                      <AnimatePresence mode="wait">
-                        {theme === "dark" ? (
-                          <motion.div
-                            key="sun-mobile"
-                            initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                            animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                            exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                            transition={{ duration: 0.3, ease: "easeInOut" }}
-                          >
-                            <Sun className="w-4 h-4 text-amber-400" />
-                          </motion.div>
-                        ) : (
-                          <motion.div
-                            key="moon-mobile"
-                            initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                            animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                            exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                            transition={{ duration: 0.3, ease: "easeInOut" }}
-                          >
-                            <Moon className="w-4 h-4 text-blue-400" />
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      {mounted && (
+                        <AnimatePresence mode="wait">
+                          {theme === "dark" ? (
+                            <motion.div
+                              key="sun-mobile"
+                              initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                              exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                              transition={{ duration: 0.3, ease: "easeInOut" }}
+                            >
+                              <Sun className="w-4 h-4 text-amber-400" />
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              key="moon-mobile"
+                              initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                              exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                              transition={{ duration: 0.3, ease: "easeInOut" }}
+                            >
+                              <Moon className="w-4 h-4 text-blue-400" />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      )}
                     </div>
                     <span>{theme === "dark" ? "Modo claro" : "Modo oscuro"}</span>
                   </button>

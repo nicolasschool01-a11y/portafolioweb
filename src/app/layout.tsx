@@ -94,6 +94,7 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <head>
         <script
+          id="json-ld-seo"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />

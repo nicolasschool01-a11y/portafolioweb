@@ -24,7 +24,7 @@ import { TrustSection } from "@/components/landing/TrustSection";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import { StickyCTA } from "@/components/landing/StickyCTA";
-import { ROICalculator } from "@/components/landing/ROICalculator";
+import { PresentationSection } from "@/components/landing/PresentationSection";
 import { WhatsAppWidget } from "@/components/landing/WhatsAppWidget";
 import { TechTicker } from "@/components/landing/TechTicker";
 import { CookieConsent } from "@/components/landing/CookieConsent";
@@ -106,7 +106,7 @@ export default function Home() {
             </SectionReveal>
             <div className="section-glow" />
             <SectionReveal>
-              <ROICalculator />
+              <PresentationSection />
             </SectionReveal>
             <SectionReveal>
               <PortfolioSection />

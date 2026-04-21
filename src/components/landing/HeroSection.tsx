@@ -254,10 +254,10 @@ export function HeroSection() {
       <div className="absolute inset-0 grid-bg" />
       <ParticleField />
 
-      {/* Animated gradient orbs */}
-      <div className="absolute top-20 left-10 w-[400px] h-[400px] bg-emerald-500/15 rounded-full blur-[140px] animate-orb" />
-      <div className="absolute bottom-20 right-10 w-[350px] h-[350px] bg-teal-500/10 rounded-full blur-[120px] animate-orb-reverse" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-violet-500/5 rounded-full blur-[180px] animate-orb" />
+      {/* Animated gradient orbs - Optimized blur/size for performance */}
+      <div className="absolute top-20 left-10 w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] bg-emerald-500/15 rounded-full blur-[80px] sm:blur-[140px] animate-orb pointer-events-none" />
+      <div className="absolute bottom-20 right-10 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] bg-teal-500/10 rounded-full blur-[70px] sm:blur-[120px] animate-orb-reverse pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] bg-violet-500/5 rounded-full blur-[100px] sm:blur-[180px] animate-orb pointer-events-none" />
 
       {/* Radial gradient overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,oklch(0.1_0.005_270_0.8)_70%)]" />
@@ -395,7 +395,7 @@ export function HeroSection() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Layers className="w-3.5 h-3.5 text-muted-foreground/40" />
+                <Layers className="hidden sm:block w-3.5 h-3.5 text-muted-foreground/40" />
                 <Cpu className="w-3.5 h-3.5 text-muted-foreground/40" />
               </div>
             </div>
@@ -624,12 +624,12 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Floating mobile mockup */}
+          {/* Floating mobile mockup - hidden on small mobile to avoid layout issues */}
           <motion.div
             initial={{ opacity: 0, x: 60, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 0.8, delay: 1.0 }}
-            className="absolute -right-2 sm:-right-6 lg:-right-12 top-1/4 w-24 sm:w-32 lg:w-40 animate-float hidden md:block"
+            className="absolute -right-4 sm:-right-6 lg:-right-12 top-1/4 w-20 sm:w-32 lg:w-40 animate-float hidden md:block pointer-events-none"
           >
             <div className="rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-emerald-500/15 glow-emerald">
               <img

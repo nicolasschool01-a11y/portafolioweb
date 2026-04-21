@@ -80,40 +80,50 @@ const itemVariants = {
   },
 };
 
-function AnimatedConnectingLine({ className, lineColor }: { className?: string; lineColor?: string }) {
+function UnifiedConnectingPath() {
   return (
-    <div className={`hidden shrink-0 md:flex items-center w-16 lg:w-24 ${className || ""}`} aria-hidden="true">
+    <div className="absolute inset-x-12 top-10 h-[2px] pointer-events-none" aria-hidden="true">
+      {/* Background track line */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white/5 via-white/10 to-white/5 rounded-full" />
+      
+      {/* Animated comet pulse */}
       <motion.div
-        className="relative flex-1 h-[2px]"
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        style={{ transformOrigin: "left" }}
+        className="absolute top-1/2 -translate-y-1/2 w-48 h-[6px] z-20"
+        animate={{ 
+          left: ["-5%", "105%"],
+          opacity: [0, 1, 1, 0]
+        }}
+        transition={{ 
+          duration: 4, 
+          repeat: Infinity, 
+          ease: "linear",
+          repeatDelay: 0.5
+        }}
       >
-        {/* Gradient line */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/15 via-white/8 to-white/15" />
-        {/* Animated gradient pulse traveling along the line */}
-        <motion.div
-          className={`absolute top-1/2 -translate-y-1/2 w-10 h-[3px] rounded-full bg-gradient-to-r ${lineColor || "from-white/30 to-white/50"} blur-[2px]`}
-          animate={{ left: ["-10%", "110%"], opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }}
-        />
-        <motion.div
-          className={`absolute top-1/2 -translate-y-1/2 w-6 h-[2px] rounded-full bg-gradient-to-r ${lineColor || "from-white/40 to-white/60"}`}
-          animate={{ left: ["-5%", "105%"], opacity: [0, 0.8, 0.8, 0] }}
-          transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }}
-        />
-      </motion.div>
-      {/* Chevron */}
-      <motion.div
-        className="ml-0.5"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.5 }}
-      >
-        <div className="w-0 h-0 border-t-[4px] border-b-[4px] border-l-[6px] border-transparent border-l-white/20" />
+        {/* Thick Comet Head with Core and Glow */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-20 h-2 bg-gradient-to-r from-transparent via-emerald-400 to-cyan-400 blur-[4px] rounded-full shadow-[0_0_25px_rgba(34,211,238,0.5)]" />
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-[4px] bg-white rounded-full blur-[1px] z-30" />
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 h-16 bg-emerald-400/10 rounded-full blur-[20px] -z-10" />
+        
+        {/* Disintegrating particles tail */}
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute right-0 top-1/2 w-1 h-1 rounded-full bg-emerald-400/60"
+            animate={{ 
+              x: [0, -(Math.random() * 50 + 30)],
+              y: [0, (Math.random() * 12 - 6)],
+              opacity: [0.8, 0],
+              scale: [1, 0]
+            }}
+            transition={{ 
+              duration: 1, 
+              repeat: Infinity,
+              delay: i * 0.08,
+              ease: "easeOut"
+            }}
+          />
+        ))}
       </motion.div>
     </div>
   );
@@ -154,7 +164,7 @@ export function WhyMeStrip() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="relative rounded-2xl border border-white/[0.05] bg-white/[0.02] p-6 sm:p-8 backdrop-blur-sm overflow-hidden"
+          className="relative rounded-2xl border border-white/[0.05] bg-white/[0.02] p-6 sm:p-8 backdrop-blur-sm"
           style={{ opacity: Math.max(0.5, borderOpacity) }}
         >
           {/* Decorative gradient mesh background */}
@@ -203,11 +213,11 @@ export function WhyMeStrip() {
               <motion.div
                 key={item.label}
                 variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ y: -5, scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex flex-col items-center gap-3 group"
+                className="flex flex-col items-center gap-3 group relative overflow-hidden p-2 rounded-2xl shimmer-sweep"
               >
-                <div className="relative">
+                <div className="relative z-10">
                   {/* Glow behind icon circle on hover */}
                   <div
                     className={`absolute inset-0 rounded-full blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-400 bg-gradient-to-br ${item.iconColor.replace("text-", "bg-")}`}
@@ -219,11 +229,16 @@ export function WhyMeStrip() {
                     <item.icon className={`h-6 w-6 ${item.iconColor}`} />
                   </div>
                 </div>
-                <div className="text-center">
-                  <span className="text-center text-sm font-medium text-foreground/80 sm:text-base block">
+                <div className="text-center relative z-10">
+                  <span className={`text-center text-sm font-bold block mb-1 ${
+                    item.iconColor.includes("emerald") ? "gradient-text-emerald-animated" : 
+                    item.iconColor.includes("cyan") ? "gradient-text-cyan-animated" : 
+                    item.iconColor.includes("violet") ? "gradient-text-violet-animated" : 
+                    "gradient-text-amber-animated"
+                  }`}>
                     {item.label}
                   </span>
-                  <span className="text-[11px] text-muted-foreground/50 mt-1 block leading-tight max-w-[140px]">
+                  <span className="text-[11px] text-muted-foreground/60 group-hover:text-foreground/80 mt-1 block leading-tight max-w-[140px] transition-colors">
                     {item.description}
                   </span>
                 </div>
@@ -231,17 +246,19 @@ export function WhyMeStrip() {
             ))}
           </div>
 
-          {/* Desktop layout with animated connecting lines */}
-          <div className="hidden md:flex items-center justify-between relative z-10">
-            {items.map((item, index) => (
-              <div key={item.label} className="flex items-center">
+          {/* Desktop layout with unified animated path */}
+          <div className="hidden md:block relative z-10 w-full mb-4">
+            <UnifiedConnectingPath />
+            <div className="flex items-start justify-between relative z-10 w-full">
+              {items.map((item, index) => (
                 <motion.div
+                  key={item.label}
                   variants={itemVariants}
-                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileHover={{ scale: 1.05, y: -8 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex flex-col items-center gap-3 group cursor-default"
+                  className="flex flex-col items-center gap-3 group cursor-default relative overflow-visible p-3 rounded-2xl transition-all hover:bg-white/[0.02] w-1/4"
                 >
-                  <div className="relative">
+                  <div className="relative z-20">
                     {/* Glow behind icon circle on hover */}
                     <div
                       className={`absolute inset-0 rounded-full opacity-0 group-hover:opacity-60 transition-opacity duration-400`}
@@ -251,29 +268,65 @@ export function WhyMeStrip() {
                       }}
                     />
                     <div
-                      className={`relative flex h-14 w-14 items-center justify-center rounded-full border ${item.borderColor} ${item.iconBg} backdrop-blur-sm transition-all duration-300 group-hover:scale-110`}
+                      className={`relative flex h-14 w-14 items-center justify-center rounded-full border ${item.borderColor} ${item.iconBg} backdrop-blur-sm transition-all duration-300 group-hover:scale-110 shadow-lg`}
                     >
                       <item.icon className={`h-6 w-6 ${item.iconColor}`} />
                     </div>
                   </div>
-                  <span className="whitespace-nowrap text-center text-sm font-medium text-foreground/80 sm:text-base">
+                  <motion.span 
+                    className={`relative z-10 text-center text-sm font-bold block mb-1 ${
+                      item.iconColor.includes("emerald") ? "gradient-text-emerald-animated" : 
+                      item.iconColor.includes("cyan") ? "gradient-text-cyan-animated" : 
+                      item.iconColor.includes("violet") ? "gradient-text-violet-animated" : 
+                      "gradient-text-amber-animated"
+                    }`}
+                    animate={index === 0 ? { opacity: 1 } : { 
+                      opacity: [0, 1, 1, 0],
+                    }}
+                    transition={{ 
+                      duration: 4.5, 
+                      repeat: Infinity, 
+                      times: [0, index * 0.23 + 0.1, 0.95, 1],
+                      ease: "easeInOut"
+                    }}
+                  >
                     {item.label}
-                  </span>
-                  <span className="whitespace-nowrap text-[11px] text-muted-foreground/50 text-center leading-tight max-w-[150px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  </motion.span>
+                  <motion.div
+                    className="relative z-10 text-[11px] text-zinc-300 group-hover:text-white text-center font-medium leading-snug max-w-[120px] overflow-hidden"
+                    animate={index === 0 ? { opacity: 1, height: "auto", y: 0 } : { 
+                      opacity: [0, 1, 1, 0],
+                      height: ["0px", "auto", "auto", "0px"],
+                      y: [4, 0, 0, 4]
+                    }}
+                    transition={{ 
+                      duration: 4.5, 
+                      repeat: Infinity, 
+                      times: [0, index * 0.23 + 0.15, 0.95, 1],
+                      ease: "easeOut"
+                    }}
+                  >
                     {item.description}
-                  </span>
+                  </motion.div>
                   {/* Hover metric tooltip */}
                   <motion.span
-                    className="whitespace-nowrap text-[10px] font-medium px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/[0.08] text-emerald-400/80 opacity-0 group-hover:opacity-100 transition-all duration-300 mt-0.5"
-                    initial={{ y: 4 }}
-                    whileHover={{ y: 0 }}
+                    className="relative z-10 whitespace-nowrap text-[10px] font-medium px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/[0.08] text-emerald-400/80 mt-1"
+                    animate={index === 0 ? { opacity: 1, y: 0 } : { 
+                      opacity: [0, 1, 1, 0],
+                      y: [4, 0, 0, 4]
+                    }}
+                    transition={{ 
+                      duration: 4.5, 
+                      repeat: Infinity, 
+                      times: [0, index * 0.23 + 0.2, 0.95, 1],
+                      ease: "easeOut"
+                    }}
                   >
                     {tooltips[item.label]}
                   </motion.span>
                 </motion.div>
-                {index < items.length - 1 && <AnimatedConnectingLine lineColor={item.lineColor} />}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* Animated counting metrics row */}

@@ -123,14 +123,15 @@ export function DifferentialSection() {
                   key={item.title}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
+                  whileHover={{ x: 5, transition: { duration: 0.2 } }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   viewport={{ once: true }}
-                  className="flex gap-4 group cursor-default"
+                  className="flex gap-4 group cursor-default p-2 rounded-xl transition-all hover:bg-white/[0.04] overflow-hidden relative shimmer-sweep"
                 >
-                  <div className={`flex-shrink-0 w-10 h-10 rounded-lg ${item.bg} border flex items-center justify-center transition-all duration-300`}>
+                  <div className={`flex-shrink-0 w-10 h-10 rounded-lg ${item.bg} border flex items-center justify-center transition-all duration-300 relative z-10`}>
                     <item.icon className={`w-4 h-4 ${item.color}`} />
                   </div>
-                  <div>
+                  <div className="relative z-10">
                     <h4 className="font-semibold mb-0.5 text-sm group-hover:text-white transition-colors">{item.title}</h4>
                     <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                   </div>
@@ -160,7 +161,7 @@ export function DifferentialSection() {
               />
 
               {/* Main card */}
-              <div className="relative rounded-2xl border border-white/[0.06] bg-card/50 backdrop-blur-sm p-7 sm:p-8 animated-gradient-border">
+              <div className="relative rounded-2xl border border-white/[0.06] bg-card/50 backdrop-blur-sm p-7 sm:p-8 animated-gradient-border overflow-hidden shimmer-sweep">
                 <div className="space-y-7">
                   {/* Header */}
                   <div className="flex items-center gap-3 mb-2">

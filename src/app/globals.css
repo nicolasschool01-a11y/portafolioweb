@@ -116,11 +116,16 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+  }
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
   }
 }
 
@@ -215,8 +220,14 @@
 /* ===== Glass card ===== */
 .glass-card {
   background: oklch(0.14 0.005 270 / 60%);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px);
   border: 1px solid oklch(1 0 0 / 6%);
+}
+
+@media (max-width: 640px) {
+  .glass-card {
+    backdrop-filter: blur(8px);
+  }
 }
 
 /* ===== Section divider ===== */
@@ -1423,6 +1434,36 @@ section[id] {
 /* ===== Gradient text animated emerald ===== */
 .gradient-text-emerald-animated {
   background: linear-gradient(135deg, #10b981, #14b8a6, #06b6d4, #10b981);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* ===== Gradient text animated violet ===== */
+.gradient-text-violet-animated {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa, #c084fc, #8b5cf6);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* ===== Gradient text animated amber ===== */
+.gradient-text-amber-animated {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24, #fb923c, #f59e0b);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* ===== Gradient text animated cyan ===== */
+.gradient-text-cyan-animated {
+  background: linear-gradient(135deg, #06b6d4, #22d3ee, #38bdf8, #06b6d4);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

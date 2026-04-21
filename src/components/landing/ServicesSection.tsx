@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { AnimateOnScroll, StaggerContainer, StaggerItem, useScrollReveal } from "./Animations";
 import { Code2, Layout, Settings, Smartphone, ArrowUpRight } from "lucide-react";
+import { useState } from "react";
 
 const services = [
   {
@@ -55,15 +56,31 @@ const services = [
   },
 ];
 
+import { CardParticles } from "./CardParticles";
+
 function ServiceCard({ service }: { service: typeof services[number] }) {
   const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Map theme to gradient class
+  const getGradientClass = (gradient: string) => {
+    if (gradient.includes("emerald")) return "gradient-text-emerald-animated";
+    if (gradient.includes("violet")) return "gradient-text-violet-animated";
+    if (gradient.includes("amber")) return "gradient-text-amber-animated";
+    if (gradient.includes("cyan")) return "gradient-text-cyan-animated";
+    return "gradient-text";
+  };
 
   return (
     <motion.div
       ref={ref}
-      whileHover={{ y: -6, transition: { duration: 0.3 } }}
-      className={`group relative h-full p-6 rounded-2xl bg-card/50 border border-white/[0.06] overflow-hidden transition-all duration-500 ${service.borderColor} hover:shadow-2xl ${service.glowColor} cursor-default card-shine spotlight hover:gradient-border-animated`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover={{ y: -6, scale: 1.02, transition: { duration: 0.3 } }}
+      className={`group relative h-full p-6 rounded-2xl bg-card/50 border border-white/[0.06] overflow-hidden transition-all duration-500 ${service.borderColor} hover:shadow-2xl ${service.glowColor} cursor-default card-shine spotlight hover:gradient-border-animated shimmer-sweep`}
     >
+      {/* Dynamic Particles */}
+      <CardParticles isHovered={isHovered} color={service.gradient.includes("emerald") ? "rgba(16, 185, 129, 0.3)" : service.gradient.includes("violet") ? "rgba(139, 92, 246, 0.3)" : service.gradient.includes("amber") ? "rgba(245, 158, 11, 0.3)" : "rgba(6, 182, 212, 0.3)"} />
       {/* Animated gradient left border */}
       <motion.div
         className="absolute top-0 left-0 w-[3px] h-full rounded-l-2xl"
@@ -105,10 +122,10 @@ function ServiceCard({ service }: { service: typeof services[number] }) {
         </div>
 
         {/* Title & description */}
-        <h3 className="text-lg font-semibold mb-2.5 group-hover:text-white transition-colors duration-300">
+        <h3 className={`text-lg font-bold mb-2.5 transition-colors duration-300 ${getGradientClass(service.gradient)}`}>
           {service.title}
         </h3>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+        <p className="text-sm text-muted-foreground/80 leading-relaxed mb-5 group-hover:text-foreground/90 transition-colors duration-300">
           {service.description}
         </p>
 

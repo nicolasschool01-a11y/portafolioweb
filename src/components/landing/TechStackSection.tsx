@@ -3,30 +3,28 @@
 import { AnimateOnScroll, StaggerContainer, StaggerItem } from "./Animations";
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useCallback } from "react";
-import {
-  Smartphone,
-  Globe,
-  Bot,
-  Zap,
-  ShoppingCart,
-  Megaphone,
-  BarChart3,
-  FileText,
-  Video,
-  Camera,
-  MessageCircle,
-  LineChart,
-  TrendingUp,
+import { 
+  Sparkles, 
+  Shield, 
+  Rocket, 
+  Target, 
+  Users, 
+  Layers, 
+  Lightbulb, 
+  TrendingUp, 
   ArrowRight,
-  Sparkles,
-  Shield,
-  Rocket,
-  Target,
-  Users,
-  Layers,
-  Lightbulb,
+  Smartphone,
+  ShoppingCart,
+  BarChart3,
+  MessageCircle,
+  Zap,
+  Camera,
+  Globe,
+  FileText,
+  LineChart
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { CardParticles } from "./CardParticles";
 
 /* ─── Types ─── */
 interface Solution {
@@ -257,14 +255,16 @@ function SolutionCard({
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={handleMouseLeave}
-          whileHover={{ y: -6 }}
+          whileHover={{ y: -8, scale: 1.02 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className={`relative overflow-hidden rounded-2xl border border-white/[0.06] bg-card/50 backdrop-blur-sm p-6 sm:p-7 cursor-default transition-all duration-500 hover:border-white/[0.14] group hover:shadow-2xl ${solution.glowClass} card-shine`}
+          className={`relative overflow-hidden rounded-2xl border border-white/[0.06] bg-card/50 backdrop-blur-sm p-6 sm:p-7 cursor-default transition-all duration-500 hover:border-white/[0.14] group hover:shadow-2xl ${solution.glowClass} card-shine shimmer-sweep shadow-lg hover:shadow-emerald-500/5`}
           style={{
             transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
             transition: "transform 0.25s ease-out",
           }}
         >
+          {/* Dynamic Particles */}
+          <CardParticles isHovered={isHovered} color={solution.gradient.includes("emerald") ? "rgba(16, 185, 129, 0.4)" : solution.gradient.includes("violet") ? "rgba(139, 92, 246, 0.4)" : solution.gradient.includes("amber") ? "rgba(245, 158, 11, 0.4)" : "rgba(6, 182, 212, 0.4)"} />
           {/* Left gradient accent border */}
           <div
             className={`absolute left-0 top-6 bottom-6 w-[3px] rounded-full bg-gradient-to-b ${solution.gradient} opacity-0 group-hover:opacity-60 transition-opacity duration-500`}
@@ -291,12 +291,17 @@ function SolutionCard({
           </div>
 
           {/* Title */}
-          <h3 className="font-semibold text-base sm:text-lg mb-2 group-hover:text-white transition-colors duration-300">
+          <h3 className={`font-bold text-base sm:text-lg mb-2 transition-colors duration-300 ${
+            solution.gradient.includes("emerald") ? "gradient-text-emerald-animated" : 
+            solution.gradient.includes("violet") ? "gradient-text-violet-animated" : 
+            solution.gradient.includes("amber") ? "gradient-text-amber-animated" : 
+            "gradient-text-cyan-animated"
+          }`}>
             {solution.title}
           </h3>
 
           {/* Description */}
-          <p className="text-sm text-muted-foreground leading-relaxed mb-4 group-hover:text-foreground/80 transition-colors duration-300">
+          <p className="text-sm text-muted-foreground/80 leading-relaxed mb-4 group-hover:text-foreground transition-colors duration-300 relative z-10">
             {solution.description}
           </p>
 
@@ -409,7 +414,7 @@ export function TechStackSection() {
                   <div className="flex items-center gap-3 shrink-0">
                     <span className="text-xl">{category.emoji}</span>
                     <div className="text-center">
-                      <span className="text-sm sm:text-base font-bold text-foreground block">
+                      <span className="text-sm sm:text-base font-bold gradient-text-animated block">
                         {category.label}
                       </span>
                       <span className="text-[11px] text-muted-foreground/60 block mt-0.5 hidden sm:block">

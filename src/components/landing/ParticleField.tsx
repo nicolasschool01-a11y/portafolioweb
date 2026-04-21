@@ -53,7 +53,11 @@ export function ParticleField() {
     window.addEventListener("resize", resize);
 
     // Create particles
-    const PARTICLE_COUNT = Math.min(Math.floor((width * height) / 10000), 90);
+    // Create particles - significantly fewer on mobile for performance
+    const isMobile = width < 768;
+    const PARTICLE_COUNT = isMobile 
+      ? Math.min(Math.floor((width * height) / 25000), 40)
+      : Math.min(Math.floor((width * height) / 10000), 80);
     particlesRef.current = [];
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
@@ -144,27 +148,38 @@ export function ParticleField() {
         // Core
         ctx.beginPath();
         ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = p.color + currentOpacity.toFixed(3) + ")";
+        ctx.fillStyle = `${p.color}${currentOpacity})`;
         ctx.fill();
       }
 
       // Draw connections between nearby particles (emerald/20)
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i];
-          const b = particles[j];
-          const ddx = a.x - b.x;
-          const ddy = a.y - b.y;
-          const dd = Math.sqrt(ddx * ddx + ddy * ddy);
+      // On mobile, we skip connections if the CPU is likely struggling or just show fewer
+      const skipConnections = isMobile && time % 2 === 0;
+      
+      if (!skipConnections) {
+        ctx.lineWidth = 0.5;
+        const maxDistSq = 100 * 100;
 
-          if (dd < 100) {
-            const lineOpacity = (1 - dd / 100) * 0.2;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(16, 185, 129, ${lineOpacity.toFixed(3)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
+        for (let i = 0; i < particles.length; i++) {
+          const a = particles[i];
+          // Optimization: only check a limited number of particles ahead
+          const limit = isMobile ? Math.min(i + 15, particles.length) : particles.length;
+          
+          for (let j = i + 1; j < limit; j++) {
+            const b = particles[j];
+            const ddx = a.x - b.x;
+            const ddy = a.y - b.y;
+            const distSq = ddx * ddx + ddy * ddy;
+
+            if (distSq < maxDistSq) {
+              const dist = Math.sqrt(distSq);
+              const lineOpacity = (1 - dist / 100) * 0.15;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.strokeStyle = `rgba(16, 185, 129, ${lineOpacity})`;
+              ctx.stroke();
+            }
           }
         }
       }
