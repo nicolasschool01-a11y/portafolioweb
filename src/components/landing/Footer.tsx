@@ -245,7 +245,7 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Link columns with hover translateX + color */}
+          {/* Link columns */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
               <h4 className="text-xs font-semibold uppercase tracking-wider mb-5 text-foreground/80">
@@ -265,6 +265,35 @@ export function Footer() {
               </ul>
             </div>
           ))}
+
+          {/* pSEO Directory Column */}
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-wider mb-5 text-foreground/80">
+              Ubicaciones
+            </h4>
+            <ul className="space-y-3">
+              <li>
+                <a href="/desarrollo-web-en-montevideo" className="text-sm text-muted-foreground hover:text-emerald-400 transition-all duration-200 hover:translate-x-1 inline-block">
+                  Web en Montevideo
+                </a>
+              </li>
+              <li>
+                <a href="/app-a-medida-en-buenos-aires" className="text-sm text-muted-foreground hover:text-emerald-400 transition-all duration-200 hover:translate-x-1 inline-block">
+                  Apps en Buenos Aires
+                </a>
+              </li>
+              <li>
+                <a href="/chatbot-whatsapp-en-punta-del-este" className="text-sm text-muted-foreground hover:text-emerald-400 transition-all duration-200 hover:translate-x-1 inline-block">
+                  Chatbot en Punta del Este
+                </a>
+              </li>
+              <li>
+                <a href="/sistema-crm-en-cordoba" className="text-sm text-muted-foreground hover:text-emerald-400 transition-all duration-200 hover:translate-x-1 inline-block">
+                  CRM en Córdoba
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
 
         {/* CTA strip with animated gradient border */}

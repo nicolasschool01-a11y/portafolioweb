@@ -29,6 +29,22 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: false,
+  async rewrites() {
+    return [
+      {
+        source: "/sitemap.xml",
+        destination: "/sitemaps/index.xml",
+      },
+      {
+        source: "/sitemap-home.xml",
+        destination: "/sitemaps/home.xml",
+      },
+      {
+        source: "/sitemap-:id.xml",
+        destination: "/sitemaps/:id.xml",
+      },
+    ];
+  },
   async headers() {
     return [
       {
