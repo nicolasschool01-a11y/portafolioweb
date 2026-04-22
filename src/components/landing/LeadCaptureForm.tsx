@@ -542,6 +542,9 @@ export function LeadCaptureForm() {
           step8: formData.extraFeatures,
           step9: formData.demoGoal,
         }),
+        contentNeeds: formData.contentNeeds,
+        demoGoal: formData.demoGoal,
+        extraFeatures: formData.extraFeatures,
         sourceSlug: sourceSlug,
       };
 
@@ -1540,7 +1543,7 @@ export function LeadCaptureForm() {
                       ¡Tu proyecto está en marcha! 🎉
                     </h3>
                     <p className="text-muted-foreground mb-8 text-sm sm:text-base leading-relaxed">
-                      Recibimos tu solicitud. Para acelerar el proceso y tener tu presupuesto hoy mismo, <span className="text-emerald-400 font-semibold underline decoration-emerald-500/30 underline-offset-4">agendá una llamada de 15 min</span> conmigo.
+                      Recibimos tu solicitud con éxito. Para acelerar el proceso y tener tu presupuesto hoy mismo, <span className="text-emerald-400 font-semibold underline decoration-emerald-500/30 underline-offset-4">agendá una Sesión de Descubrimiento de 15 min</span> para conocernos.
                     </p>
                   </motion.div>
 
@@ -1552,12 +1555,12 @@ export function LeadCaptureForm() {
                   >
                     <Button
                       size="lg"
-                      onClick={() => window.open("https://calendly.com/nicolasclaudioolivera/30min", "_blank")}
+                      onClick={() => window.open("https://calendly.com/nicolasclaudioolivera/15min", "_blank")}
                       className="w-full bg-white text-black hover:bg-white/90 rounded-2xl h-14 text-base font-bold shadow-[0_0_30px_rgba(255,255,255,0.15)] group relative overflow-hidden"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                       <Calendar className="w-5 h-5 mr-3 text-emerald-600" />
-                      📅 Reservar Sesión de Estrategia
+                      📅 Agendar Sesión de Descubrimiento (15 min)
                       <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     <p className="text-[10px] text-muted-foreground/60 mt-3 flex items-center justify-center gap-1">

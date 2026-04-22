@@ -48,6 +48,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: "/admin",
+        destination: "/admin/leads",
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {

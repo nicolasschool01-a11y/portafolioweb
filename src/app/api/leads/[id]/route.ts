@@ -3,9 +3,10 @@ import { db } from "@/lib/db";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authHeader = request.headers.get("authorization");
     const masterKey = process.env.ADMIN_MASTER_KEY;
 
@@ -17,7 +18,7 @@ export async function PATCH(
     const { status, adminNotes } = body;
 
     const updatedLead = await db.lead.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         status: status || undefined,
         adminNotes: adminNotes || undefined,
@@ -36,9 +37,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authHeader = request.headers.get("authorization");
     const masterKey = process.env.ADMIN_MASTER_KEY;
 
@@ -47,7 +49,7 @@ export async function DELETE(
     }
 
     await db.lead.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ success: true });

@@ -84,6 +84,15 @@ interface Lead {
   description: string | null;
   adminNotes: string | null;
   
+  // Gamified Form Fields v4.5
+  problemSolved: string | null;
+  targetUsers: string | null;
+  designStatus: string | null;
+  timeline: string | null;
+  contentNeeds: string | null;
+  demoGoal: string | null;
+  extraFeatures: string | null;
+  
   // Intelligence Fields
   website: string | null;
   mapsUrl: string | null;
@@ -120,6 +129,7 @@ export default function AdminLeadsPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [generatingPitch, setGeneratingPitch] = useState<{ id: string, channel: string } | null>(null);
   const [generatedPitch, setGeneratedPitch] = useState<string | null>(null);
+  const [selectedLeadForDiscovery, setSelectedLeadForDiscovery] = useState<Lead | null>(null);
 
   // Auth check
   const checkAuth = async (keyParam?: string) => {
@@ -523,6 +533,87 @@ export default function AdminLeadsPage() {
         )}
       </AnimatePresence>
 
+      {/* MODAL: RADIOGRAFÍA DEL LEAD v4.5 */}
+      <AnimatePresence>
+        {selectedLeadForDiscovery && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="bg-[#0c0c0c] border border-white/10 p-8 rounded-[2.5rem] w-full max-w-2xl shadow-2xl relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[100px] -z-10" />
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center">
+                    <Database className="w-5 h-5 text-black" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold">Radiografía del Lead</h3>
+                    <p className="text-xs text-muted-foreground">{selectedLeadForDiscovery.name} • {selectedLeadForDiscovery.company || "Sin Empresa"}</p>
+                  </div>
+                </div>
+                <Button variant="ghost" size="icon" onClick={() => setSelectedLeadForDiscovery(null)} className="rounded-full hover:bg-white/5">×</Button>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 overflow-y-auto max-h-[60vh] pr-2 scrollbar-thin">
+                <div className="space-y-4">
+                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">Tipo de Proyecto</p>
+                    <p className="text-sm font-semibold text-blue-400 capitalize">{selectedLeadForDiscovery.projectType}</p>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">Presupuesto</p>
+                    <p className="text-sm font-semibold text-emerald-400 capitalize">{selectedLeadForDiscovery.budget}</p>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">Problema a Resolver</p>
+                    <p className="text-sm italic">{selectedLeadForDiscovery.problemSolved || "No especificado"}</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">¿Cuándo lo necesita?</p>
+                    <p className="text-sm font-semibold text-amber-400 capitalize">{selectedLeadForDiscovery.timeline || "No especificado"}</p>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">Estado del Diseño</p>
+                    <p className="text-sm capitalize">{selectedLeadForDiscovery.designStatus || "No especificado"}</p>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">Extra Features</p>
+                    <p className="text-[10px] text-muted-foreground truncate">{selectedLeadForDiscovery.extraFeatures || "Sin detalles"}</p>
+                  </div>
+                </div>
+                {selectedLeadForDiscovery.description && (
+                   <div className="col-span-1 md:col-span-2 p-4 rounded-2xl bg-white/5 border border-white/10">
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">Feedback Detallado / Demo Goals</p>
+                    <p className="text-xs leading-relaxed opacity-80">{selectedLeadForDiscovery.demoGoal || "N/A"}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-4">
+                <Button 
+                  onClick={() => window.open(`https://wa.me/${selectedLeadForDiscovery.whatsapp?.replace(/[^0-9]/g, "")}`, "_blank")}
+                  className="flex-1 h-14 bg-emerald-500 text-black font-bold rounded-2xl flex items-center justify-center gap-2"
+                >
+                  <MessageSquare className="w-5 h-5" /> Contactar por WhatsApp
+                </Button>
+                <Button onClick={() => setSelectedLeadForDiscovery(null)} variant="outline" className="flex-1 h-14 border-white/10 rounded-2xl">
+                  Cerrar
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header Estilo Centro de Comando */}
       <header className="border-b border-white/10 bg-[#050505]/95 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-[1500px] mx-auto px-6 h-20 flex items-center justify-between">
@@ -779,6 +870,16 @@ export default function AdminLeadsPage() {
 
                     {/* ACCIONES DE CIERRE */}
                     <div className="flex items-center gap-2">
+                       {lead.projectType && (
+                         <Button 
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setSelectedLeadForDiscovery(lead)}
+                          className="h-9 border-blue-500/30 hover:bg-blue-500/10 text-blue-400 font-bold rounded-xl px-4 gap-2 transition-transform active:scale-95"
+                        >
+                          <Database className="w-3 h-3" /> RADIOGRAFÍA
+                        </Button>
+                       )}
                        <Button 
                         size="sm"
                         onClick={() => generateAIPitch(lead, "WhatsApp")}
