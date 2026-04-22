@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
           from: "NicoPrompt CRM <onboarding@resend.dev>",
           to: "nicolas.olivera.uy24@gmail.com",
           subject: `🎯 Nuevo Lead: ${lead.name}`,
-          html: `<h2>🚀 ¡Nuevo Proyecto de ${lead.projectType}!</h2><p>Ver en el CRM: https://nicoprompt.com/admin/leads</p>`,
+          html: `<h2>🚀 ¡Nuevo Proyecto de ${lead.projectType}!</h2><p>Ver en el CRM: https://nicoprompt.com/admin</p>`,
         });
       } catch (e) {
         console.error("Email notify error:", e);

@@ -1555,7 +1555,7 @@ export function LeadCaptureForm() {
                   >
                     <Button
                       size="lg"
-                      onClick={() => window.open("https://calendly.com/nicolasclaudioolivera/15min", "_blank")}
+                      onClick={() => window.open("https://calendly.com/nicoprompt/15min", "_blank")}
                       className="w-full bg-white text-black hover:bg-white/90 rounded-2xl h-14 text-base font-bold shadow-[0_0_30px_rgba(255,255,255,0.15)] group relative overflow-hidden"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
