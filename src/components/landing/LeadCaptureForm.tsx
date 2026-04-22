@@ -44,8 +44,10 @@ import {
   PenTool,
   Image,
   BarChart3,
+  Mail,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useParams } from "next/navigation";
 
 // ─── Data Options ───────────────────────────────────────────
 
@@ -377,7 +379,7 @@ function FloatingInputField({
   optional = false,
 }: {
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ElementType;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
@@ -469,6 +471,8 @@ export function LeadCaptureForm() {
     company: "",
   });
   const { toast } = useToast();
+  const params = useParams();
+  const sourceSlug = params?.slug as string || "direct";
 
   // Typing effect for welcome
   const fullText = "¡Hola! 👋 Soy NicoPrompt y voy a ayudarte a dar forma a tu proyecto";
@@ -538,6 +542,7 @@ export function LeadCaptureForm() {
           step8: formData.extraFeatures,
           step9: formData.demoGoal,
         }),
+        sourceSlug: sourceSlug,
       };
 
       const res = await fetch("/api/leads", {
@@ -588,7 +593,7 @@ export function LeadCaptureForm() {
       case 9:
         return formData.demoGoal !== "";
       case 10:
-        return formData.name.trim() !== "" && formData.email.trim() !== "";
+        return formData.name.trim() !== "" && formData.email.trim() !== "" && formData.whatsapp.trim() !== "";
       default:
         return false;
     }
@@ -1447,25 +1452,25 @@ export function LeadCaptureForm() {
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
               >
                 <h3 className="text-xl font-semibold mb-1">
-                  ¿Cómo te contactamos? 📬
+                  ¡Casi listo! Solo falta tu contacto 📬
                 </h3>
                 <p className="text-sm text-muted-foreground mb-6">
-                  Tus datos están seguros y solo los usaré para prepararte el demo.
+                  Te avisaré por WhatsApp cuando el demo esté listo para probar.
                 </p>
-                <div className="space-y-5">
+                <div className="space-y-4">
                   <FloatingInputField
-                    label="Nombre completo"
+                    label="¿A quién contactamos?"
                     icon={User}
                     value={formData.name}
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    placeholder="Tu nombre"
+                    placeholder="Tu nombre completo"
                     required
                   />
                   <FloatingInputField
-                    label="Email"
-                    icon={Smartphone}
+                    label="Email para enviar el presupuesto"
+                    icon={Mail}
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
@@ -1474,38 +1479,21 @@ export function LeadCaptureForm() {
                     type="email"
                     required
                   />
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="pt-2">
                     <FloatingInputField
-                      label="Teléfono"
-                      icon={Phone}
-                      value={formData.phone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })
-                      }
-                      placeholder="+54 11 ..."
-                      optional
-                    />
-                    <FloatingInputField
-                      label="WhatsApp"
+                      label="WhatsApp (para contacto rápido)"
                       icon={MessageSquare}
                       value={formData.whatsapp}
                       onChange={(e) =>
                         setFormData({ ...formData, whatsapp: e.target.value })
                       }
-                      placeholder="+54 11 ..."
-                      optional
+                      placeholder="+598 9x xxx xxx"
+                      required
                     />
+                    <p className="text-[10px] text-emerald-400/70 mt-2 flex items-center gap-1">
+                       <Zap className="w-3 h-3" /> Usaré este número solo para enviarte el demo o coordinar la llamada.
+                    </p>
                   </div>
-                  <FloatingInputField
-                    label="Empresa"
-                    icon={Building2}
-                    value={formData.company}
-                    onChange={(e) =>
-                      setFormData({ ...formData, company: e.target.value })
-                    }
-                    placeholder="Nombre de tu empresa"
-                    optional
-                  />
                 </div>
               </motion.div>
             )}
@@ -1520,13 +1508,13 @@ export function LeadCaptureForm() {
                   duration: 0.5,
                   ease: [0.25, 0.1, 0.25, 1],
                 }}
-                className="flex flex-col items-center justify-center py-12 text-center relative"
+                className="flex flex-col items-center justify-center py-10 text-center relative"
               >
                 {/* Confetti celebration */}
                 <ConfettiEffect />
 
                 {/* Content above confetti */}
-                <div className="relative z-10">
+                <div className="relative z-10 w-full max-w-md mx-auto">
                   <motion.div
                     initial={{ scale: 0, rotate: -90 }}
                     animate={{ scale: 1, rotate: 0 }}
@@ -1535,10 +1523,10 @@ export function LeadCaptureForm() {
                       stiffness: 200,
                       delay: 0.2,
                     }}
-                    className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-6 shadow-2xl shadow-emerald-500/30"
+                    className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-6 shadow-2xl shadow-emerald-500/30 mx-auto"
                   >
                     <Check
-                      className="w-12 h-12 text-white"
+                      className="w-10 h-10 text-white"
                       strokeWidth={3}
                     />
                   </motion.div>
@@ -1548,47 +1536,45 @@ export function LeadCaptureForm() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
                   >
-                    <h3 className="text-2xl sm:text-3xl font-bold mb-2">
-                      ¡Proyecto enviado! 🎉
+                    <h3 className="text-2xl sm:text-3xl font-bold mb-3 tracking-tight">
+                      ¡Tu proyecto está en marcha! 🎉
                     </h3>
-                    <p className="text-muted-foreground max-w-md mb-2">
-                      Te contactaré en menos de 24hs con una propuesta
-                      personalizada.
+                    <p className="text-muted-foreground mb-8 text-sm sm:text-base leading-relaxed">
+                      Recibimos tu solicitud. Para acelerar el proceso y tener tu presupuesto hoy mismo, <span className="text-emerald-400 font-semibold underline decoration-emerald-500/30 underline-offset-4">agendá una llamada de 15 min</span> conmigo.
+                    </p>
+                  </motion.div>
+
+                  {/* CALENDLY BUTTON - ACCIÓN PRINCIPAL */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
+                  >
+                    <Button
+                      size="lg"
+                      onClick={() => window.open("https://calendly.com/nicolasclaudioolivera/30min", "_blank")}
+                      className="w-full bg-white text-black hover:bg-white/90 rounded-2xl h-14 text-base font-bold shadow-[0_0_30px_rgba(255,255,255,0.15)] group relative overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <Calendar className="w-5 h-5 mr-3 text-emerald-600" />
+                      📅 Reservar Sesión de Estrategia
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                    <p className="text-[10px] text-muted-foreground/60 mt-3 flex items-center justify-center gap-1">
+                      <Clock className="w-3 h-3" /> Solo te tomará 15 minutos
                     </p>
                   </motion.div>
 
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 }}
-                    className="flex items-center gap-2 mt-4 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm"
+                    transition={{ delay: 1.2 }}
+                    className="flex flex-col items-center gap-4 mt-10"
                   >
-                    <PartyPopper className="w-4 h-4" />
-                    ¡Gracias por confiar en NicoPrompt!
-                  </motion.div>
-
-                  {/* Animated celebration emojis */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1 }}
-                    className="mt-8 flex gap-2"
-                  >
-                    {["🎉", "🚀", "⭐", "✨", "🎊"].map((emoji, i) => (
-                      <motion.span
-                        key={i}
-                        initial={{ y: 20, opacity: 0, scale: 0 }}
-                        animate={{ y: 0, opacity: 1, scale: 1 }}
-                        transition={{
-                          delay: 1 + i * 0.15,
-                          type: "spring",
-                          stiffness: 300,
-                        }}
-                        className="text-2xl"
-                      >
-                        {emoji}
-                      </motion.span>
-                    ))}
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+                      <Zap className="w-3.5 h-3.5" />
+                      Te envié una confirmación a {formData.email}
+                    </div>
                   </motion.div>
                 </div>
               </motion.div>
@@ -1596,7 +1582,7 @@ export function LeadCaptureForm() {
           </AnimatePresence>
 
           {/* ─── Navigation buttons ─── */}
-          {step > 0 && step < 8 && !submitted && (
+          {step > 0 && step < 10 && !submitted && (
             <div className="flex justify-between items-center mt-8">
               {/* Subtle back button */}
               <button
@@ -1612,14 +1598,14 @@ export function LeadCaptureForm() {
                 disabled={!canProceed()}
                 className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl group disabled:opacity-50 transition-all duration-200 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-[0.97]"
               >
-                {isContactStep ? "Ver resumen" : "Continuar"}
+                Continuar
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
               </Button>
             </div>
           )}
 
-          {/* ─── Summary submit ─── */}
-          {isSummaryStep && !submitted && (
+          {/* ─── Final Submit (Step 10) ─── */}
+          {step === 10 && !submitted && (
             <div className="flex justify-between items-center mt-8">
               {/* Subtle back button */}
               <button

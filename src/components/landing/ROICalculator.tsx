@@ -118,8 +118,10 @@ function formatCurrency(value: number): string {
   }).format(value);
 }
 
+type ProjectType = (typeof projectTypes)[number];
+
 export function ROICalculator() {
-  const [selectedType, setSelectedType] = useState(projectTypes[0]);
+  const [selectedType, setSelectedType] = useState<ProjectType>(projectTypes[0]);
   const [revenue, setRevenue] = useState(10000);
 
   const monthlyGain = revenue * selectedType.efficiencyMultiplier;

@@ -32,21 +32,39 @@ model Post {
 model Lead {
   id            String   @id @default(cuid())
   name          String
-  email         String
+  email         String   @default("")
   phone         String?
   whatsapp      String?
   company       String?
-  projectType   String
+  projectType   String   @default("Prospect")
   problemSolved String?
   targetUsers   String?
   designStatus  String?
   timeline      String?
-  budget        String
+  budget        String   @default("")
   contentNeeds  String?
   demoGoal      String?
   extraFeatures String?
   description   String?
   status        String   @default("new")
+  sourceSlug    String?
+  adminNotes    String?
+  
+  // Novedades v3.1 (Apify & Smart Outreach)
+  website       String?
+  mapsUrl       String?
+  rating        Float?
+  reviewsCount  Int?
+  street        String?
+  city          String?
+  state         String?
+  industry      String?
+  instagram     String?
+  facebook      String?
+  leadSource    String   @default("organic") // organic, scraped, linkedIn, etc.
+  category      String?
+  tags          String?  // Almacenado como JSON comprimido o string simple
+
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
