@@ -741,7 +741,7 @@ export function LeadCaptureForm() {
         {/* ─── MOBILE MODAL WRAPPER ─── */}
         <div className={
           step > 0 && !submitted 
-            ? "fixed inset-0 z-[60] bg-background/98 backdrop-blur-3xl flex flex-col pt-8 pb-4 px-4 overflow-hidden w-[100vw] h-[100dvh] sm:static sm:block sm:bg-transparent sm:p-0 sm:overflow-visible sm:h-auto sm:w-auto"
+            ? "fixed inset-0 z-[60] bg-background flex flex-col pt-2 pb-2 px-3 overflow-hidden w-[100vw] h-[100dvh] sm:static sm:block sm:bg-transparent sm:p-0 sm:overflow-visible sm:h-auto sm:w-auto"
             : ""
         }>
           {step > 0 && !submitted && (
@@ -754,7 +754,7 @@ export function LeadCaptureForm() {
             </button>
           )}
 
-          <div className={step > 0 && !submitted ? "w-full max-w-2xl mx-auto flex-1 flex flex-col mt-6 sm:mt-0 min-h-0" : "w-full"}>
+          <div className={step > 0 && !submitted ? "w-full max-w-2xl mx-auto flex-1 flex flex-col mt-4 sm:mt-0 min-h-0" : "w-full"}>
             
             {/* ─── Progress bar with milestones + glow + bounce ─── */}
             {step > 0 && !submitted && (
@@ -901,7 +901,7 @@ export function LeadCaptureForm() {
            className={`relative ${step > 0 && !submitted ? "flex-1 flex flex-col min-h-0" : ""}`}
         >
           <div className={`gradient-border-animated rounded-[18px] p-[2px] ${step > 0 && !submitted ? "flex-1 flex flex-col min-h-0" : ""}`}>
-          <div className={`relative rounded-2xl border border-white/10 bg-card/50 backdrop-blur-sm p-4 sm:p-8 overflow-y-auto overflow-x-hidden sm:overflow-visible min-h-0 sm:min-h-[420px] ${step > 0 && !submitted ? "flex-1 flex flex-col min-h-0 scrollbar-hide" : ""}`}>
+          <div className={`relative rounded-2xl border border-white/10 bg-card sm:bg-card/50 sm:backdrop-blur-sm p-2 sm:p-8 overflow-y-auto overflow-x-hidden sm:overflow-visible min-h-0 sm:min-h-[420px] ${step > 0 && !submitted ? "flex-1 flex flex-col min-h-0 scrollbar-hide" : ""}`}>
           <SparkleBurst key={sparkleKey} active={showSparkle} />
 
           <AnimatePresence mode="wait" custom={direction}>
@@ -931,7 +931,7 @@ export function LeadCaptureForm() {
                       damping: 15,
                       delay: 0.1,
                     }}
-                    className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-6 shadow-xl shadow-emerald-500/25"
+                    className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-2 sm:mb-6 shadow-xl shadow-emerald-500/25"
                   >
                     <Rocket className="w-10 h-10 text-white" />
                   </motion.div>
@@ -995,10 +995,10 @@ export function LeadCaptureForm() {
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Qué tipo de proyecto necesitás? 🚀
                 </h3>
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   Elegí la opción que mejor describe tu idea.
                 </p>
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
                   {projectTypes.map((type) => {
                     const Icon = type.icon;
                     const isSelected = formData.projectType === type.id;
@@ -1008,7 +1008,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, projectType: type.id })
                         }
-                        className={`relative p-3 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-2 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1049,7 +1049,7 @@ export function LeadCaptureForm() {
                         <span className="text-xs font-medium block leading-tight relative z-10">
                           {type.label}
                         </span>
-                        <span className="text-[10px] text-muted-foreground block mt-0.5 leading-tight relative z-10">
+                        <span className="hidden sm:block text-[10px] sm:text-[11px] text-muted-foreground mt-0.5 sm:mt-1 leading-tight relative z-10">
                           {type.tagline}
                         </span>
                         {/* Selected glow overlay */}
@@ -1081,10 +1081,10 @@ export function LeadCaptureForm() {
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Qué problema resuelve? 🎯
                 </h3>
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   Elegí el objetivo principal de tu proyecto.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
                   {problemOptions.map((opt) => {
                     const Icon = opt.icon;
                     const isSelected = formData.problemSolved === opt.id;
@@ -1094,7 +1094,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, problemSolved: opt.id })
                         }
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1172,10 +1172,10 @@ export function LeadCaptureForm() {
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Quiénes son tus usuarios? 👥
                 </h3>
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   ¿Quiénes van a usar lo que vamos a construir?
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
                   {targetUsersOptions.map((opt) => {
                     const Icon = opt.icon;
                     const isSelected = formData.targetUsers === opt.id;
@@ -1185,7 +1185,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, targetUsers: opt.id })
                         }
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1244,10 +1244,10 @@ export function LeadCaptureForm() {
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Tenés diseños o referencias? 🎨
                 </h3>
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   No worries si no tenés nada, ¡eso es parte del proceso!
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
                   {designStatusOptions.map((opt) => {
                     const isSelected = formData.designStatus === opt.id;
                     return (
@@ -1308,10 +1308,10 @@ export function LeadCaptureForm() {
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Cuándo lo necesitás? ⏰
                 </h3>
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   ¿Cuándo te gustaría tener tu producto listo?
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
                   {timelineOptions.map((opt) => {
                     const Icon = opt.icon;
                     const isSelected = formData.timeline === opt.id;
@@ -1327,7 +1327,7 @@ export function LeadCaptureForm() {
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <div className="flex items-center gap-3 mb-1">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-1">
                           <span className="text-xl sm:text-2xl">{opt.emoji}</span>
                           <div className="flex-1">
                             <span className="text-sm font-semibold block">
@@ -1387,11 +1387,11 @@ export function LeadCaptureForm() {
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Cuál es tu presupuesto? 💰
                 </h3>
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   Esto me ayuda a dimensionar la mejor solución para vos. ¡Cotizaciones
                   sin compromiso!
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
                   {budgetOptions.map((opt) => {
                     const isSelected = formData.budget === opt.id;
                     return (
@@ -1406,7 +1406,7 @@ export function LeadCaptureForm() {
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3">
                           <span className="text-xl sm:text-2xl">{opt.emoji}</span>
                           <div className="flex-1">
                             <span className="text-base font-semibold block">
@@ -1466,7 +1466,7 @@ export function LeadCaptureForm() {
                 <p className="text-xs text-muted-foreground/60 mb-5">
                   Elegí todas las que apliquen — o skipeá si no necesitás.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
                   {contentNeedsOptions.map((opt) => {
                     const Icon = opt.icon;
                     const isSelected = formData.contentNeeds.includes(opt.id);
@@ -1481,7 +1481,7 @@ export function LeadCaptureForm() {
                               : [...formData.contentNeeds, opt.id],
                           });
                         }}
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-2 sm:gap-3 ${
                           isSelected
                             ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1525,7 +1525,7 @@ export function LeadCaptureForm() {
                 <p className="text-xs text-muted-foreground/60 mb-5">
                   Cuanta más info me des, más preciso será el demo que preparemos.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                   {extraFeaturesOptions.map((opt) => {
                     const isSelected = formData.extraFeatures.includes(opt.id);
                     return (
@@ -1574,10 +1574,10 @@ export function LeadCaptureForm() {
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Qué esperás como siguiente paso? 🎬
                 </h3>
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   Con esta info puedo prepararte un demo MVP para que veas tu producto en acción.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
                   {demoGoalsOptions.map((opt) => {
                     const Icon = opt.icon;
                     const isSelected = formData.demoGoal === opt.id;
@@ -1591,11 +1591,11 @@ export function LeadCaptureForm() {
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <div className="flex items-center gap-3 mb-1">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-1">
                           <span className="text-xl sm:text-2xl">{opt.emoji}</span>
                           <div className="flex-1">
                             <span className="text-sm font-semibold block">{opt.label}</span>
-                            <span className="text-[10px] sm:text-xs text-muted-foreground">{opt.desc}</span>
+                            <span className="hidden sm:block text-xs text-muted-foreground">{opt.desc}</span>
                           </div>
                           <Icon className={`w-4 h-4 flex-shrink-0 ${isSelected ? "text-emerald-400" : "text-muted-foreground"} transition-colors`} />
                         </div>
@@ -1625,7 +1625,7 @@ export function LeadCaptureForm() {
                 <h3 className="text-xl font-semibold mb-1">
                   ¡Casi listo! Solo falta tu contacto 📬
                 </h3>
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   Te avisaré por WhatsApp cuando el demo esté listo para probar.
                 </p>
                 <div className="space-y-4">
@@ -1694,7 +1694,7 @@ export function LeadCaptureForm() {
                       stiffness: 200,
                       delay: 0.2,
                     }}
-                    className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-6 shadow-2xl shadow-emerald-500/30 mx-auto"
+                    className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-2 sm:mb-6 shadow-2xl shadow-emerald-500/30 mx-auto"
                   >
                     <Check
                       className="w-10 h-10 text-white"
@@ -1832,7 +1832,7 @@ function AnimatedSummaryRow({
   return (
     <motion.div
       variants={summaryItemVariants}
-      className="flex items-start gap-3 p-3 rounded-lg bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-colors duration-200"
+      className="flex items-start gap-2 sm:gap-3 p-3 rounded-lg bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-colors duration-200"
     >
       <Badge
         variant="outline"
