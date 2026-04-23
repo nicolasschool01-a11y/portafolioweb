@@ -733,13 +733,34 @@ export function LeadCaptureForm() {
           </p>
         </div>
 
-        {/* ─── Progress bar with milestones + glow + bounce ─── */}
-        {step > 0 && !submitted && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
-          >
+        {/* Spacer to prevent layout shift on mobile cuando el form pasa a fixed */}
+        {step > 0 && !submitted && <div className="h-[500px] w-full sm:hidden"></div>}
+
+        {/* ─── MOBILE MODAL WRAPPER ─── */}
+        <div className={
+          step > 0 && !submitted 
+            ? "fixed inset-0 z-[60] bg-background/95 backdrop-blur-3xl flex flex-col pt-8 pb-8 px-4 overflow-y-auto w-full h-[100dvh] sm:static sm:block sm:bg-transparent sm:p-0 sm:overflow-visible sm:h-auto"
+            : ""
+        }>
+          {step > 0 && !submitted && (
+            <button
+              onClick={() => setStep(0)}
+              className="absolute top-4 right-4 z-[70] flex items-center justify-center w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full transition-colors sm:hidden"
+              aria-label="Cerrar formulario"
+            >
+              <X className="w-5 h-5 text-white" />
+            </button>
+          )}
+
+          <div className={step > 0 && !submitted ? "w-full max-w-2xl mx-auto flex-1 flex flex-col mt-6 sm:mt-0" : "w-full"}>
+            
+            {/* ─── Progress bar with milestones + glow + bounce ─── */}
+            {step > 0 && !submitted && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-8 flex-shrink-0"
+              >
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium text-foreground/80">
                 {getStepLabel()}{" "}
@@ -1787,6 +1808,11 @@ export function LeadCaptureForm() {
           </div>
           </div>
         </motion.div>
+
+        {/* Cierre de wrappers del modal móvil */}
+        </div>
+        </div>
+
       </div>
     </section>
   );
