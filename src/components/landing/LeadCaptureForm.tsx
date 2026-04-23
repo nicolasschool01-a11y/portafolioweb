@@ -785,7 +785,7 @@ export function LeadCaptureForm() {
                 style={{ width: `${getProgressPercent()}%` }}
               >
                 <motion.div 
-                  className="absolute inset-y-0 left-0 w-[1200px] h-full opacity-80"
+                  className="absolute inset-y-0 left-0 w-[800px] sm:w-[1200px] h-full opacity-80"
                   animate={{ backgroundPosition: ["0px 0px", "-100px 0px"] }}
                   transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
                   style={{
@@ -878,7 +878,7 @@ export function LeadCaptureForm() {
           className="relative"
         >
           <div className="gradient-border-animated rounded-[18px] p-[2px]">
-          <div className="relative rounded-2xl border border-white/10 bg-card/50 backdrop-blur-sm p-6 sm:p-8 overflow-hidden min-h-[420px]">
+          <div className="relative rounded-2xl border border-white/10 bg-card/50 backdrop-blur-sm p-4 sm:p-8 overflow-visible min-h-0 sm:min-h-[420px]">
           <SparkleBurst key={sparkleKey} active={showSparkle} />
 
           <AnimatePresence mode="wait" custom={direction}>
@@ -975,7 +975,7 @@ export function LeadCaptureForm() {
                 <p className="text-sm text-muted-foreground mb-6">
                   Elegí la opción que mejor describe tu idea.
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
                   {projectTypes.map((type) => {
                     const Icon = type.icon;
                     const isSelected = formData.projectType === type.id;
@@ -1022,11 +1022,11 @@ export function LeadCaptureForm() {
                             </motion.div>
                           )}
                         </div>
-                        <span className="text-lg mb-1 block">{type.emoji}</span>
-                        <span className="text-sm font-medium block leading-tight">
+                        <span className="text-xl sm:text-2xl mb-1 block relative z-10">{type.emoji}</span>
+                        <span className="text-[13px] sm:text-[15px] font-medium block leading-tight relative z-10">
                           {type.label}
                         </span>
-                        <span className="text-[11px] text-muted-foreground block mt-1 leading-tight">
+                        <span className="text-[10px] sm:text-[11px] text-muted-foreground block mt-1 leading-tight relative z-10">
                           {type.tagline}
                         </span>
                         {/* Selected glow overlay */}
@@ -1071,15 +1071,15 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, problemSolved: opt.id })
                         }
-                        className={`relative p-3 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
+                        className={`relative p-2.5 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <span className="text-2xl flex-shrink-0">{opt.emoji}</span>
+                        <span className="text-xl sm:text-2xl flex-shrink-0">{opt.emoji}</span>
                         <div className="flex-1">
-                          <span className="text-sm font-medium block">
+                          <span className="text-[13px] sm:text-sm font-medium block">
                             {opt.label}
                           </span>
                         </div>
@@ -1162,15 +1162,15 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, targetUsers: opt.id })
                         }
-                        className={`relative p-3 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
+                        className={`relative p-2.5 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <span className="text-2xl flex-shrink-0">{opt.emoji}</span>
+                        <span className="text-xl sm:text-2xl flex-shrink-0">{opt.emoji}</span>
                         <div className="flex-1">
-                          <span className="text-sm font-medium block">
+                          <span className="text-[13px] sm:text-sm font-medium block">
                             {opt.label}
                           </span>
                         </div>
@@ -1233,14 +1233,14 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, designStatus: opt.id })
                         }
-                        className={`relative p-3 sm:p-4 rounded-xl border text-left transition-all duration-200 ${
+                        className={`relative p-2.5 sm:p-4 rounded-xl border text-left transition-all duration-200 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <span className="text-lg block mb-1">{opt.emoji}</span>
-                        <span className="text-sm font-medium block leading-tight">
+                        <span className="text-xl sm:text-2xl block mb-1">{opt.emoji}</span>
+                        <span className="text-[13px] sm:text-sm font-medium block leading-tight">
                           {opt.label}
                         </span>
                         {isSelected && (
@@ -1298,19 +1298,19 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, timeline: opt.id })
                         }
-                        className={`relative p-3.5 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-2.5 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
                         <div className="flex items-center gap-3 mb-1">
-                          <span className="text-2xl">{opt.emoji}</span>
+                          <span className="text-xl sm:text-2xl">{opt.emoji}</span>
                           <div className="flex-1">
                             <span className="text-sm font-semibold block">
                               {opt.label}
                             </span>
-                            <span className="text-xs text-muted-foreground">
+                            <span className="text-[10px] sm:text-xs text-muted-foreground">
                               {opt.desc}
                             </span>
                           </div>
@@ -1377,19 +1377,19 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, budget: opt.id })
                         }
-                        className={`relative p-3.5 sm:p-5 rounded-xl border text-left transition-all duration-200 ${
+                        className={`relative p-2.5 sm:p-5 rounded-xl border text-left transition-all duration-200 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-2xl">{opt.emoji}</span>
+                          <span className="text-xl sm:text-2xl">{opt.emoji}</span>
                           <div className="flex-1">
                             <span className="text-base font-semibold block">
                               {opt.label}
                             </span>
-                            <span className="text-xs text-muted-foreground">
+                            <span className="text-[10px] sm:text-xs text-muted-foreground">
                               {opt.desc}
                             </span>
                           </div>
@@ -1458,15 +1458,15 @@ export function LeadCaptureForm() {
                               : [...formData.contentNeeds, opt.id],
                           });
                         }}
-                        className={`relative p-3 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
+                        className={`relative p-2.5 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
                           isSelected
                             ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <span className="text-2xl flex-shrink-0">{opt.emoji}</span>
+                        <span className="text-xl sm:text-2xl flex-shrink-0">{opt.emoji}</span>
                         <div className="flex-1">
-                          <span className="text-sm font-medium block">{opt.label}</span>
+                          <span className="text-[13px] sm:text-sm font-medium block">{opt.label}</span>
                           <span className="text-[11px] text-muted-foreground">{opt.desc}</span>
                         </div>
                         {isSelected && (
@@ -1522,7 +1522,7 @@ export function LeadCaptureForm() {
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <span className="text-lg block mb-1">{opt.emoji}</span>
+                        <span className="text-xl sm:text-2xl block mb-1">{opt.emoji}</span>
                         <span className="text-xs font-medium block leading-tight">{opt.label}</span>
                         {isSelected && (
                           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-1.5 right-1.5 flex items-center justify-center">
@@ -1562,17 +1562,17 @@ export function LeadCaptureForm() {
                       <RippleCard
                         key={opt.id}
                         onClick={() => setFormData({ ...formData, demoGoal: opt.id })}
-                        className={`relative p-3.5 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-2.5 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
                         <div className="flex items-center gap-3 mb-1">
-                          <span className="text-2xl">{opt.emoji}</span>
+                          <span className="text-xl sm:text-2xl">{opt.emoji}</span>
                           <div className="flex-1">
                             <span className="text-sm font-semibold block">{opt.label}</span>
-                            <span className="text-xs text-muted-foreground">{opt.desc}</span>
+                            <span className="text-[10px] sm:text-xs text-muted-foreground">{opt.desc}</span>
                           </div>
                           <Icon className={`w-4 h-4 flex-shrink-0 ${isSelected ? "text-emerald-400" : "text-muted-foreground"} transition-colors`} />
                         </div>
