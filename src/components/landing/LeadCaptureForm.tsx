@@ -422,6 +422,7 @@ function FloatingInputField({
   const isActive = focused || localValue.length > 0;
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocalValue(value);
   }, [value]);
 
@@ -521,6 +522,7 @@ export function LeadCaptureForm() {
 
   useEffect(() => {
     if (step === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTypedText("");
       let index = 0;
       const interval = setInterval(() => {
@@ -1077,8 +1079,8 @@ export function LeadCaptureForm() {
                       >
                         <div className="flex items-center gap-3 w-full p-2.5">
                           <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {Icon && <Icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
-                            {!Icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
+                            {opt.icon && <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
+                            {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
                             <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
@@ -1151,8 +1153,8 @@ export function LeadCaptureForm() {
                       >
                         <div className="flex items-center gap-3 w-full p-2.5">
                           <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {Icon && <Icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
-                            {!Icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
+                            {opt.icon && <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
+                            {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
                             <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
@@ -1205,8 +1207,8 @@ export function LeadCaptureForm() {
                       >
                         <div className="flex items-center gap-3 w-full p-2.5">
                           <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {Icon && <Icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
-                            {!Icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
+                            {opt.icon && <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
+                            {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
                             <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
@@ -1260,8 +1262,8 @@ export function LeadCaptureForm() {
                       >
                         <div className="flex items-center gap-3 w-full p-2.5">
                           <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {Icon && <Icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
-                            {!Icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
+                            {opt.icon && <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
+                            {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
                             <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
@@ -1381,8 +1383,8 @@ export function LeadCaptureForm() {
                       >
                         <div className="flex items-center gap-3 w-full p-2.5">
                           <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {Icon && <Icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
-                            {!Icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
+                            {opt.icon && <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
+                            {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
                             <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
