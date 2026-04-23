@@ -1008,12 +1008,6 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, projectType: type.id })
                         }
-                        className={`relative p-2 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
-                          isSelected
-                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
-                            : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
-                        }`}
-                      >
                         className={`relative p-3 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
