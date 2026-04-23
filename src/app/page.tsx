@@ -18,11 +18,14 @@ import { PricingPreview } from "@/components/landing/PricingPreview";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { SEOSection } from "@/components/landing/SEOSection";
 import { EducationSection } from "@/components/landing/EducationSection";
-import { FAQSection } from "@/components/landing/FAQSection";
-import { LeadCaptureForm } from "@/components/landing/LeadCaptureForm";
 import { TrustSection } from "@/components/landing/TrustSection";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
+import dynamic from "next/dynamic";
+
+const FAQSection = dynamic(() => import("@/components/landing/FAQSection").then(mod => mod.FAQSection));
+const LeadCaptureForm = dynamic(() => import("@/components/landing/LeadCaptureForm").then(mod => mod.LeadCaptureForm));
+
 import { StickyCTA } from "@/components/landing/StickyCTA";
 import { PresentationSection } from "@/components/landing/PresentationSection";
 
@@ -37,8 +40,8 @@ import { NotificationProvider } from "@/components/landing/NotificationToast";
 function SectionReveal({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       className={className}

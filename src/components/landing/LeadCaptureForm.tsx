@@ -129,6 +129,7 @@ const extraFeaturesOptions = [
   { id: "integraciones", label: "Integraciones (APIs externas)", emoji: "🔗" },
   { id: "analitica", label: "Analytics / Métricas", emoji: "📈" },
   { id: "multidioma", label: "Multiidioma", emoji: "🌍" },
+  { id: "diseno-ui", label: "Diseño UI/UX", emoji: "🎨" },
   { id: "ninguna", label: "Nada de esto por ahora", emoji: "✅" },
 ];
 
@@ -349,20 +350,48 @@ function RippleCard({
   }, []);
 
   return (
-    <button onClick={handleClick} className={`relative overflow-hidden ${className}`}>
+    <motion.button 
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.97 }}
+      onClick={handleClick} 
+      className={`relative w-full h-full overflow-hidden shadow-sm hover:shadow-emerald-500/10 transition-shadow ${className}`}
+    >
       {children}
       {ripples.map((r) => (
         <motion.span
           key={r.id}
-          initial={{ scale: 0, opacity: 0.35 }}
-          animate={{ scale: 5, opacity: 0 }}
-          transition={{ duration: 0.65, ease: "easeOut" }}
-          onAnimationComplete={() => removeRipple(r.id)}
-          className="absolute rounded-full bg-white/25 pointer-events-none w-10 h-10"
+          initial={{ scale: 0, opacity: 0.4 }}
+          animate={{ scale: 6, opacity: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="absolute rounded-full bg-emerald-500/20 pointer-events-none w-10 h-10"
           style={{ left: r.x - 20, top: r.y - 20 }}
         />
       ))}
-    </button>
+    </motion.button>
+  );
+}
+
+// ─── Select Sparkle Micro-Animation ─────────────────────────
+
+function SelectSparkle() {
+  return (
+    <>
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={i}
+          initial={{ scale: 0, x: 0, y: 0, opacity: 1 }}
+          animate={{
+            scale: [0, 1.5, 0],
+            x: Math.cos((i * 60 * Math.PI) / 180) * 25,
+            y: Math.sin((i * 60 * Math.PI) / 180) * 25,
+            opacity: [1, 1, 0]
+          }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="absolute w-1.5 h-1.5 bg-emerald-400 rounded-full"
+          style={{ top: "40%", left: "40%" }}
+        />
+      ))}
+    </>
   );
 }
 
@@ -381,14 +410,26 @@ function FloatingInputField({
   label: string;
   icon: React.ElementType;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (val: string) => void;
   placeholder: string;
   type?: string;
   required?: boolean;
   optional?: boolean;
 }) {
   const [focused, setFocused] = useState(false);
-  const isActive = focused || value.length > 0;
+  const [localValue, setLocalValue] = useState(value);
+  const isActive = focused || localValue.length > 0;
+
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
+
+  const handleBlur = () => {
+    setFocused(false);
+    if (localValue !== value) {
+      onChange(localValue);
+    }
+  };
 
   return (
     <div className="relative">
@@ -406,10 +447,10 @@ function FloatingInputField({
       </label>
       <Input
         type={type}
-        value={value}
-        onChange={onChange}
+        value={localValue}
+        onChange={(e) => setLocalValue(e.target.value)}
         onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onBlur={handleBlur}
         placeholder={isActive ? placeholder : " "}
         className={`rounded-xl h-12 border transition-all duration-300 ${
           isActive ? "pt-5" : ""
@@ -491,6 +532,39 @@ export function LeadCaptureForm() {
       }, 30);
       return () => clearInterval(interval);
     }
+  }, [step]);
+
+  // Interceptar clics en todos los CTAs globales para restarle un clic al lead
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const buttonOrLink = target.closest("button, a");
+      if (!buttonOrLink) return;
+      
+      // Ignorar clics si ya están dentro del formulario o su propia estructura
+      if (target.closest("#contacto") || target.closest("form")) return;
+
+      const text = buttonOrLink.textContent?.toLowerCase() || "";
+      const href = buttonOrLink.getAttribute("href");
+      
+      // Reconocer palabras clave típicas de cta de la landing
+      const isCta = href === "#contacto" || 
+                    text.includes("crear mi proyecto") || 
+                    text.includes("cotización") || 
+                    text.includes("comenzar") ||
+                    text.includes("contacto");
+
+      if (isCta) {
+        // En vez de mostrar la pantalla de bienvenida (Paso 0), abrir directo el form (Paso 1)
+        if (step === 0) {
+          setStep(1);
+        }
+      }
+    };
+    
+    // Fase de captura
+    document.addEventListener("click", handleGlobalClick, true);
+    return () => document.removeEventListener("click", handleGlobalClick, true);
   }, [step]);
 
   const triggerSparkle = useCallback(() => {
@@ -680,22 +754,88 @@ export function LeadCaptureForm() {
             <div className="relative h-2.5 rounded-full bg-white/[0.04] overflow-visible">
               {/* Glow layer behind the fill */}
               <motion.div
-                className="absolute inset-y-[-2px] left-0 bg-gradient-to-r from-emerald-500/30 to-teal-500/30 rounded-full blur-md"
+                className="absolute inset-y-[-4px] left-0 bg-cyan-500/40 rounded-full blur-md"
                 initial={false}
                 animate={{ width: `${getProgressPercent()}%` }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
               />
-              {/* Actual fill */}
+              {/* Actual fill with electricity effect (Blue Lightning Core) */}
               <motion.div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"
+                className="absolute inset-y-[2px] left-0 bg-white rounded-full z-10"
                 initial={false}
-                animate={{ width: `${getProgressPercent()}%` }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                animate={{ 
+                  width: `${getProgressPercent()}%`,
+                  opacity: [0.9, 1, 0.85, 1] 
+                }}
+                transition={{
+                  width: { duration: 0.4, ease: "easeOut" },
+                  opacity: { duration: 0.15, repeat: Infinity, ease: "linear" }
+                }}
                 style={{
-                  boxShadow:
-                    "0 0 12px rgba(16,185,129,0.35), 0 0 4px rgba(16,185,129,0.5)",
+                  boxShadow: "0 0 8px #fff, 0 0 15px #22d3ee, 0 0 25px #06b6d4, 0 0 40px #0891b2",
                 }}
               />
+
+              {/* Electric arcing branches overlay - CLIPPED TO FILLED PART */}
+              <motion.div
+                className="absolute inset-y-[-6px] left-0 overflow-hidden mix-blend-screen pointer-events-none z-10"
+                initial={false}
+                animate={{ width: `${getProgressPercent()}%` }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                style={{ width: `${getProgressPercent()}%` }}
+              >
+                <motion.div 
+                  className="absolute inset-y-0 left-0 w-[1200px] h-full opacity-80"
+                  animate={{ backgroundPosition: ["0px 0px", "-100px 0px"] }}
+                  transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='22'%3E%3Cpath d='M0 11 L10 4 L20 18 L30 7 L40 16 L50 2 L60 20 L70 5 L80 16 L90 8 L100 11' stroke='%2322d3ee' fill='none' stroke-width='1.5' filter='drop-shadow(0 0 2px %2306b6d4)' /%3E%3Cpath d='M0 11 L15 19 L25 5 L35 18 L55 4 L75 18 L85 5 L100 11' stroke='%23a5f3fc' fill='none' stroke-width='1' /%3E%3C/svg%3E")`,
+                    backgroundSize: "100px 100%",
+                  }}
+                />
+              </motion.div>
+              {/* Explosion at the head/tip of progress bar (Blue Zap & Sparks) */}
+              <motion.div
+                className="absolute top-1/2 -translate-y-1/2 z-20 pointer-events-none"
+                initial={false}
+                animate={{ left: `${getProgressPercent()}%` }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                {/* Core Zap */}
+                <motion.div
+                  key={`lightning-zap-${step}`} 
+                  initial={{ scale: 0.1, opacity: 1, rotate: 0 }}
+                  animate={{ scale: [0.1, 4, 0], opacity: [1, 0.9, 0], rotate: [0, 90, 180] }}
+                  transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+                  className="absolute w-5 h-5 bg-white mix-blend-screen"
+                  style={{ 
+                    left: "-10px", top: "-10px", 
+                    boxShadow: "0 0 30px 15px rgba(34,211,238,0.9)",
+                    clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)"
+                  }}
+                />
+                {/* Electric Sparks */}
+                {[...Array(5)].map((_, i) => (
+                  <motion.div
+                    key={`spark-${step}-${i}`}
+                    initial={{ scale: 0, x: 0, y: 0, opacity: 1 }}
+                    animate={{
+                      scale: [0, 1, 0],
+                      x: (Math.random() - 0.5) * 80,
+                      y: (Math.random() - 0.5) * 80,
+                      opacity: [1, 1, 0]
+                    }}
+                    transition={{ duration: 0.4 + Math.random() * 0.2, delay: 0.15, ease: "easeOut" }}
+                    className="absolute w-3 h-0.5 bg-cyan-300 mix-blend-screen"
+                    style={{ 
+                      left: "-1.5px", top: "-1px",
+                      transformOrigin: "left center",
+                      rotate: `${Math.random() * 360}deg`,
+                      boxShadow: "0 0 10px 2px #22d3ee"
+                    }}
+                  />
+                ))}
+              </motion.div>
               {/* Milestone emojis with bounce */}
               {milestoneEmojis.map((emoji, i) => {
                 if (i === 0) return null;
@@ -835,7 +975,7 @@ export function LeadCaptureForm() {
                 <p className="text-sm text-muted-foreground mb-6">
                   Elegí la opción que mejor describe tu idea.
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-h-[340px] overflow-y-auto pr-1 scrollbar-thin">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {projectTypes.map((type) => {
                     const Icon = type.icon;
                     const isSelected = formData.projectType === type.id;
@@ -845,7 +985,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, projectType: type.id })
                         }
-                        className={`relative p-4 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-3.5 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -877,7 +1017,8 @@ export function LeadCaptureForm() {
                                 damping: 15,
                               }}
                             >
-                              <Check className="w-4 h-4 text-emerald-400" />
+                              <SelectSparkle />
+                              <Check className="w-4 h-4 text-emerald-400 relative z-10" />
                             </motion.div>
                           )}
                         </div>
@@ -930,7 +1071,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, problemSolved: opt.id })
                         }
-                        className={`relative p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
+                        className={`relative p-3 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1021,7 +1162,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, targetUsers: opt.id })
                         }
-                        className={`relative p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
+                        className={`relative p-3 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1092,7 +1233,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, designStatus: opt.id })
                         }
-                        className={`relative p-4 rounded-xl border text-left transition-all duration-200 ${
+                        className={`relative p-3 sm:p-4 rounded-xl border text-left transition-all duration-200 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1157,7 +1298,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, timeline: opt.id })
                         }
-                        className={`relative p-5 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-3.5 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1236,7 +1377,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, budget: opt.id })
                         }
-                        className={`relative p-5 rounded-xl border text-left transition-all duration-200 ${
+                        className={`relative p-3.5 sm:p-5 rounded-xl border text-left transition-all duration-200 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1261,8 +1402,10 @@ export function LeadCaptureForm() {
                                 stiffness: 400,
                                 damping: 15,
                               }}
+                              className="absolute top-2 right-2 flex items-center justify-center"
                             >
-                              <Check className="w-4 h-4 text-emerald-400" />
+                              <SelectSparkle />
+                              <Check className="w-4 h-4 text-emerald-400 relative z-10" />
                             </motion.div>
                           )}
                         </div>
@@ -1300,7 +1443,7 @@ export function LeadCaptureForm() {
                 <p className="text-xs text-muted-foreground/60 mb-5">
                   Elegí todas las que apliquen — o skipeá si no necesitás.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {contentNeedsOptions.map((opt) => {
                     const Icon = opt.icon;
                     const isSelected = formData.contentNeeds.includes(opt.id);
@@ -1315,7 +1458,7 @@ export function LeadCaptureForm() {
                               : [...formData.contentNeeds, opt.id],
                           });
                         }}
-                        className={`relative p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
+                        className={`relative p-3 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
                           isSelected
                             ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1327,8 +1470,9 @@ export function LeadCaptureForm() {
                           <span className="text-[11px] text-muted-foreground">{opt.desc}</span>
                         </div>
                         {isSelected && (
-                          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-2 right-2">
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-2 right-2 flex items-center justify-center">
+                            <SelectSparkle />
+                            <Check className="w-3.5 h-3.5 text-emerald-400 relative z-10" />
                           </motion.div>
                         )}
                       </RippleCard>
@@ -1372,7 +1516,7 @@ export function LeadCaptureForm() {
                               : [...formData.extraFeatures, opt.id],
                           });
                         }}
-                        className={`relative p-3.5 rounded-xl border text-center transition-all duration-200 group ${
+                        className={`relative p-2.5 sm:p-3.5 rounded-xl border text-center transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1381,8 +1525,9 @@ export function LeadCaptureForm() {
                         <span className="text-lg block mb-1">{opt.emoji}</span>
                         <span className="text-xs font-medium block leading-tight">{opt.label}</span>
                         {isSelected && (
-                          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-1.5 right-1.5">
-                            <Check className="w-3 h-3 text-emerald-400" />
+                          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-1.5 right-1.5 flex items-center justify-center">
+                            <SelectSparkle />
+                            <Check className="w-3 h-3 text-emerald-400 relative z-10" />
                           </motion.div>
                         )}
                       </button>
@@ -1417,7 +1562,7 @@ export function LeadCaptureForm() {
                       <RippleCard
                         key={opt.id}
                         onClick={() => setFormData({ ...formData, demoGoal: opt.id })}
-                        className={`relative p-5 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-3.5 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1465,8 +1610,8 @@ export function LeadCaptureForm() {
                     label="¿A quién contactamos?"
                     icon={User}
                     value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
+                    onChange={(val) =>
+                      setFormData({ ...formData, name: val })
                     }
                     placeholder="Tu nombre completo"
                     required
@@ -1475,8 +1620,8 @@ export function LeadCaptureForm() {
                     label="Email para enviar el presupuesto"
                     icon={Mail}
                     value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
+                    onChange={(val) =>
+                      setFormData({ ...formData, email: val })
                     }
                     placeholder="tu@email.com"
                     type="email"
@@ -1487,8 +1632,8 @@ export function LeadCaptureForm() {
                       label="WhatsApp (para contacto rápido)"
                       icon={MessageSquare}
                       value={formData.whatsapp}
-                      onChange={(e) =>
-                        setFormData({ ...formData, whatsapp: e.target.value })
+                      onChange={(val) =>
+                        setFormData({ ...formData, whatsapp: val })
                       }
                       placeholder="+598 9x xxx xxx"
                       required
@@ -1596,14 +1741,16 @@ export function LeadCaptureForm() {
                 <span>Atrás</span>
               </button>
 
-              <Button
-                onClick={nextStep}
-                disabled={!canProceed()}
-                className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl group disabled:opacity-50 transition-all duration-200 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-[0.97]"
-              >
-                Continuar
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={nextStep}
+                  disabled={!canProceed()}
+                  className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl group disabled:opacity-50 transition-all duration-200 hover:shadow-lg hover:shadow-emerald-500/20"
+                >
+                  Continuar
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+                </Button>
+              </motion.div>
             </div>
           )}
 
@@ -1618,21 +1765,23 @@ export function LeadCaptureForm() {
                 <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200" />
                 <span>Atrás</span>
               </button>
-              <Button
-                onClick={handleSubmit}
-                disabled={!canProceed() || loading}
-                className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl px-6 group shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-              >
-                {loading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <Send className="w-4 h-4 mr-2" />
-                    Enviar mi proyecto
-                    <ArrowUpRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
-                  </>
-                )}
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={!canProceed() || loading}
+                  className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl px-6 group shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300"
+                >
+                  {loading ? (
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      Enviar mi proyecto
+                      <ArrowUpRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+                    </>
+                  )}
+                </Button>
+              </motion.div>
             </div>
           )}
           </div>

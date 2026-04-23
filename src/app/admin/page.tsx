@@ -38,6 +38,7 @@ import {
 } from "lucide-react";
 import Papa from "papaparse";
 import { parsePhoneNumber, isValidNumber } from "libphonenumber-js";
+import { MatrixRain } from "@/components/admin/MatrixRain";
 import { 
   PieChart, 
   Pie, 
@@ -456,9 +457,10 @@ export default function AdminDashboardPage() {
     return (
       <div className="min-h-screen bg-[#020202] text-white flex items-center justify-center p-6 relative overflow-hidden">
         {/* Cinematic Background */}
+        <MatrixRain color="#10b981" speed={1.2} density={0.8} />
+        
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.05),transparent_50%)]" />
-          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         </div>
 
         <motion.div 

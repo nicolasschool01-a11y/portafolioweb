@@ -249,71 +249,78 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     []
   );
 
-  /* ---- Auto-show schedule ---- */
+  /* ---- Auto-show schedule (Dynamic & Randomized) ---- */
   useEffect(() => {
-    const socialProofMessages = [
-      {
-        type: "social-proof" as const,
-        title: "¡Nueva solicitud!",
-        description: "Alguien de Buenos Aires solicitó una cotización hace 3 minutos",
-      },
-      {
-        type: "social-proof" as const,
-        title: "Actividad reciente",
-        description: "Un emprendedor de Córdoba acaba de pedir su presupuesto",
-      },
-      {
-        type: "social-proof" as const,
-        title: "¡Mucho movimiento!",
-        description: "Alguien de Rosario acaba de agendar una consulta gratuita",
-      },
-    ];
+    const cities = ["Buenos Aires", "Córdoba", "Rosario", "Mendoza", "Montevideo", "Santiago", "Bogotá", "Lima", "Ciudad de México", "Madrid", "Barcelona", "Miami", "Valencia", "Neuquén", "Tucumán"];
+    const avatars = ["Un emprendedor", "Una startup", "Una agencia", "Un e-commerce", "Alguien", "Una empresa"];
+    
+    const getDynamicMessage = () => {
+      const city = cities[Math.floor(Math.random() * cities.length)];
+      const avatar = avatars[Math.floor(Math.random() * avatars.length)];
+      const min = Math.floor(Math.random() * 15) + 2;
+      const count = Math.floor(Math.random() * 7) + 3;
+      
+      const templates = [
+        {
+          type: "social-proof" as const,
+          title: "¡Nueva solicitud!",
+          description: `${avatar} de ${city} solicitó una cotización hace ${min} minutos`,
+        },
+        {
+          type: "social-proof" as const,
+          title: "Actividad reciente",
+          description: `${avatar} de ${city} acaba de pedir su presupuesto`,
+        },
+        {
+          type: "social-proof" as const,
+          title: "¡Mucho movimiento!",
+          description: `${avatar} de ${city} acaba de agendar una demo gratuita`,
+        },
+        {
+          type: "info" as const,
+          title: "👁️ En este momento",
+          description: `${count} personas de distintas ciudades están viendo esta misma página`,
+        },
+        {
+          type: "tip" as const,
+          title: "💡 Consejo útil",
+          description: "La mayoría de los MVPs bien armados se validan en su primer mes de vida",
+        },
+        {
+          type: "tip" as const,
+          title: "🤖 Automatizaciones",
+          description: "Tip: Integrar IA o bots a tu negocio puede ahorrarte más de 10hs semanales",
+        },
+        {
+          type: "success" as const,
+          title: "✅ Proyecto entregado",
+          description: `Un sistema a medida fue deployado con éxito en ${min} días esta semana`,
+        },
+        {
+          type: "info" as const,
+          title: "🚀 Escalabilidad",
+          description: "Construimos arquitecturas Cloud nativas listas para soportar miles de usuarios",
+        }
+      ];
+      
+      return templates[Math.floor(Math.random() * templates.length)];
+    };
 
-    const tipMessages = [
-      {
-        type: "tip" as const,
-        title: "💡 Consejo útil",
-        description: "Obtené tu cotización gratuita en menos de 24 hs",
-      },
-      {
-        type: "tip" as const,
-        title: "💡 ¿Sabías que...?",
-        description: "Un MVP bien hecho puede validar tu idea en menos de 2 semanas",
-      },
-      {
-        type: "success" as const,
-        title: "✅ Proyecto entregado",
-        description: "Un CRM personalizado fue entregado en 12 días esta semana",
-      },
-      {
-        type: "info" as const,
-        title: "ℹ️ Nuevos servicios",
-        description: "Ahora también ofrecemos automatización con IA para negocios",
-      },
-    ];
+    let timeoutId: NodeJS.Timeout;
+    
+    const scheduleNext = (delay: number) => {
+      timeoutId = setTimeout(() => {
+        addNotification(getDynamicMessage());
+        // Programar la siguiente notificación de manera muy aleatoria entre 20s y 60s
+        scheduleNext(20000 + Math.random() * 40000);
+      }, delay);
+    };
 
-    const t15 = setTimeout(() => {
-      const msg =
-        socialProofMessages[Math.floor(Math.random() * socialProofMessages.length)];
-      addNotification(msg);
-    }, 15_000);
-
-    const t45 = setTimeout(() => {
-      const msg = tipMessages[Math.floor(Math.random() * tipMessages.length)];
-      addNotification(msg);
-    }, 45_000);
-
-    // Optional second round
-    const t90 = setTimeout(() => {
-      const msg =
-        socialProofMessages[Math.floor(Math.random() * socialProofMessages.length)];
-      addNotification(msg);
-    }, 90_000);
+    // Primera notificación arranca aleatorio entre los 15s y 25s iniciales
+    scheduleNext(15000 + Math.random() * 10000);
 
     return () => {
-      clearTimeout(t15);
-      clearTimeout(t45);
-      clearTimeout(t90);
+      clearTimeout(timeoutId);
     };
   }, [addNotification]);
 
