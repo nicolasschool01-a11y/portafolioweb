@@ -1008,7 +1008,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, projectType: type.id })
                         }
-                        className={`relative p-2 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1321,7 +1321,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, timeline: opt.id })
                         }
-                        className={`relative p-2 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1400,7 +1400,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, budget: opt.id })
                         }
-                        className={`relative p-2 sm:p-5 rounded-xl border text-left transition-all duration-200 ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1481,7 +1481,7 @@ export function LeadCaptureForm() {
                               : [...formData.contentNeeds, opt.id],
                           });
                         }}
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-2 sm:gap-3 ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
                           isSelected
                             ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1585,7 +1585,7 @@ export function LeadCaptureForm() {
                       <RippleCard
                         key={opt.id}
                         onClick={() => setFormData({ ...formData, demoGoal: opt.id })}
-                        className={`relative p-2 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
