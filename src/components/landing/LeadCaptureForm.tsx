@@ -1333,7 +1333,7 @@ export function LeadCaptureForm() {
                             <span className="text-sm font-semibold block">
                               {opt.label}
                             </span>
-                            <span className="text-[10px] sm:text-xs text-muted-foreground">
+                            <span className="hidden sm:block text-[10px] sm:text-xs text-muted-foreground">
                               {opt.desc}
                             </span>
                           </div>
@@ -1412,7 +1412,7 @@ export function LeadCaptureForm() {
                             <span className="text-base font-semibold block">
                               {opt.label}
                             </span>
-                            <span className="text-[10px] sm:text-xs text-muted-foreground">
+                            <span className="hidden sm:block text-[10px] sm:text-xs text-muted-foreground">
                               {opt.desc}
                             </span>
                           </div>
@@ -1490,7 +1490,7 @@ export function LeadCaptureForm() {
                         <span className="text-xl sm:text-2xl flex-shrink-0">{opt.emoji}</span>
                         <div className="flex-1">
                           <span className="text-[13px] sm:text-sm font-medium block">{opt.label}</span>
-                          <span className="text-[11px] text-muted-foreground"><span className="hidden sm:block text-[10px] sm:text-[11px] text-muted-foreground mt-0.5">{opt.desc}</span>
+                          <span className="hidden sm:block text-[10px] sm:text-[11px] text-muted-foreground mt-0.5">{opt.desc}</span>
                         </div>
                         {isSelected && (
                           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-2 right-2 flex items-center justify-center">
@@ -1595,7 +1595,7 @@ export function LeadCaptureForm() {
                           <span className="text-xl sm:text-2xl">{opt.emoji}</span>
                           <div className="flex-1">
                             <span className="text-sm font-semibold block">{opt.label}</span>
-                            <span className="hidden sm:block text-xs text-muted-foreground"><span className="hidden sm:block text-[10px] sm:text-[11px] text-muted-foreground mt-0.5">{opt.desc}</span>
+                            <span className="hidden sm:block text-xs text-muted-foreground">{opt.desc}</span>
                           </div>
                           <Icon className={`w-4 h-4 flex-shrink-0 ${isSelected ? "text-emerald-400" : "text-muted-foreground"} transition-colors`} />
                         </div>
