@@ -136,9 +136,9 @@ export default function Home() {
             <SectionReveal>
               <QuickContactBar />
             </SectionReveal>
-            <SectionReveal>
+            <div className="relative z-[60]">
               <LeadCaptureForm />
-            </SectionReveal>
+            </div>
             <div className="section-glow" />
             <SectionReveal>
               <FinalCTA />

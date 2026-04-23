@@ -550,9 +550,10 @@ export function LeadCaptureForm() {
       
       // Reconocer palabras clave típicas de cta de la landing
       const isCta = href === "#contacto" || 
-                    text.includes("crear mi proyecto") || 
-                    text.includes("cotización") || 
+                    text.includes("proyecto") || 
                     text.includes("comenzar") ||
+                    text.includes("cotización") || 
+                    text.includes("agendar") ||
                     text.includes("contacto");
 
       if (isCta) {
@@ -740,7 +741,7 @@ export function LeadCaptureForm() {
         {/* ─── MOBILE MODAL WRAPPER ─── */}
         <div className={
           step > 0 && !submitted 
-            ? "fixed inset-0 z-[60] bg-background/95 backdrop-blur-3xl flex flex-col pt-8 pb-8 px-4 overflow-y-auto w-full h-[100dvh] sm:static sm:block sm:bg-transparent sm:p-0 sm:overflow-visible sm:h-auto"
+            ? "fixed inset-0 z-[60] bg-background/98 backdrop-blur-3xl flex flex-col pt-8 pb-4 px-4 overflow-hidden w-[100vw] h-[100dvh] sm:static sm:block sm:bg-transparent sm:p-0 sm:overflow-visible sm:h-auto sm:w-auto"
             : ""
         }>
           {step > 0 && !submitted && (
@@ -753,7 +754,7 @@ export function LeadCaptureForm() {
             </button>
           )}
 
-          <div className={step > 0 && !submitted ? "w-full max-w-2xl mx-auto flex-1 flex flex-col mt-6 sm:mt-0" : "w-full"}>
+          <div className={step > 0 && !submitted ? "w-full max-w-2xl mx-auto flex-1 flex flex-col mt-6 sm:mt-0 min-h-0" : "w-full"}>
             
             {/* ─── Progress bar with milestones + glow + bounce ─── */}
             {step > 0 && !submitted && (
@@ -895,12 +896,12 @@ export function LeadCaptureForm() {
 
         {/* ─── Form card with animated gradient border ─── */}
         <motion.div
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="relative"
+           animate={{ y: [0, -6, 0] }}
+           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+           className={`relative ${step > 0 && !submitted ? "flex-1 flex flex-col min-h-0" : ""}`}
         >
-          <div className="gradient-border-animated rounded-[18px] p-[2px]">
-          <div className="relative rounded-2xl border border-white/10 bg-card/50 backdrop-blur-sm p-4 sm:p-8 overflow-visible min-h-0 sm:min-h-[420px]">
+          <div className={`gradient-border-animated rounded-[18px] p-[2px] ${step > 0 && !submitted ? "flex-1 flex flex-col min-h-0" : ""}`}>
+          <div className={`relative rounded-2xl border border-white/10 bg-card/50 backdrop-blur-sm p-4 sm:p-8 overflow-y-auto overflow-x-hidden sm:overflow-visible min-h-0 sm:min-h-[420px] ${step > 0 && !submitted ? "flex-1 flex flex-col min-h-0 scrollbar-hide" : ""}`}>
           <SparkleBurst key={sparkleKey} active={showSparkle} />
 
           <AnimatePresence mode="wait" custom={direction}>
