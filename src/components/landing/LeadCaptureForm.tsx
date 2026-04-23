@@ -441,7 +441,7 @@ function FloatingInputField({
             : "top-1/2 -translate-y-1/2 text-sm text-muted-foreground"
         }`}
       >
-        <Icon className={`w-3.5 h-3.5 transition-colors duration-200 ${isActive ? "text-emerald-400" : "text-muted-foreground/60"}`} />
+        <Icon className={`w-5 h-5 transition-colors duration-200 ${isActive ? "text-emerald-400" : "text-muted-foreground/60"}`} />
         <span>{label}</span>
         {required && <span className="text-emerald-400 ml-0.5">*</span>}
         {optional && <span className="text-muted-foreground/50 ml-1 text-[9px]">(opcional)</span>}
@@ -741,7 +741,7 @@ export function LeadCaptureForm() {
         {/* ─── MOBILE MODAL WRAPPER ─── */}
         <div className={
           step > 0 && !submitted 
-            ? "fixed inset-0 z-[60] bg-background flex flex-col pt-2 pb-2 px-3 overflow-hidden w-[100vw] h-[100dvh] sm:static sm:block sm:bg-transparent sm:p-0 sm:overflow-visible sm:h-auto sm:w-auto"
+            ? "fixed inset-0 z-[60] bg-background flex flex-col pt-1 pb-2 px-2 overflow-hidden w-[100vw] h-[100dvh] sm:static sm:block sm:bg-transparent sm:p-0 sm:overflow-visible sm:h-auto sm:w-auto"
             : ""
         }>
           {step > 0 && !submitted && (
@@ -915,7 +915,7 @@ export function LeadCaptureForm() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                className="flex flex-col items-center justify-center py-8 text-center"
+                className="flex flex-col items-center justify-center py-8 text-center flex-1 flex flex-col min-h-0"
               >
                 {/* Floating orbs for visual depth */}
                 <FloatingOrbs />
@@ -991,14 +991,14 @@ export function LeadCaptureForm() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+               className="flex-1 flex flex-col min-h-0">
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Qué tipo de proyecto necesitás? 🚀
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   Elegí la opción que mejor describe tu idea.
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 flex-1 min-h-0 py-1">
                   {projectTypes.map((type) => {
                     const Icon = type.icon;
                     const isSelected = formData.projectType === type.id;
@@ -1008,50 +1008,25 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, projectType: type.id })
                         }
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <div className="flex items-center gap-1.5 mb-1.5">
-                          <div
-                            className={`p-1 rounded-lg transition-colors duration-200 ${
-                              isSelected
-                                ? "bg-emerald-500/20"
-                                : "bg-white/5 group-hover:bg-white/10"
-                            }`}
-                          >
-                            <Icon
-                              className={`w-3.5 h-3.5 transition-colors duration-200 ${
-                                isSelected
-                                  ? "text-emerald-400"
-                                  : "text-muted-foreground group-hover:text-foreground"
-                              }`}
-                            />
-                          </div>
-                          {isSelected && (
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              transition={{
-                                type: "spring",
-                                stiffness: 400,
-                                damping: 15,
-                              }}
-                            >
-                              <SelectSparkle />
-                              <Check className="w-3.5 h-3.5 text-emerald-400 relative z-10" />
-                            </motion.div>
-                          )}
+                                            <div className="flex items-center gap-3 w-full">
+                        <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
+                          <Icon className={`w-5 h-5 transition-colors duration-200 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />
                         </div>
-                        <span className="text-lg mb-0.5 block relative z-10">{type.emoji}</span>
-                        <span className="text-xs font-medium block leading-tight relative z-10">
-                          {type.label}
-                        </span>
-                        <span className="hidden sm:block text-[10px] sm:text-[11px] text-muted-foreground mt-0.5 sm:mt-1 leading-tight relative z-10">
-                          {type.tagline}
-                        </span>
+                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                          <span className="text-[13px] sm:text-sm font-semibold block truncate">
+                            {type.label}
+                          </span>
+                          <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
+                            {type.tagline}
+                          </span>
+                        </div>
+                      </div>
                         {/* Selected glow overlay */}
                         {isSelected && (
                           <motion.div
@@ -1077,14 +1052,14 @@ export function LeadCaptureForm() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+               className="flex-1 flex flex-col min-h-0">
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Qué problema resuelve? 🎯
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   Elegí el objetivo principal de tu proyecto.
                 </p>
-                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
                   {problemOptions.map((opt) => {
                     const Icon = opt.icon;
                     const isSelected = formData.problemSolved === opt.id;
@@ -1094,44 +1069,27 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, problemSolved: opt.id })
                         }
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
+                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <span className="text-xl sm:text-2xl flex-shrink-0">{opt.emoji}</span>
-                        <div className="flex-1">
-                          <span className="text-[13px] sm:text-sm font-medium block">
-                            {opt.label}
-                          </span>
+                        <div className="flex items-center gap-3 w-full p-2.5">
+                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
+                            {Icon && <Icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
+                            {!Icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
+                          </div>
+                          <div className="flex-1 min-w-0 flex flex-col justify-center">
+                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            {(opt.tagline || opt.desc || opt.description) && (
+                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
+                                {opt.tagline || opt.desc || opt.description}
+                              </span>
+                            )}
+                          </div>
+                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
                         </div>
-                        <Icon
-                          className={`w-4 h-4 flex-shrink-0 transition-colors duration-200 ${
-                            isSelected ? "text-emerald-400" : "text-muted-foreground"
-                          }`}
-                        />
-                        {isSelected && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{
-                              type: "spring",
-                              stiffness: 400,
-                              damping: 15,
-                            }}
-                            className="absolute top-2 right-2"
-                          >
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
-                          </motion.div>
-                        )}
-                        {isSelected && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="absolute inset-0 rounded-xl bg-gradient-to-br from-emerald-500/5 to-teal-500/5 pointer-events-none"
-                          />
-                        )}
                       </RippleCard>
                     );
                   })}
@@ -1168,14 +1126,14 @@ export function LeadCaptureForm() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+               className="flex-1 flex flex-col min-h-0">
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Quiénes son tus usuarios? 👥
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   ¿Quiénes van a usar lo que vamos a construir?
                 </p>
-                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
                   {targetUsersOptions.map((opt) => {
                     const Icon = opt.icon;
                     const isSelected = formData.targetUsers === opt.id;
@@ -1185,44 +1143,27 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, targetUsers: opt.id })
                         }
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
+                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <span className="text-xl sm:text-2xl flex-shrink-0">{opt.emoji}</span>
-                        <div className="flex-1">
-                          <span className="text-[13px] sm:text-sm font-medium block">
-                            {opt.label}
-                          </span>
+                        <div className="flex items-center gap-3 w-full p-2.5">
+                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
+                            {Icon && <Icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
+                            {!Icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
+                          </div>
+                          <div className="flex-1 min-w-0 flex flex-col justify-center">
+                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            {(opt.tagline || opt.desc || opt.description) && (
+                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
+                                {opt.tagline || opt.desc || opt.description}
+                              </span>
+                            )}
+                          </div>
+                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
                         </div>
-                        <Icon
-                          className={`w-4 h-4 flex-shrink-0 transition-colors duration-200 ${
-                            isSelected ? "text-emerald-400" : "text-muted-foreground"
-                          }`}
-                        />
-                        {isSelected && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{
-                              type: "spring",
-                              stiffness: 400,
-                              damping: 15,
-                            }}
-                            className="absolute top-2 right-2"
-                          >
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
-                          </motion.div>
-                        )}
-                        {isSelected && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="absolute inset-0 rounded-xl bg-gradient-to-br from-emerald-500/5 to-teal-500/5 pointer-events-none"
-                          />
-                        )}
                       </RippleCard>
                     );
                   })}
@@ -1240,14 +1181,14 @@ export function LeadCaptureForm() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+               className="flex-1 flex flex-col min-h-0">
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Tenés diseños o referencias? 🎨
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   No worries si no tenés nada, ¡eso es parte del proceso!
                 </p>
-                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
                   {designStatusOptions.map((opt) => {
                     const isSelected = formData.designStatus === opt.id;
                     return (
@@ -1256,37 +1197,27 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, designStatus: opt.id })
                         }
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 ${
+                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <span className="text-xl sm:text-2xl block mb-1">{opt.emoji}</span>
-                        <span className="text-[13px] sm:text-sm font-medium block leading-tight">
-                          {opt.label}
-                        </span>
-                        {isSelected && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{
-                              type: "spring",
-                              stiffness: 400,
-                              damping: 15,
-                            }}
-                            className="absolute top-2 right-2"
-                          >
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
-                          </motion.div>
-                        )}
-                        {isSelected && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="absolute inset-0 rounded-xl bg-gradient-to-br from-emerald-500/5 to-teal-500/5 pointer-events-none"
-                          />
-                        )}
+                        <div className="flex items-center gap-3 w-full p-2.5">
+                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
+                            {Icon && <Icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
+                            {!Icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
+                          </div>
+                          <div className="flex-1 min-w-0 flex flex-col justify-center">
+                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            {(opt.tagline || opt.desc || opt.description) && (
+                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
+                                {opt.tagline || opt.desc || opt.description}
+                              </span>
+                            )}
+                          </div>
+                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
+                        </div>
                       </RippleCard>
                     );
                   })}
@@ -1304,14 +1235,14 @@ export function LeadCaptureForm() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+               className="flex-1 flex flex-col min-h-0">
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Cuándo lo necesitás? ⏰
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   ¿Cuándo te gustaría tener tu producto listo?
                 </p>
-                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
                   {timelineOptions.map((opt) => {
                     const Icon = opt.icon;
                     const isSelected = formData.timeline === opt.id;
@@ -1321,51 +1252,27 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, timeline: opt.id })
                         }
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <div className="flex items-center gap-2 sm:gap-3 mb-1">
-                          <span className="text-xl sm:text-2xl">{opt.emoji}</span>
-                          <div className="flex-1">
-                            <span className="text-sm font-semibold block">
-                              {opt.label}
-                            </span>
-                            <span className="hidden sm:block text-[10px] sm:text-xs text-muted-foreground">
-                              {opt.desc}
-                            </span>
+                        <div className="flex items-center gap-3 w-full p-2.5">
+                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
+                            {Icon && <Icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
+                            {!Icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
                           </div>
-                          <Icon
-                            className={`w-4 h-4 flex-shrink-0 transition-colors duration-200 ${
-                              isSelected
-                                ? "text-emerald-400"
-                                : "text-muted-foreground"
-                            }`}
-                          />
+                          <div className="flex-1 min-w-0 flex flex-col justify-center">
+                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            {(opt.tagline || opt.desc || opt.description) && (
+                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
+                                {opt.tagline || opt.desc || opt.description}
+                              </span>
+                            )}
+                          </div>
+                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
                         </div>
-                        {isSelected && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{
-                              type: "spring",
-                              stiffness: 400,
-                              damping: 15,
-                            }}
-                            className="absolute top-2 right-2"
-                          >
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
-                          </motion.div>
-                        )}
-                        {isSelected && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="absolute inset-0 rounded-xl bg-gradient-to-br from-emerald-500/5 to-teal-500/5 pointer-events-none"
-                          />
-                        )}
                       </RippleCard>
                     );
                   })}
@@ -1383,7 +1290,7 @@ export function LeadCaptureForm() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+               className="flex-1 flex flex-col min-h-0">
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Cuál es tu presupuesto? 💰
                 </h3>
@@ -1391,7 +1298,7 @@ export function LeadCaptureForm() {
                   Esto me ayuda a dimensionar la mejor solución para vos. ¡Cotizaciones
                   sin compromiso!
                 </p>
-                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
                   {budgetOptions.map((opt) => {
                     const isSelected = formData.budget === opt.id;
                     return (
@@ -1400,45 +1307,30 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, budget: opt.id })
                         }
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 ${
+                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <div className="flex items-center gap-2 sm:gap-3">
-                          <span className="text-xl sm:text-2xl">{opt.emoji}</span>
-                          <div className="flex-1">
-                            <span className="text-base font-semibold block">
-                              {opt.label}
-                            </span>
-                            <span className="hidden sm:block text-[10px] sm:text-xs text-muted-foreground">
-                              {opt.desc}
-                            </span>
+                        <div className="flex items-center gap-3 w-full p-2.5">
+                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
+                            {opt.icon ? (
+                              <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />
+                            ) : (
+                              <span className="text-xl">{opt.emoji}</span>
+                            )}
                           </div>
-                          {isSelected && (
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              transition={{
-                                type: "spring",
-                                stiffness: 400,
-                                damping: 15,
-                              }}
-                              className="absolute top-2 right-2 flex items-center justify-center"
-                            >
-                              <SelectSparkle />
-                              <Check className="w-4 h-4 text-emerald-400 relative z-10" />
-                            </motion.div>
-                          )}
+                          <div className="flex-1 min-w-0 flex flex-col justify-center">
+                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            {(opt.tagline || opt.desc || opt.description) && (
+                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
+                                {opt.tagline || opt.desc || opt.description}
+                              </span>
+                            )}
+                          </div>
+                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
                         </div>
-                        {isSelected && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="absolute inset-0 rounded-xl bg-gradient-to-br from-emerald-500/5 to-teal-500/5 pointer-events-none"
-                          />
-                        )}
                       </RippleCard>
                     );
                   })}
@@ -1456,7 +1348,7 @@ export function LeadCaptureForm() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+               className="flex-1 flex flex-col min-h-0">
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Necesitás contenido también? 📱
                 </h3>
@@ -1466,7 +1358,7 @@ export function LeadCaptureForm() {
                 <p className="text-xs text-muted-foreground/60 mb-5">
                   Elegí todas las que apliquen — o skipeá si no necesitás.
                 </p>
-                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
                   {contentNeedsOptions.map((opt) => {
                     const Icon = opt.icon;
                     const isSelected = formData.contentNeeds.includes(opt.id);
@@ -1481,23 +1373,27 @@ export function LeadCaptureForm() {
                               : [...formData.contentNeeds, opt.id],
                           });
                         }}
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
+                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
                           isSelected
-                            ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
+                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <span className="text-xl sm:text-2xl flex-shrink-0">{opt.emoji}</span>
-                        <div className="flex-1">
-                          <span className="text-[13px] sm:text-sm font-medium block">{opt.label}</span>
-                          <span className="hidden sm:block text-[10px] sm:text-[11px] text-muted-foreground mt-0.5">{opt.desc}</span>
+                        <div className="flex items-center gap-3 w-full p-2.5">
+                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
+                            {Icon && <Icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
+                            {!Icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
+                          </div>
+                          <div className="flex-1 min-w-0 flex flex-col justify-center">
+                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            {(opt.tagline || opt.desc || opt.description) && (
+                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
+                                {opt.tagline || opt.desc || opt.description}
+                              </span>
+                            )}
+                          </div>
+                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
                         </div>
-                        {isSelected && (
-                          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-2 right-2 flex items-center justify-center">
-                            <SelectSparkle />
-                            <Check className="w-3.5 h-3.5 text-emerald-400 relative z-10" />
-                          </motion.div>
-                        )}
                       </RippleCard>
                     );
                   })}
@@ -1515,7 +1411,7 @@ export function LeadCaptureForm() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+               className="flex-1 flex flex-col min-h-0">
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Funcionalidades extra? 🔧
                 </h3>
@@ -1529,7 +1425,7 @@ export function LeadCaptureForm() {
                   {extraFeaturesOptions.map((opt) => {
                     const isSelected = formData.extraFeatures.includes(opt.id);
                     return (
-                      <button
+                      <RippleCard
                         key={opt.id}
                         onClick={() => {
                           setFormData({
@@ -1539,21 +1435,26 @@ export function LeadCaptureForm() {
                               : [...formData.extraFeatures, opt.id],
                           });
                         }}
-                        className={`relative p-2.5 sm:p-3.5 rounded-xl border text-center transition-all duration-200 group ${
+                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
                           isSelected
-                            ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
+                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <span className="text-xl sm:text-2xl block mb-1">{opt.emoji}</span>
-                        <span className="text-xs font-medium block leading-tight">{opt.label}</span>
-                        {isSelected && (
-                          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-1.5 right-1.5 flex items-center justify-center">
-                            <SelectSparkle />
-                            <Check className="w-3 h-3 text-emerald-400 relative z-10" />
-                          </motion.div>
-                        )}
-                      </button>
+                        <div className="flex items-center gap-3 w-full p-2.5">
+                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
+                            {opt.icon ? (
+                              <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />
+                            ) : (
+                              <span className="text-xl">{opt.emoji}</span>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0 flex flex-col justify-center">
+                            <span className="text-[11px] sm:text-xs font-semibold block leading-tight">{opt.label}</span>
+                          </div>
+                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
+                        </div>
+                      </RippleCard>
                     );
                   })}
                 </div>
@@ -1570,40 +1471,47 @@ export function LeadCaptureForm() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+               className="flex-1 flex flex-col min-h-0">
                 <h3 className="text-xl font-semibold mb-1">
                   ¿Qué esperás como siguiente paso? 🎬
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
                   Con esta info puedo prepararte un demo MVP para que veas tu producto en acción.
                 </p>
-                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
                   {demoGoalsOptions.map((opt) => {
                     const Icon = opt.icon;
                     const isSelected = formData.demoGoal === opt.id;
                     return (
                       <RippleCard
                         key={opt.id}
-                        onClick={() => setFormData({ ...formData, demoGoal: opt.id })}
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group ${
+                        onClick={() =>
+                          setFormData({ ...formData, demoGoal: opt.id })
+                        }
+                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
                           isSelected
-                            ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
+                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <div className="flex items-center gap-2 sm:gap-3 mb-1">
-                          <span className="text-xl sm:text-2xl">{opt.emoji}</span>
-                          <div className="flex-1">
-                            <span className="text-sm font-semibold block">{opt.label}</span>
-                            <span className="hidden sm:block text-xs text-muted-foreground">{opt.desc}</span>
+                        <div className="flex items-center gap-3 w-full p-2.5">
+                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
+                            {opt.icon ? (
+                              <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />
+                            ) : (
+                              <span className="text-xl">{opt.emoji}</span>
+                            )}
                           </div>
-                          <Icon className={`w-4 h-4 flex-shrink-0 ${isSelected ? "text-emerald-400" : "text-muted-foreground"} transition-colors`} />
+                          <div className="flex-1 min-w-0 flex flex-col justify-center">
+                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            {(opt.tagline || opt.desc || opt.description) && (
+                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
+                                {opt.tagline || opt.desc || opt.description}
+                              </span>
+                            )}
+                          </div>
+                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
                         </div>
-                        {isSelected && (
-                          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-2 right-2">
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
-                          </motion.div>
-                        )}
                       </RippleCard>
                     );
                   })}
@@ -1743,7 +1651,7 @@ export function LeadCaptureForm() {
                     className="flex flex-col items-center gap-4 mt-10"
                   >
                     <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
-                      <Zap className="w-3.5 h-3.5" />
+                      <Zap className="w-5 h-5" />
                       Te envié una confirmación a {formData.email}
                     </div>
                   </motion.div>
@@ -1760,7 +1668,7 @@ export function LeadCaptureForm() {
                 onClick={prevStep}
                 className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-all duration-200 group px-3 py-1.5 rounded-lg hover:bg-white/5 -ml-1"
               >
-                <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200" />
+                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform duration-200" />
                 <span>Atrás</span>
               </button>
 
@@ -1785,7 +1693,7 @@ export function LeadCaptureForm() {
                 onClick={prevStep}
                 className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-all duration-200 group px-3 py-1.5 rounded-lg hover:bg-white/5 -ml-1"
               >
-                <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200" />
+                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform duration-200" />
                 <span>Atrás</span>
               </button>
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }}>
