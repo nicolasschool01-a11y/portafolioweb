@@ -293,13 +293,13 @@ function FloatingOrbs() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       <motion.div
-        className="absolute w-36 h-36 rounded-full blur-3xl"
+        className="absolute w-36 h-36 rounded-full blur-2xl"
         style={{ top: "8%", left: "10%", background: "rgba(16,185,129,0.08)" }}
         animate={{ y: [0, -25, 0], x: [0, 15, 0], scale: [1, 1.25, 1] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute w-28 h-28 rounded-full blur-3xl"
+        className="absolute w-28 h-28 rounded-full blur-2xl"
         style={{ bottom: "15%", right: "8%", background: "rgba(20,184,166,0.1)" }}
         animate={{ y: [0, 20, 0], x: [0, -18, 0], scale: [1, 1.3, 1] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
@@ -812,7 +812,7 @@ export function LeadCaptureForm() {
                   animate={{ backgroundPosition: ["0px 0px", "-100px 0px"] }}
                   transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
                   style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='22'%3E%3Cpath d='M0 11 L10 4 L20 18 L30 7 L40 16 L50 2 L60 20 L70 5 L80 16 L90 8 L100 11' stroke='%2322d3ee' fill='none' stroke-width='1.5' filter='drop-shadow(0 0 2px %2306b6d4)' /%3E%3Cpath d='M0 11 L15 19 L25 5 L35 18 L55 4 L75 18 L85 5 L100 11' stroke='%23a5f3fc' fill='none' stroke-width='1' /%3E%3C/svg%3E")`,
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='22'%3E%3Cpath d='M0 11 L10 4 L20 18 L30 7 L40 16 L50 2 L60 20 L70 5 L80 16 L90 8 L100 11' stroke='%2322d3ee' fill='none' stroke-width='1.5' /%3E%3Cpath d='M0 11 L15 19 L25 5 L35 18 L55 4 L75 18 L85 5 L100 11' stroke='%23a5f3fc' fill='none' stroke-width='1' /%3E%3C/svg%3E")`,
                     backgroundSize: "100px 100%",
                   }}
                 />
@@ -1008,22 +1008,28 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, projectType: type.id })
                         }
-                        className={`relative p-3.5 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-2 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
                         }`}
                       >
-                        <div className="flex items-center gap-2 mb-2">
+                        className={`relative p-3 rounded-xl border text-left transition-all duration-200 group ${
+                          isSelected
+                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
+                            : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5 mb-1.5">
                           <div
-                            className={`p-1.5 rounded-lg transition-colors duration-200 ${
+                            className={`p-1 rounded-lg transition-colors duration-200 ${
                               isSelected
                                 ? "bg-emerald-500/20"
                                 : "bg-white/5 group-hover:bg-white/10"
                             }`}
                           >
                             <Icon
-                              className={`w-4 h-4 transition-colors duration-200 ${
+                              className={`w-3.5 h-3.5 transition-colors duration-200 ${
                                 isSelected
                                   ? "text-emerald-400"
                                   : "text-muted-foreground group-hover:text-foreground"
@@ -1041,15 +1047,15 @@ export function LeadCaptureForm() {
                               }}
                             >
                               <SelectSparkle />
-                              <Check className="w-4 h-4 text-emerald-400 relative z-10" />
+                              <Check className="w-3.5 h-3.5 text-emerald-400 relative z-10" />
                             </motion.div>
                           )}
                         </div>
-                        <span className="text-xl sm:text-2xl mb-1 block relative z-10">{type.emoji}</span>
-                        <span className="text-[13px] sm:text-[15px] font-medium block leading-tight relative z-10">
+                        <span className="text-lg mb-0.5 block relative z-10">{type.emoji}</span>
+                        <span className="text-xs font-medium block leading-tight relative z-10">
                           {type.label}
                         </span>
-                        <span className="text-[10px] sm:text-[11px] text-muted-foreground block mt-1 leading-tight relative z-10">
+                        <span className="text-[10px] text-muted-foreground block mt-0.5 leading-tight relative z-10">
                           {type.tagline}
                         </span>
                         {/* Selected glow overlay */}
@@ -1094,7 +1100,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, problemSolved: opt.id })
                         }
-                        className={`relative p-2.5 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1185,7 +1191,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, targetUsers: opt.id })
                         }
-                        className={`relative p-2.5 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-3 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1256,7 +1262,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, designStatus: opt.id })
                         }
-                        className={`relative p-2.5 sm:p-4 rounded-xl border text-left transition-all duration-200 ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1321,7 +1327,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, timeline: opt.id })
                         }
-                        className={`relative p-2.5 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-2 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1400,7 +1406,7 @@ export function LeadCaptureForm() {
                         onClick={() =>
                           setFormData({ ...formData, budget: opt.id })
                         }
-                        className={`relative p-2.5 sm:p-5 rounded-xl border text-left transition-all duration-200 ${
+                        className={`relative p-2 sm:p-5 rounded-xl border text-left transition-all duration-200 ${
                           isSelected
                             ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1481,7 +1487,7 @@ export function LeadCaptureForm() {
                               : [...formData.contentNeeds, opt.id],
                           });
                         }}
-                        className={`relative p-2.5 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
+                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex items-center gap-2 sm:gap-3 ${
                           isSelected
                             ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
@@ -1585,7 +1591,7 @@ export function LeadCaptureForm() {
                       <RippleCard
                         key={opt.id}
                         onClick={() => setFormData({ ...formData, demoGoal: opt.id })}
-                        className={`relative p-2.5 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
+                        className={`relative p-2 sm:p-5 rounded-xl border text-left transition-all duration-200 group ${
                           isSelected
                             ? "border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
                             : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"

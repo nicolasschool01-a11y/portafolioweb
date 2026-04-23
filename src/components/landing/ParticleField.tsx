@@ -89,8 +89,15 @@ export function ParticleField() {
     canvas.addEventListener("mouseleave", handleMouseLeave);
 
     let time = 0;
+    let isIntersecting = true;
+    const observer = new IntersectionObserver((entries) => {
+      isIntersecting = entries[0].isIntersecting;
+    });
+    observer.observe(canvas.parentElement || canvas);
 
     const animate = () => {
+      animFrameRef.current = requestAnimationFrame(animate);
+      if (!isIntersecting) return; // SKIP HEAVY COMPUTATION ON MOBILE WHEN NOT VISIBLE
       time += 1;
       ctx.clearRect(0, 0, width, height);
 
@@ -184,13 +191,14 @@ export function ParticleField() {
         }
       }
 
-      animFrameRef.current = requestAnimationFrame(animate);
+      // Loop is called at the top of the function to prevent death on early return
     };
 
     animate();
 
     return () => {
       cancelAnimationFrame(animFrameRef.current);
+      observer.disconnect();
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("mousemove", handleMouse);
       canvas.removeEventListener("mouseleave", handleMouseLeave);
