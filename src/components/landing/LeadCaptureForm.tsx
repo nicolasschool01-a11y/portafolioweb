@@ -351,11 +351,9 @@ function RippleCard({
   }, []);
 
   return (
-    <motion.button 
-      whileHover={{ y: -2 }}
-      whileTap={{ scale: 0.97 }}
+    <button 
       onClick={handleClick} 
-      className={`relative w-full h-full overflow-hidden shadow-sm hover:shadow-emerald-500/10 transition-shadow ${className}`}
+      className={`relative w-full h-full overflow-hidden shadow-sm hover:shadow-emerald-500/10 active:opacity-80 transition-all duration-200 ${className}`}
     >
       {children}
       {ripples.map((r) => (
@@ -368,7 +366,7 @@ function RippleCard({
           style={{ left: r.x - 20, top: r.y - 20 }}
         />
       ))}
-    </motion.button>
+    </button>
   );
 }
 
@@ -1021,7 +1019,7 @@ export function LeadCaptureForm() {
                           <Icon className={`w-5 h-5 transition-colors duration-200 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />
                         </div>
                         <div className="flex-1 min-w-0 flex flex-col justify-center">
-                          <span className="text-[13px] sm:text-sm font-semibold block truncate">
+                          <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">
                             {type.label}
                           </span>
                           <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
@@ -1083,7 +1081,7 @@ export function LeadCaptureForm() {
                             {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
                             {(opt.tagline || opt.desc || opt.description) && (
                               <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
                                 {opt.tagline || opt.desc || opt.description}
@@ -1157,7 +1155,7 @@ export function LeadCaptureForm() {
                             {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
                             {(opt.tagline || opt.desc || opt.description) && (
                               <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
                                 {opt.tagline || opt.desc || opt.description}
@@ -1211,7 +1209,7 @@ export function LeadCaptureForm() {
                             {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
                             {(opt.tagline || opt.desc || opt.description) && (
                               <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
                                 {opt.tagline || opt.desc || opt.description}
@@ -1266,7 +1264,7 @@ export function LeadCaptureForm() {
                             {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
                             {(opt.tagline || opt.desc || opt.description) && (
                               <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
                                 {opt.tagline || opt.desc || opt.description}
@@ -1324,7 +1322,7 @@ export function LeadCaptureForm() {
                             )}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
                             {(opt.tagline || opt.desc || opt.description) && (
                               <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
                                 {opt.tagline || opt.desc || opt.description}
@@ -1387,7 +1385,7 @@ export function LeadCaptureForm() {
                             {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
                             {(opt.tagline || opt.desc || opt.description) && (
                               <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
                                 {opt.tagline || opt.desc || opt.description}
@@ -1505,7 +1503,7 @@ export function LeadCaptureForm() {
                             )}
                           </div>
                           <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block truncate">{opt.label}</span>
+                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
                             {(opt.tagline || opt.desc || opt.description) && (
                               <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
                                 {opt.tagline || opt.desc || opt.description}
@@ -1674,7 +1672,7 @@ export function LeadCaptureForm() {
                 <span>Atrás</span>
               </button>
 
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }}>
+              <motion.div whileTap={{ scale: 0.98 }}>
                 <Button
                   onClick={nextStep}
                   disabled={!canProceed()}
@@ -1698,7 +1696,7 @@ export function LeadCaptureForm() {
                 <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform duration-200" />
                 <span>Atrás</span>
               </button>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }}>
+              <motion.div whileTap={{ scale: 0.98 }}>
                 <Button
                   onClick={handleSubmit}
                   disabled={!canProceed() || loading}

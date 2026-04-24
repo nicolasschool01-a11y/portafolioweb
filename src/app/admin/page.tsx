@@ -666,10 +666,7 @@ export default function AdminDashboardPage() {
           
           <div className="flex items-center gap-6">
             <div className="hidden lg:flex items-center gap-8 border-x border-white/5 px-8">
-              <div className="text-center">
-                <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Revenue Potencial</p>
-                <p className="text-xl font-bold text-emerald-400">USD ${stats.potentialRevenue.toLocaleString()}</p>
-              </div>
+              {/* Ocultamos el bloque de Revenue que restaba foco operativo */}
               <div className="text-center">
                 <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Total Leads</p>
                 <p className="text-xl font-bold">{stats.total}</p>
@@ -710,12 +707,7 @@ export default function AdminDashboardPage() {
                   onClick={() => setCurrentFilter("whatsapp")}
                   className={`rounded-lg h-7 text-[9px] font-black uppercase px-3 transition-all ${currentFilter === "whatsapp" ? 'bg-emerald-500 text-black' : 'text-emerald-500/80'}`}
                 >WhatsApp</Button>
-                <Button 
-                  variant={isProspectingMode ? "secondary" : "ghost"} 
-                  size="sm" 
-                  onClick={() => setIsProspectingMode(!isProspectingMode)}
-                  className={`rounded-lg h-7 text-[9px] font-black uppercase px-3 transition-all ${isProspectingMode ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-amber-500/80 border border-amber-500/10'}`}
-                >Modo Agente ⚡</Button>
+                {/* Modo Agente eliminado. Enfocado en acción directa por lead con IA Pitch */}
               </div>
             </div>
 
@@ -869,8 +861,79 @@ export default function AdminDashboardPage() {
           
           {/* Conservamos el resto de pestañas (Insights, Marketing) con sus diseños actuales */}
           <TabsContent value="insights" className="animate-in fade-in duration-700">
-             <div className="p-20 text-center border border-white/5 rounded-[3rem] bg-white/[0.01]">
-                <p className="text-muted-foreground font-black uppercase tracking-widest">Cargando Módulo de Analíticas Avanzado...</p>
+             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 bg-[#080808] p-6 rounded-[2.5rem] border border-white/5 shadow-2xl">
+                {/* Panel Métricas 1 */}
+                <div className="bg-[#0c0c0c] border border-white/10 rounded-[2rem] p-6">
+                   <div className="flex items-center justify-between mb-8">
+                     <h3 className="font-bold text-sm uppercase tracking-widest text-muted-foreground flex items-center gap-2"><Globe className="w-4 h-4" /> Distribución Geográfica</h3>
+                   </div>
+                   <div className="h-[250px] w-full">
+                     <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={stats.chartData.cities} layout="vertical" margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                           <XAxis type="number" hide />
+                           <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{fill: '#888', fontSize: 10, fontWeight: 'bold'}} width={90} />
+                           <Tooltip cursor={{fill: 'rgba(255,255,255,0.02)'}} contentStyle={{backgroundColor: '#000', borderColor: '#333', borderRadius: '12px', fontSize: '10px'}} />
+                           <Bar dataKey="value" fill="#10b981" radius={[0, 4, 4, 0]}>
+                             {stats.chartData.cities.map((entry: any, index: number) => (
+                               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                             ))}
+                           </Bar>
+                        </BarChart>
+                     </ResponsiveContainer>
+                   </div>
+                </div>
+
+                {/* Panel Métricas 2 */}
+                <div className="bg-[#0c0c0c] border border-white/10 rounded-[2rem] p-6">
+                   <div className="flex items-center justify-between mb-8">
+                     <h3 className="font-bold text-sm uppercase tracking-widest text-muted-foreground flex items-center gap-2"><Activity className="w-4 h-4" /> Puntos de Dolor</h3>
+                   </div>
+                   <div className="h-[250px] w-full">
+                     <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                           <Pie
+                             data={stats.chartData.painPoints}
+                             cx="50%"
+                             cy="50%"
+                             innerRadius={60}
+                             outerRadius={90}
+                             paddingAngle={5}
+                             dataKey="value"
+                             stroke="none"
+                           >
+                             {stats.chartData.painPoints.map((entry: any, index: number) => (
+                               <Cell key={`cell-${index}`} fill={entry.color} />
+                             ))}
+                           </Pie>
+                           <Tooltip contentStyle={{backgroundColor: '#000', borderColor: '#333', borderRadius: '12px', fontSize: '10px'}} />
+                           <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{fontSize: '10px', fontWeight: 'bold'}} />
+                        </PieChart>
+                     </ResponsiveContainer>
+                   </div>
+                </div>
+
+                {/* Gráfico Tendencia (Ancho completo) */}
+                <div className="col-span-1 lg:col-span-2 bg-[#0c0c0c] border border-white/10 rounded-[2rem] p-6">
+                    <div className="flex items-center justify-between mb-8">
+                     <h3 className="font-bold text-sm uppercase tracking-widest text-muted-foreground flex items-center gap-2"><TrendingUp className="w-4 h-4" /> Evolución de Leads (7 Días)</h3>
+                   </div>
+                   <div className="h-[250px] w-full mt-4">
+                     <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart data={stats.chartData.timeline} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+                          <defs>
+                            <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                              <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                            </linearGradient>
+                          </defs>
+                          <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#888', fontSize: 10}} />
+                          <YAxis axisLine={false} tickLine={false} tick={{fill: '#888', fontSize: 10}} />
+                          <Tooltip contentStyle={{backgroundColor: '#000', borderColor: '#333', borderRadius: '12px', fontSize: '10px'}} />
+                          <Area type="monotone" dataKey="count" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorCount)" />
+                        </AreaChart>
+                     </ResponsiveContainer>
+                   </div>
+                </div>
              </div>
           </TabsContent>
         </Tabs>

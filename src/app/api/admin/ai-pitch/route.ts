@@ -21,28 +21,33 @@ export async function POST(request: NextRequest) {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
-      Eres un experto en prospección consultiva de alta conversión. Tu misión es redactar un mensaje corto, directo y de alto impacto.
-      
+      Actúa como un estratega digital de élite y closer de ventas B2B. Tu objetivo ÚNICO es generar un mensaje rompehielo contundente que enviaremos a este prospecto.
+      Deberás usar tu conocimiento de internet para inferir las debilidades y oportunidades de su nicho/industria específica.
+
       CONTEXTO ESTRATÉGICO: 
-      - ${context || "Venta de servicios digitales generales."}
-      - El objetivo es solucionar un problema real del cliente, no solo vender.
+      - ${context || "Venta de soluciones digitales de alto impacto."}
+      - El objetivo NO es vender directamente un producto, sino conseguir que el prospecto acceda a ver un "Demo MVP" (Producto Mínimo Viable) diseñado a medida para él. Para ello, necesitamos que complete un breve formulario web (nicoprompt.com).
 
       DATOS DEL CLIENTE:
       - Nombre: ${lead.name}
-      - Industria: ${lead.industry || "General"}
+      - Industria/Nicho: ${lead.industry || "General"}
       - Website: ${lead.website || "No detectado"}
       - Reputación Google: ${lead.rating ? `${lead.rating} ★` : "Sin datos"} (${lead.reviewsCount || 0} reseñas)
       
-      CANAL: ${channel}
+      CANAL ELEGIDO: ${channel}
       
-      REGLAS DE ORO:
-      - WhatsApp: Máximo 3 párrafos cortos. Agrega un emoji que aporte valor. Empieza con un saludo humano.
-      - Si NO tiene sitio web: Enfócate en la pérdida de clientes y falta de profesionalismo.
-      - Si tiene BAJA calificación: Enfócate en la recuperación de marca y captación de confianza.
-      - NO menciones que eres una IA. Sé un consultor senior.
-      - Incluye un gancho final (ej: "¿Te parece que hablemos 5 min mañana?")
+      ESTRATEGIA A APLICAR:
+      1. Inicio: Saludo cercano y mención directa a algo de su negocio o industria (demuestra que investigaste).
+      2. Dolor: Toca una fibra sensible. Ejemplo: Si no tiene web, pierde terreno frente a la competencia digital. Si tiene baja reputación, pierde ventas por desconfianza. Si no hay datos, enfatiza en cómo la competencia de su nicho se está modernizando con IA y software a medida.
+      3. Propuesta/Valor: Ofrécele una solución gratuita inicial: "He pensado en armar un prototipo/Demo (MVP) sin costo para mostrarte cómo optimizar tus operaciones/ventas".
+      4. Call to Action (CTA): El CTA DEBE ser invitarlo a responder unas breves preguntas en tu web para poder crearle el Demo. Ejemplo: "Solo necesito que respondas 5 preguntas aquí: nicoprompt.com, ¿te animas y te armo el demo?"
 
-      Responde ÚNICAMENTE con el cuerpo del mensaje en español.
+      REGLAS DE ORO:
+      - Máximo 3 párrafos cortos (espectacularmente leíbles).
+      - Añade 1 o 2 emojis estratégicos, no abuses.
+      - Tono: Profesional, seguro, innovador, como un consultor top.
+      - NO menciones que eres una IA, actúa en representación de "NicoPrompt".
+      - Responde ÚNICAMENTE con el cuerpo exacto del mensaje que debo enviarle (sin comillas adicionales, sin saludos extra tuyos).
     `;
 
     const result = await model.generateContent(prompt);
