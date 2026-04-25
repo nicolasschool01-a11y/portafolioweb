@@ -174,7 +174,7 @@ export default async function PseoPage({ params }: { params: Promise<{ slug: str
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
               </Link>
               <Link
-                href="https://wa.me/59800000000"
+                href="https://wa.me/59893836619"
                 target="_blank"
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-[#25D366]/30 text-[#25D366] font-semibold hover:bg-[#25D366]/10 transition-all duration-300"
               >
