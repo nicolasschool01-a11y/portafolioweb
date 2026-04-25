@@ -57,7 +57,7 @@ export function WhatsAppWidget() {
                     hacerla realidad.
                   </p>
                   <a
-                    href="https://wa.me/54900000000?text=Hola%20NicoPrompt!%20Tengo%20una%20idea%20de%20proyecto%20que%20me%20gustaría%20compartir."
+                    href="https://wa.me/59893836619?text=Hola%20NicoPrompt!%20Tengo%20una%20idea%20de%20proyecto%20que%20me%20gustaría%20compartir."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-green-500 hover:bg-green-600 text-white font-medium text-sm transition-colors"

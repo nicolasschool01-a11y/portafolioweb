@@ -350,7 +350,7 @@ export function Footer() {
                 className="border-white/10 bg-white/[0.03] hover:bg-white/[0.08] text-sm text-muted-foreground hover:text-foreground rounded-xl gap-2 transition-all duration-200 hover:border-white/20"
               >
                 <Phone className="w-4 h-4" />
-                <a href="https://wa.me/54900000000" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/59893836619" target="_blank" rel="noopener noreferrer">
                   WhatsApp directo
                 </a>
               </Button>

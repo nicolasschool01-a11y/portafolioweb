@@ -26,7 +26,7 @@ const contactItems = [
   {
     icon: MessageCircle,
     label: "WhatsApp directo",
-    href: "https://wa.me/5491100000000",
+    href: "https://wa.me/59893836619",
     color: "text-emerald-400",
     bg: "bg-emerald-500/10",
     border: "border-emerald-500/20",
