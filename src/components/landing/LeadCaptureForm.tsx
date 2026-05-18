@@ -26,7 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
-const CALENDLY_URL = "https://calendly.com/nicoprompt/15min";
+const CALENDLY_URL = "https://calendly.com/nicoprompt/consulta-ia-inicial";
 
 const priorityAreas = [
   "Ventas / seguimiento de leads",
