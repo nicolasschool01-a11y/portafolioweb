@@ -16,21 +16,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NicoPrompt — Apps & Software a Medida con IA",
+  title: "NicoPrompt — IA aplicada a procesos de negocio",
   description:
-    "Desarrollo aplicaciones, sistemas y webs a medida usando inteligencia artificial. MVPs rápidos, funcionales y listos para escalar. Convierte tu idea en software real en días, no meses.",
+    "Consulta IA Inicial gratuita e IA Sprint para ordenar procesos, ahorrar tiempo y prototipar sistemas simples con inteligencia artificial.",
   keywords: [
     "NicoPrompt",
-    "desarrollo de software",
-    "aplicaciones a medida",
+    "IA aplicada",
+    "IA para negocios",
+    "automatizacion con IA",
+    "IA Sprint",
+    "consulta IA",
+    "procesos de negocio",
     "IA",
-    "MVP",
-    "apps web",
     "CRM",
-    "automatización",
-    "desarrollo rápido",
-    "startup",
-    "software a medida",
+    "automatizacion",
+    "pymes",
+    "founders",
     "Uruguay",
   ],
   authors: [{ name: "NicoPrompt" }],
@@ -38,18 +39,18 @@ export const metadata: Metadata = {
     icon: "/logo.svg",
   },
   openGraph: {
-    title: "NicoPrompt — Software a Medida con IA en Días",
+    title: "NicoPrompt — IA aplicada a procesos de negocio",
     description:
-      "Desarrollo aplicaciones, sistemas y webs a medida usando inteligencia artificial. MVPs rápidos, funcionales y listos para escalar.",
+      "Consulta IA Inicial gratuita e IA Sprint para detectar oportunidades concretas y prototipar sistemas simples.",
     type: "website",
     locale: "es_UY",
     siteName: "NicoPrompt",
   },
   twitter: {
     card: "summary_large_image",
-    title: "NicoPrompt — Software a Medida con IA en Días",
+    title: "NicoPrompt — IA aplicada a procesos de negocio",
     description:
-      "Desarrollo aplicaciones, sistemas y webs a medida usando inteligencia artificial.",
+      "Consulta IA Inicial gratuita e IA Sprint para ordenar procesos y validar sistemas con IA.",
   },
   robots: {
     index: true,
@@ -63,14 +64,14 @@ const jsonLd = {
   "@type": "ProfessionalService",
   name: "NicoPrompt",
   description:
-    "Desarrollo de software a medida potenciado por inteligencia artificial. MVPs rápidos, funcionales y listos para escalar.",
+    "IA aplicada a procesos de negocio: consulta inicial, IA Sprint e implementacion posterior segun alcance.",
   url: "https://nicoprompt.com",
   serviceType: [
-    "Desarrollo de aplicaciones a medida",
-    "Desarrollo web",
+    "Consulta IA Inicial",
+    "NicoPrompt IA Sprint",
+    "Automatizacion con IA",
     "Sistemas CRM",
-    "Automatización con IA",
-    "MVP para startups",
+    "Optimización de procesos",
   ],
   areaServed: {
     "@type": "Place",

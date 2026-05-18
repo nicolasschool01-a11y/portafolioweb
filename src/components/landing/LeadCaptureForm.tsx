@@ -1,644 +1,307 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useParams } from "next/navigation";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Bot,
+  Briefcase,
+  Calendar,
+  Check,
+  Clock,
+  Database,
+  FileText,
+  Mail,
+  MessageSquare,
+  Send,
+  ShieldCheck,
+  Sparkles,
+  Target,
+  User,
+  Zap,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import {
-  X,
-  ArrowRight,
-  ArrowLeft,
-  Check,
-  Send,
-  Sparkles,
-  Globe,
-  Smartphone,
-  Database,
-  Zap,
-  Palette,
-  ShoppingCart,
-  Cloud,
-  Lightbulb,
-  DollarSign,
-  Users,
-  MessageSquare,
-  FileText,
-  Brain,
-  Handshake,
-  Flame,
-  Clock,
-  Calendar,
-  Leaf,
-  Phone,
-  User,
-  Building2,
-  PartyPopper,
-  Rocket,
-  ArrowUpRight,
-  Video,
-  Camera,
-  Megaphone,
-  Target,
-  Wand2,
-  MonitorPlay,
-  PenTool,
-  Image,
-  BarChart3,
-  Mail,
-} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useParams } from "next/navigation";
 
-// ─── Data Options ───────────────────────────────────────────
+const CALENDLY_URL = "https://calendly.com/nicoprompt/consulta-ia-inicial";
 
-const projectTypes = [
-  { id: "web-app", label: "App Web", emoji: "🌐", icon: Globe, tagline: "Tu negocio, en cualquier dispositivo" },
-  { id: "mobile-app", label: "App Móvil", emoji: "📱", icon: Smartphone, tagline: "Llevá tu app al pocket de tus usuarios" },
-  { id: "crm", label: "CRM / Sistema", emoji: "📊", icon: Database, tagline: "Gestioná tu negocio de forma inteligente" },
-  { id: "automation", label: "Automatización con IA", emoji: "⚡", icon: Zap, tagline: "Potenciá tu productividad con IA" },
-  { id: "website", label: "Sitio Web", emoji: "🎨", icon: Palette, tagline: "Tu vitrina digital profesional" },
-  { id: "ecommerce", label: "E-commerce", emoji: "🛒", icon: ShoppingCart, tagline: "Vendé las 24hs, los 7 días" },
-  { id: "saas", label: "SaaS", emoji: "☁️", icon: Cloud, tagline: "Tu producto como servicio" },
-  { id: "other", label: "Otro", emoji: "💡", icon: Lightbulb, tagline: "Contame tu idea y vemos" },
+const priorityAreas = [
+  "Ventas / seguimiento de leads",
+  "Atencion al cliente",
+  "Operaciones internas",
+  "Marketing / contenido",
+  "CRM / base de datos",
+  "Reportes / dashboards",
+  "Automatizacion administrativa",
+  "Otro",
 ];
 
-const problemOptions = [
-  { id: "vender-mas", label: "Vender más", emoji: "💰", icon: DollarSign },
-  { id: "automatizar", label: "Automatizar procesos", emoji: "⚙️", icon: Zap },
-  { id: "gestionar-datos", label: "Gestionar datos/clientes", emoji: "📋", icon: Database },
-  { id: "crear-contenido", label: "Crear contenido", emoji: "✍️", icon: FileText },
-  { id: "mejorar-comunicacion", label: "Mejorar comunicación interna", emoji: "💬", icon: MessageSquare },
-  { id: "otro-problema", label: "Otro (contame más)", emoji: "💭", icon: Lightbulb },
+const tools = [
+  "Web / landing",
+  "Formularios",
+  "WhatsApp",
+  "Email",
+  "Google Sheets / Excel",
+  "CRM",
+  "Supabase / base de datos",
+  "Make / Zapier / n8n",
+  "ChatGPT / IA",
+  "Otra",
 ];
 
-const targetUsersOptions = [
-  { id: "mis-clientes", label: "Mis clientes", emoji: "👥", icon: Users },
-  { id: "equipo-interno", label: "Mi equipo interno", emoji: "🏢", icon: Building2 },
-  { id: "publico-general", label: "Público general", emoji: "🌍", icon: Globe },
-  { id: "b2b", label: "Otro negocio (B2B)", emoji: "🤝", icon: Handshake },
-  { id: "no-claro", label: "No lo tengo claro todavía", emoji: "🤔", icon: Brain },
-];
-
-const designStatusOptions = [
-  { id: "wireframes", label: "Sí, tengo wireframes o mockups", emoji: "✅" },
-  { id: "referencia-visual", label: "Tengo una referencia visual (otra app/sitio)", emoji: "🎨" },
-  { id: "documentado", label: "Tengo el proyecto escrito/documentado", emoji: "📝" },
-  { id: "solo-idea", label: "Solo tengo la idea en mi cabeza", emoji: "💭" },
-  { id: "ayuda-diseno", label: "Quiero que me ayudes con el diseño también", emoji: "🤝" },
-];
-
-const timelineOptions = [
-  { id: "1-2-semanas", label: "Lo necesito YA", emoji: "🔥", desc: "1-2 semanas", icon: Flame },
-  { id: "2-4-semanas", label: "Urgente", emoji: "⚡", desc: "2-4 semanas", icon: Zap },
-  { id: "1-2-meses", label: "Normal", emoji: "📅", desc: "1-2 meses", icon: Calendar },
-  { id: "3-meses", label: "Sin apuro", emoji: "🌿", desc: "3+ meses", icon: Leaf },
+const urgencyOptions = [
+  "Curiosidad / exploracion",
+  "Quiero resolverlo este trimestre",
+  "Quiero resolverlo este mes",
+  "Es urgente",
 ];
 
 const budgetOptions = [
-  { id: "500-1500", label: "$500 - $1,500", desc: "MVP básico", emoji: "🚀" },
-  { id: "1500-5000", label: "$1,500 - $5,000", desc: "Producto sólido", emoji: "⭐" },
-  { id: "5000-15000", label: "$5,000 - $15,000", desc: "App completa", emoji: "💎" },
-  { id: "15000+", label: "$15,000+", desc: "Enterprise", emoji: "🏢" },
-  { id: "no-se", label: "No tengo idea", desc: "Necesito orientación", emoji: "💰" },
+  "Menos de USD 300",
+  "USD 300-600",
+  "USD 600-1000",
+  "Mas de USD 1000",
+  "No se todavia",
 ];
 
-const contentNeedsOptions = [
-  { id: "redes-sociales", label: "Contenido para redes sociales", emoji: "📱", icon: Megaphone, desc: "Posts, stories, reels" },
-  { id: "fotos-producto", label: "Fotos de producto con IA", emoji: "📸", icon: Camera, desc: "Catálogos, menús, productos" },
-  { id: "videos-ugc", label: "Videos / contenido UGC", emoji: "🎬", icon: Video, desc: "Reviews, tutoriales, unboxings" },
-  { id: "copywriting", label: "Copywriting & textos", emoji: "✍️", icon: PenTool, desc: "Descripciones, emails, ads" },
-  { id: "imagenes-ia", label: "Imágenes generativas con IA", emoji: "🎨", icon: Image, desc: "Banners, posts, creativos" },
-  { id: "seo-content", label: "Contenido SEO / Blog", emoji: "🔍", icon: FileText, desc: "Artículos, landing pages" },
-  { id: "no-necesita", label: "No necesito contenido por ahora", emoji: "✅", icon: Check, desc: "Solo el producto digital" },
+const authorityOptions = [
+  "Decido yo",
+  "Decido con otra persona",
+  "Influyo, pero no decido",
+  "Estoy explorando para mi equipo",
 ];
 
-const demoGoalsOptions = [
-  { id: "ver-funcional", label: "Ver algo funcional", emoji: "🖥️", icon: MonitorPlay, desc: "Quiero clickear y probar" },
-  { id: "pitch-inversores", label: "Presentar a inversores", emoji: "💼", icon: Handshake, desc: "Demo para levantar capital" },
-  { id: "validar-mercado", label: "Validar con clientes reales", emoji: "👥", icon: Users, desc: "Testear antes de invertir más" },
-  { id: "presupuesto-formal", label: "Cotización formal", emoji: "📋", icon: FileText, desc: "Proposal detallada por escrito" },
-  { id: "solo-orientacion", label: "Solo orientación por ahora", emoji: "💡", icon: Lightbulb, desc: "Quiero entender opciones" },
-];
-
-const extraFeaturesOptions = [
-  { id: "pagos", label: "Pagos / Suscripciones", emoji: "💳" },
-  { id: "notificaciones", label: "Notificaciones push/email", emoji: "🔔" },
-  { id: "chat-soporte", label: "Chat / Soporte al usuario", emoji: "💬" },
-  { id: "panel-admin", label: "Panel de administración", emoji: "📊" },
-  { id: "autenticacion", label: "Login / Registro de usuarios", emoji: "🔐" },
-  { id: "integraciones", label: "Integraciones (APIs externas)", emoji: "🔗" },
-  { id: "analitica", label: "Analytics / Métricas", emoji: "📈" },
-  { id: "multidioma", label: "Multiidioma", emoji: "🌍" },
-  { id: "diseno-ui", label: "Diseño UI/UX", emoji: "🎨" },
-  { id: "ninguna", label: "Nada de esto por ahora", emoji: "✅" },
-];
-
-// ─── Motivational Messages ──────────────────────────────────
-
-const motivationalMessages: Record<number, string> = {
-  0: "",
-  1: "¡Buen comienzo! 👏",
-  2: "¡Interesante! Seguimos 🎯",
-  3: "Cada vez más cerca 🎯",
-  4: "¡Ya le estamos dando forma! ✨",
-  5: "Ya casi tenemos todo 🏁",
-  6: "¡Gran paso! Seguimos 🚀",
-  7: "Ya casi cerramos 📋",
-  8: "¡Info clave para tu demo! 🎬",
-  9: "¡Ultimo paso! Estamos a punto ✨",
-  10: "",
-};
-
-// ─── Summary Helpers ────────────────────────────────────────
-
-function getLabelFromId(options: { id: string; label: string; emoji?: string; desc?: string }[], id: string): string {
-  const opt = options.find((o) => o.id === id);
-  if (!opt) return id;
-  if (opt.desc) return `${opt.emoji} ${opt.label} — ${opt.desc}`;
-  return `${opt.emoji} ${opt.label}`;
+interface FormData {
+  name: string;
+  email: string;
+  whatsapp: string;
+  company: string;
+  website: string;
+  role: string;
+  businessContext: string;
+  audience: string;
+  stage: string;
+  priorityArea: string;
+  processToImprove: string;
+  painCost: string;
+  firstValuableVersion: string;
+  currentTools: string[];
+  dataLocation: string;
+  sensitiveData: string;
+  sampleDataAvailable: string;
+  urgency: string;
+  budget: string;
+  decisionAuthority: string;
+  desiredStart: string;
+  consentAccepted: boolean;
 }
 
-function getMotivationalByProject(projectType: string): string {
-  const msgs: Record<string, string> = {
-    "web-app": "Una app web sólida puede transformar tu negocio. Vamos a hacerla realidad 🚀",
-    "mobile-app": "Las apps móviles conectan con los usuarios como nada más. ¡Vamos por ella! 📱",
-    "crm": "Un buen CRM puede ahorrarte horas de trabajo cada semana. ¡Vamos a construirlo! 📊",
-    automation: "La automatización con IA es el futuro, y estás a punto de ser parte de él ⚡",
-    website: "Tu vitrina digital va a impresionar. ¡Vamos a diseñarla! 🎨",
-    ecommerce: "El comercio online no descansa. ¡Vamos a hacer que venda por vos! 🛒",
-    saas: "Un producto SaaS es un activo que escala. ¡Vamos a construirlo juntos! ☁️",
-    other: "Las mejores ideas a veces no encajan en una categoría. ¡Vamos a explorarla! 💡",
-  };
-  return msgs[projectType] || "¡Estamos listos para dar vida a tu proyecto! 🚀";
+const initialFormData: FormData = {
+  name: "",
+  email: "",
+  whatsapp: "",
+  company: "",
+  website: "",
+  role: "",
+  businessContext: "",
+  audience: "",
+  stage: "",
+  priorityArea: "",
+  processToImprove: "",
+  painCost: "",
+  firstValuableVersion: "",
+  currentTools: [],
+  dataLocation: "",
+  sensitiveData: "",
+  sampleDataAvailable: "",
+  urgency: "",
+  budget: "",
+  decisionAuthority: "",
+  desiredStart: "",
+  consentAccepted: false,
+};
+
+function FieldLabel({ children }: { children: React.ReactNode }) {
+  return <label className="text-sm font-medium text-foreground/90">{children}</label>;
 }
 
-// ─── Confetti Data ──────────────────────────────────────────
+function HelperText({ children }: { children: React.ReactNode }) {
+  return <p className="text-xs text-muted-foreground leading-relaxed">{children}</p>;
+}
 
-const CONFETTI_COLORS = [
-  "#10b981",
-  "#14b8a6",
-  "#34d399",
-  "#fbbf24",
-  "#f472b6",
-  "#818cf8",
-  "#fb7185",
-  "#fcd34d",
-  "#a78bfa",
-  "#6ee7b7",
-];
-
-const CONFETTI_PARTICLES = Array.from({ length: 60 }, (_, i) => ({
-  id: i,
-  x: Math.random() * 100,
-  delay: Math.random() * 0.8,
-  duration: 2.5 + Math.random() * 2,
-  color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
-  size: 5 + Math.random() * 7,
-  rotation: Math.random() * 360,
-  drift: (Math.random() - 0.5) * 200,
-  isCircle: Math.random() > 0.5,
-}));
-
-// ─── Animation Variants ────────────────────────────────────
-
-const summaryContainerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.1 },
-  },
-};
-
-const summaryItemVariants = {
-  hidden: { opacity: 0, y: 12, scale: 0.97 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.35, ease: "easeOut" as const },
-  },
-};
-
-// ─── Sparkle burst component ────────────────────────────────
-
-function SparkleBurst({ active }: { active: boolean }) {
-  if (!active) return null;
+function TextAreaField({
+  value,
+  onChange,
+  placeholder,
+  rows = 4,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  rows?: number;
+}) {
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
-      {[...Array(12)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full bg-emerald-400"
-          style={{
-            width: i % 3 === 0 ? 3 : 2,
-            height: i % 3 === 0 ? 3 : 2,
-          }}
-          initial={{
-            x: "50%",
-            y: "50%",
-            opacity: 1,
-            scale: 0,
-          }}
-          animate={{
-            x: `${50 + Math.cos((i * Math.PI * 2) / 12) * 65}%`,
-            y: `${50 + Math.sin((i * Math.PI * 2) / 12) * 65}%`,
-            opacity: 0,
-            scale: 1.2,
-          }}
-          transition={{ duration: 0.65, ease: "easeOut" }}
-        />
-      ))}
-    </div>
+    <textarea
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+      placeholder={placeholder}
+      rows={rows}
+      className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/45 outline-none transition focus:border-emerald-500/45 focus:bg-white/[0.06] focus:ring-2 focus:ring-emerald-500/10"
+    />
   );
 }
 
-// ─── Confetti Effect Component ──────────────────────────────
-
-function ConfettiEffect() {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-50">
-      {CONFETTI_PARTICLES.map((p) => (
-        <motion.div
-          key={p.id}
-          className="absolute"
-          style={{
-            left: `${p.x}%`,
-            top: -20,
-            width: p.size,
-            height: p.isCircle ? p.size : p.size * 0.55,
-            backgroundColor: p.color,
-            borderRadius: p.isCircle ? "50%" : "2px",
-          }}
-          initial={{ y: 0, x: 0, rotate: 0, opacity: 1 }}
-          animate={{
-            y: 550,
-            x: p.drift,
-            rotate: p.rotation + 900,
-            opacity: 0,
-          }}
-          transition={{
-            duration: p.duration,
-            delay: p.delay,
-            ease: [0.25, 0.1, 0.25, 1],
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-// ─── Floating Orbs Component (Welcome BG) ───────────────────
-
-function FloatingOrbs() {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      <motion.div
-        className="absolute w-36 h-36 rounded-full blur-2xl"
-        style={{ top: "8%", left: "10%", background: "rgba(16,185,129,0.08)" }}
-        animate={{ y: [0, -25, 0], x: [0, 15, 0], scale: [1, 1.25, 1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute w-28 h-28 rounded-full blur-2xl"
-        style={{ bottom: "15%", right: "8%", background: "rgba(20,184,166,0.1)" }}
-        animate={{ y: [0, 20, 0], x: [0, -18, 0], scale: [1, 1.3, 1] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-      />
-      <motion.div
-        className="absolute w-20 h-20 rounded-full blur-2xl"
-        style={{ top: "45%", left: "55%", background: "rgba(52,211,153,0.06)" }}
-        animate={{ y: [0, -15, 0], x: [0, 12, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-      />
-      <motion.div
-        className="absolute w-16 h-16 rounded-full blur-2xl"
-        style={{ top: "20%", right: "25%", background: "rgba(167,139,250,0.05)" }}
-        animate={{ y: [0, 10, 0], x: [0, -10, 0], scale: [1, 1.2, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-      />
-    </div>
-  );
-}
-
-// ─── Ripple Card Component ──────────────────────────────────
-
-function RippleCard({
+function OptionButton({
+  selected,
   children,
   onClick,
-  className,
 }: {
+  selected: boolean;
   children: React.ReactNode;
   onClick: () => void;
-  className: string;
 }) {
-  const [ripples, setRipples] = useState<Array<{ id: number; x: number; y: number }>>([]);
-
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setRipples((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      },
-    ]);
-    onClick();
-  };
-
-  const removeRipple = useCallback((id: number) => {
-    setRipples((prev) => prev.filter((r) => r.id !== id));
-  }, []);
-
   return (
-    <button 
-      onClick={handleClick} 
-      className={`relative w-full h-full overflow-hidden shadow-sm hover:shadow-emerald-500/10 active:opacity-80 transition-all duration-200 ${className}`}
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-xl border px-3 py-2.5 text-left text-sm transition ${
+        selected
+          ? "border-emerald-400/60 bg-emerald-500/12 text-foreground shadow-lg shadow-emerald-500/10"
+          : "border-white/10 bg-white/[0.03] text-muted-foreground hover:border-white/20 hover:bg-white/[0.06] hover:text-foreground"
+      }`}
     >
       {children}
-      {ripples.map((r) => (
-        <motion.span
-          key={r.id}
-          initial={{ scale: 0, opacity: 0.4 }}
-          animate={{ scale: 6, opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="absolute rounded-full bg-emerald-500/20 pointer-events-none w-10 h-10"
-          style={{ left: r.x - 20, top: r.y - 20 }}
-        />
-      ))}
     </button>
   );
 }
 
-// ─── Select Sparkle Micro-Animation ─────────────────────────
+function calculateScore(data: FormData) {
+  let score = 0;
+  if (data.painCost.trim().length > 40) score += 2;
+  else if (data.painCost.trim()) score += 1;
 
-function SelectSparkle() {
-  return (
-    <>
-      {[...Array(6)].map((_, i) => (
-        <motion.div
-          key={i}
-          initial={{ scale: 0, x: 0, y: 0, opacity: 1 }}
-          animate={{
-            scale: [0, 1.5, 0],
-            x: Math.cos((i * 60 * Math.PI) / 180) * 25,
-            y: Math.sin((i * 60 * Math.PI) / 180) * 25,
-            opacity: [1, 1, 0]
-          }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="absolute w-1.5 h-1.5 bg-emerald-400 rounded-full"
-          style={{ top: "40%", left: "40%" }}
-        />
-      ))}
-    </>
-  );
+  if (data.processToImprove.trim().length > 40) score += 2;
+  else if (data.priorityArea) score += 1;
+
+  if (["USD 600-1000", "Mas de USD 1000"].includes(data.budget)) score += 2;
+  else if (data.budget === "USD 300-600") score += 1;
+
+  if (data.decisionAuthority === "Decido yo") score += 2;
+  else if (data.decisionAuthority === "Decido con otra persona") score += 1;
+
+  if (["Quiero resolverlo este mes", "Es urgente"].includes(data.urgency)) score += 2;
+  else if (data.urgency === "Quiero resolverlo este trimestre") score += 1;
+
+  if (data.sampleDataAvailable === "Si") score += 2;
+  else if (data.sampleDataAvailable === "No se todavia") score += 1;
+
+  if (data.firstValuableVersion.trim().length > 30) score += 2;
+  else if (data.firstValuableVersion.trim()) score += 1;
+
+  const hypothesis =
+    score >= 10
+      ? "Buen fit para consulta y posible IA Sprint"
+      : score >= 7
+        ? "Consulta posible; confirmar alcance y presupuesto"
+        : "Fit bajo o temprano; nutrir o pedir mas contexto";
+
+  return { score, hypothesis };
 }
-
-// ─── Floating Input Field Component ─────────────────────────
-
-function FloatingInputField({
-  label,
-  icon: Icon,
-  value,
-  onChange,
-  placeholder,
-  type = "text",
-  required = false,
-  optional = false,
-}: {
-  label: string;
-  icon: React.ElementType;
-  value: string;
-  onChange: (val: string) => void;
-  placeholder: string;
-  type?: string;
-  required?: boolean;
-  optional?: boolean;
-}) {
-  const [focused, setFocused] = useState(false);
-  const [localValue, setLocalValue] = useState(value);
-  const isActive = focused || localValue.length > 0;
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setLocalValue(value);
-  }, [value]);
-
-  const handleBlur = () => {
-    setFocused(false);
-    if (localValue !== value) {
-      onChange(localValue);
-    }
-  };
-
-  return (
-    <div className="relative">
-      <label
-        className={`absolute left-3 flex items-center gap-1.5 pointer-events-none z-10 transition-all duration-200 ease-out origin-left ${
-          isActive
-            ? "top-1.5 text-[10px] text-emerald-400 scale-[0.85]"
-            : "top-1/2 -translate-y-1/2 text-sm text-muted-foreground"
-        }`}
-      >
-        <Icon className={`w-5 h-5 transition-colors duration-200 ${isActive ? "text-emerald-400" : "text-muted-foreground/60"}`} />
-        <span>{label}</span>
-        {required && <span className="text-emerald-400 ml-0.5">*</span>}
-        {optional && <span className="text-muted-foreground/50 ml-1 text-[9px]">(opcional)</span>}
-      </label>
-      <Input
-        type={type}
-        value={localValue}
-        onChange={(e) => setLocalValue(e.target.value)}
-        onFocus={() => setFocused(true)}
-        onBlur={handleBlur}
-        placeholder={isActive ? placeholder : " "}
-        className={`rounded-xl h-12 border transition-all duration-300 ${
-          isActive ? "pt-5" : ""
-        } ${
-          focused
-            ? "bg-white/[0.07] border-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.12),0_0_4px_rgba(16,185,129,0.2)]"
-            : "bg-white/5 border-white/10 hover:border-white/15"
-        }`}
-      />
-    </div>
-  );
-}
-
-// ─── Form Data Interface ────────────────────────────────────
-
-interface FormData {
-  projectType: string;
-  problemSolved: string;
-  problemSolvedOther: string;
-  targetUsers: string;
-  designStatus: string;
-  timeline: string;
-  budget: string;
-  contentNeeds: string[];
-  demoGoal: string;
-  extraFeatures: string[];
-  name: string;
-  email: string;
-  phone: string;
-  whatsapp: string;
-  company: string;
-}
-
-const TOTAL_STEPS = 11; // 0 (welcome) + 10 (steps 1-10)
 
 export function LeadCaptureForm() {
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [direction, setDirection] = useState(0);
-  const [sparkleKey, setSparkleKey] = useState(0);
-  const [showSparkle, setShowSparkle] = useState(false);
-  const [typedText, setTypedText] = useState("");
-  const [formData, setFormData] = useState<FormData>({
-    projectType: "",
-    problemSolved: "",
-    problemSolvedOther: "",
-    targetUsers: "",
-    designStatus: "",
-    timeline: "",
-    budget: "",
-    contentNeeds: [],
-    demoGoal: "",
-    extraFeatures: [],
-    name: "",
-    email: "",
-    phone: "",
-    whatsapp: "",
-    company: "",
-  });
+  const [formData, setFormData] = useState<FormData>(initialFormData);
   const { toast } = useToast();
   const params = useParams();
-  const sourceSlug = params?.slug as string || "direct";
+  const sourceSlug = (params?.slug as string) || "direct";
+  const totalSteps = 5;
+  const score = useMemo(() => calculateScore(formData), [formData]);
 
-  // Typing effect for welcome
-  const fullText = "¡Hola! 👋 Soy NicoPrompt y voy a ayudarte a dar forma a tu proyecto";
-
-  useEffect(() => {
-    if (step === 0) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setTypedText("");
-      let index = 0;
-      const interval = setInterval(() => {
-        if (index <= fullText.length) {
-          setTypedText(fullText.slice(0, index));
-          index++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 30);
-      return () => clearInterval(interval);
-    }
-  }, [step]);
-
-  // Interceptar clics en todos los CTAs globales para restarle un clic al lead
-  useEffect(() => {
-    const handleGlobalClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const buttonOrLink = target.closest("button, a");
-      if (!buttonOrLink) return;
-      
-      // Ignorar clics si ya están dentro del formulario o su propia estructura
-      if (target.closest("#contacto") || target.closest("form")) return;
-
-      const text = buttonOrLink.textContent?.toLowerCase() || "";
-      const href = buttonOrLink.getAttribute("href");
-      
-      // Reconocer palabras clave típicas de cta de la landing
-      const isCta = href === "#contacto" || 
-                    text.includes("proyecto") || 
-                    text.includes("comenzar") ||
-                    text.includes("cotización") || 
-                    text.includes("agendar") ||
-                    text.includes("contacto");
-
-      if (isCta) {
-        // En vez de mostrar la pantalla de bienvenida (Paso 0), abrir directo el form (Paso 1)
-        if (step === 0) {
-          setStep(1);
-        }
-      }
-    };
-    
-    // Fase de captura
-    document.addEventListener("click", handleGlobalClick, true);
-    return () => document.removeEventListener("click", handleGlobalClick, true);
-  }, [step]);
-
-  const triggerSparkle = useCallback(() => {
-    setSparkleKey((k) => k + 1);
-    setShowSparkle(true);
-    setTimeout(() => setShowSparkle(false), 700);
-  }, []);
-
-  const nextStep = () => {
-    triggerSparkle();
-    setDirection(1);
-    setStep((prev) => Math.min(prev + 1, TOTAL_STEPS - 1));
+  const updateField = <K extends keyof FormData>(field: K, value: FormData[K]) => {
+    setFormData((current) => ({ ...current, [field]: value }));
   };
 
-  const prevStep = () => {
-    setDirection(-1);
-    setStep((prev) => Math.max(prev - 1, 0));
+  const toggleTool = (tool: string) => {
+    setFormData((current) => ({
+      ...current,
+      currentTools: current.currentTools.includes(tool)
+        ? current.currentTools.filter((item) => item !== tool)
+        : [...current.currentTools, tool],
+    }));
+  };
+
+  const canProceed = () => {
+    if (step === 0) {
+      return Boolean(formData.name.trim() && formData.email.trim() && formData.company.trim() && formData.role.trim());
+    }
+    if (step === 1) {
+      return Boolean(formData.businessContext.trim() && formData.priorityArea && formData.processToImprove.trim());
+    }
+    if (step === 2) {
+      return Boolean(formData.painCost.trim() && formData.firstValuableVersion.trim());
+    }
+    if (step === 3) {
+      return Boolean(formData.currentTools.length && formData.dataLocation.trim() && formData.sensitiveData && formData.sampleDataAvailable);
+    }
+    return Boolean(formData.urgency && formData.budget && formData.decisionAuthority && formData.consentAccepted);
   };
 
   const handleSubmit = async () => {
+    if (!canProceed()) return;
+
     setLoading(true);
     try {
       const payload = {
-        projectType: formData.projectType,
-        problemSolved:
-          formData.problemSolved === "otro-problema"
-            ? formData.problemSolvedOther
-            : formData.problemSolved,
-        targetUsers: formData.targetUsers,
-        designStatus: formData.designStatus,
-        timeline: formData.timeline,
-        budget: formData.budget,
+        leadType: "consulta-ia-inicial",
         name: formData.name,
         email: formData.email,
-        phone: formData.phone,
         whatsapp: formData.whatsapp,
         company: formData.company,
-        description: JSON.stringify({
-          step1: formData.projectType,
-          step2:
-            formData.problemSolved === "otro-problema"
-              ? formData.problemSolvedOther
-              : formData.problemSolved,
-          step3: formData.targetUsers,
-          step4: formData.designStatus,
-          step5: formData.timeline,
-          step6: formData.budget,
-          step7: formData.contentNeeds,
-          step8: formData.extraFeatures,
-          step9: formData.demoGoal,
-        }),
-        contentNeeds: formData.contentNeeds,
-        demoGoal: formData.demoGoal,
-        extraFeatures: formData.extraFeatures,
-        sourceSlug: sourceSlug,
+        website: formData.website,
+        role: formData.role,
+        businessContext: formData.businessContext,
+        audience: formData.audience,
+        stage: formData.stage,
+        priorityArea: formData.priorityArea,
+        processToImprove: formData.processToImprove,
+        painCost: formData.painCost,
+        firstValuableVersion: formData.firstValuableVersion,
+        currentTools: formData.currentTools,
+        dataLocation: formData.dataLocation,
+        sensitiveData: formData.sensitiveData,
+        sampleDataAvailable: formData.sampleDataAvailable,
+        urgency: formData.urgency,
+        budget: formData.budget,
+        decisionAuthority: formData.decisionAuthority,
+        desiredStart: formData.desiredStart,
+        consentAccepted: formData.consentAccepted,
+        qualificationScore: score.score,
+        offerHypothesis: score.hypothesis,
+        sourceSlug,
       };
 
-      const res = await fetch("/api/leads", {
+      const response = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Failed to submit");
+
+      if (!response.ok) throw new Error("Failed to submit");
+
       setSubmitted(true);
       toast({
-        title: "¡Proyecto enviado!",
-        description: "Te contactaré en menos de 24 horas con una propuesta.",
+        title: "Contexto recibido",
+        description: "Ahora podes agendar la Consulta IA Inicial gratuita.",
       });
     } catch {
       toast({
-        title: "Error",
-        description: "Hubo un error. Intentá de nuevo o contactame directamente.",
+        title: "No se pudo enviar",
+        description: "Intentá de nuevo o contactame por WhatsApp.",
         variant: "destructive",
       });
     } finally {
@@ -646,1109 +309,330 @@ export function LeadCaptureForm() {
     }
   };
 
-  const canProceed = (): boolean => {
-    switch (step) {
-      case 0:
-        return true;
-      case 1:
-        return formData.projectType !== "";
-      case 2:
-        return (
-          formData.problemSolved !== "" &&
-          (formData.problemSolved !== "otro-problema" || formData.problemSolvedOther.trim() !== "")
-        );
-      case 3:
-        return formData.targetUsers !== "";
-      case 4:
-        return formData.designStatus !== "";
-      case 5:
-        return formData.timeline !== "";
-      case 6:
-        return formData.budget !== "";
-      case 7:
-        return true; // Content needs - optional
-      case 8:
-        return true; // Extra features - optional
-      case 9:
-        return formData.demoGoal !== "";
-      case 10:
-        return formData.name.trim() !== "" && formData.email.trim() !== "" && formData.whatsapp.trim() !== "";
-      default:
-        return false;
-    }
-  };
-
-  const getProgressPercent = (): number => {
-    if (step === 0) return 0;
-    if (step >= 10) return 100;
-    return Math.round((step / 9) * 100);
-  };
-
-  const getStepLabel = (): string => {
-    if (step === 0) return "";
-    if (step >= 10) return "¡Completado!";
-    return `Paso ${step} de 9`;
-  };
-
-  // ─── Slide + Scale variants ───────────────────────────
-  const slideVariants = {
-    enter: (dir: number) => ({
-      x: dir > 0 ? 280 : -280,
-      opacity: 0,
-      scale: 0.94,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      scale: 1,
-    },
-    exit: (dir: number) => ({
-      x: dir < 0 ? 280 : -280,
-      opacity: 0,
-      scale: 0.94,
-    }),
-  };
-
-  // Progress bar milestones (emoji markers at key points)
-  const milestoneEmojis = ["", "🎯", "💡", "👥", "🎨", "⏰", "💰", "📱", "🔧", "🎬", "✅"];
-
-  const isContactStep = step === 10;
-  const isSummaryStep = false; // No separate summary - submit on contact step
+  const nextStep = () => setStep((current) => Math.min(current + 1, totalSteps - 1));
+  const previousStep = () => setStep((current) => Math.max(current - 1, 0));
 
   return (
     <section id="contacto" className="relative py-24 sm:py-32 overflow-hidden">
-      <div className="absolute inset-0 grid-bg opacity-30" />
+      <div className="absolute inset-0 grid-bg opacity-20" />
+      <div className="absolute left-1/2 top-1/4 h-[380px] w-[380px] -translate-x-1/2 rounded-full bg-emerald-500/[0.05] blur-[120px]" />
 
-      <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-4">
-            <Sparkles className="w-3 h-3" />
-            Comenzar proyecto
+      <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 text-center">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-xs font-medium text-emerald-400">
+            <Sparkles className="h-3.5 w-3.5" />
+            Precalificacion para Consulta IA Inicial
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
-            Descubramos juntos{" "}
-            <span className="gradient-text-emerald">tu proyecto</span>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+            Primero entendemos el proceso.{" "}
+            <span className="gradient-text">Despues hablamos de IA.</span>
           </h2>
-          <p className="text-muted-foreground text-lg">
-            Un breve viaje de descubrimiento para entender exactamente lo que necesitás.
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            Completá este formulario corto para llegar a la llamada con contexto. La consulta sirve para detectar oportunidad y fit; no incluye implementacion ni blueprint completo.
           </p>
         </div>
 
-        {/* Spacer to prevent layout shift on mobile cuando el form pasa a fixed */}
-        {step > 0 && !submitted && <div className="h-[500px] w-full sm:hidden"></div>}
-
-        {/* ─── MOBILE MODAL WRAPPER ─── */}
-        <div className={
-          step > 0 && !submitted 
-            ? "fixed inset-0 z-[60] bg-background flex flex-col pt-1 pb-2 px-2 overflow-hidden w-[100vw] h-[100dvh] sm:static sm:block sm:bg-transparent sm:p-0 sm:overflow-visible sm:h-auto sm:w-auto"
-            : ""
-        }>
-          {step > 0 && !submitted && (
-            <button
-              onClick={() => setStep(0)}
-              className="absolute top-4 right-4 z-[70] flex items-center justify-center w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full transition-colors sm:hidden"
-              aria-label="Cerrar formulario"
-            >
-              <X className="w-5 h-5 text-white" />
-            </button>
-          )}
-
-          <div className={step > 0 && !submitted ? "w-full max-w-2xl mx-auto flex-1 flex flex-col mt-4 sm:mt-0 min-h-0" : "w-full"}>
-            
-            {/* ─── Progress bar with milestones + glow + bounce ─── */}
-            {step > 0 && !submitted && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-8 flex-shrink-0"
-              >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-foreground/80">
-                {getStepLabel()}{" "}
-                {motivationalMessages[step] && (
-                  <span className="ml-2">{motivationalMessages[step]}</span>
-                )}
-              </span>
-              <span className="text-sm font-bold tabular-nums text-emerald-400">
-                {getProgressPercent()}%
-              </span>
+        <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="rounded-2xl border border-white/10 bg-card/50 p-6">
+            <div className="mb-6 flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400">
+                <Bot className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">NicoPrompt IA Sprint</p>
+                <p className="text-xs text-muted-foreground">Hasta 14 dias, 1 proceso o area prioritaria.</p>
+              </div>
             </div>
-            <div className="relative h-2.5 rounded-full bg-white/[0.04] overflow-visible">
-              {/* Glow layer behind the fill */}
-              <motion.div
-                className="absolute inset-y-[-4px] left-0 bg-cyan-500/40 rounded-full blur-md"
-                initial={false}
-                animate={{ width: `${getProgressPercent()}%` }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-              />
-              {/* Actual fill with electricity effect (Blue Lightning Core) */}
-              <motion.div
-                className="absolute inset-y-[2px] left-0 bg-white rounded-full z-10"
-                initial={false}
-                animate={{ 
-                  width: `${getProgressPercent()}%`,
-                  opacity: [0.9, 1, 0.85, 1] 
-                }}
-                transition={{
-                  width: { duration: 0.4, ease: "easeOut" },
-                  opacity: { duration: 0.15, repeat: Infinity, ease: "linear" }
-                }}
-                style={{
-                  boxShadow: "0 0 8px #fff, 0 0 15px #22d3ee, 0 0 25px #06b6d4, 0 0 40px #0891b2",
-                }}
-              />
+            <div className="space-y-4 text-sm text-muted-foreground">
+              <div className="flex gap-3">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                <span>Consulta gratuita para detectar oportunidad concreta.</span>
+              </div>
+              <div className="flex gap-3">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                <span>Formulario antes del calendario para evitar llamadas sin contexto.</span>
+              </div>
+              <div className="flex gap-3">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                <span>Si hay fit, propuesta simple para un IA Sprint acotado.</span>
+              </div>
+              <div className="flex gap-3">
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                <span>No prometemos automatizacion total, ventas garantizadas ni soporte ilimitado.</span>
+              </div>
+            </div>
+          </div>
 
-              {/* Electric arcing branches overlay - CLIPPED TO FILLED PART */}
-              <motion.div
-                className="absolute inset-y-[-6px] left-0 overflow-hidden mix-blend-screen pointer-events-none z-10"
-                initial={false}
-                animate={{ width: `${getProgressPercent()}%` }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                style={{ width: `${getProgressPercent()}%` }}
-              >
-                <motion.div 
-                  className="absolute inset-y-0 left-0 w-[800px] sm:w-[1200px] h-full opacity-80"
-                  animate={{ backgroundPosition: ["0px 0px", "-100px 0px"] }}
-                  transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='22'%3E%3Cpath d='M0 11 L10 4 L20 18 L30 7 L40 16 L50 2 L60 20 L70 5 L80 16 L90 8 L100 11' stroke='%2322d3ee' fill='none' stroke-width='1.5' /%3E%3Cpath d='M0 11 L15 19 L25 5 L35 18 L55 4 L75 18 L85 5 L100 11' stroke='%23a5f3fc' fill='none' stroke-width='1' /%3E%3C/svg%3E")`,
-                    backgroundSize: "100px 100%",
-                  }}
-                />
-              </motion.div>
-              {/* Explosion at the head/tip of progress bar (Blue Zap & Sparks) */}
-              <motion.div
-                className="absolute top-1/2 -translate-y-1/2 z-20 pointer-events-none"
-                initial={false}
-                animate={{ left: `${getProgressPercent()}%` }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-              >
-                {/* Core Zap */}
-                <motion.div
-                  key={`lightning-zap-${step}`} 
-                  initial={{ scale: 0.1, opacity: 1, rotate: 0 }}
-                  animate={{ scale: [0.1, 4, 0], opacity: [1, 0.9, 0], rotate: [0, 90, 180] }}
-                  transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-                  className="absolute w-5 h-5 bg-white mix-blend-screen"
-                  style={{ 
-                    left: "-10px", top: "-10px", 
-                    boxShadow: "0 0 30px 15px rgba(34,211,238,0.9)",
-                    clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)"
-                  }}
-                />
-                {/* Electric Sparks */}
-                {[...Array(5)].map((_, i) => (
-                  <motion.div
-                    key={`spark-${step}-${i}`}
-                    initial={{ scale: 0, x: 0, y: 0, opacity: 1 }}
-                    animate={{
-                      scale: [0, 1, 0],
-                      x: (Math.random() - 0.5) * 80,
-                      y: (Math.random() - 0.5) * 80,
-                      opacity: [1, 1, 0]
-                    }}
-                    transition={{ duration: 0.4 + Math.random() * 0.2, delay: 0.15, ease: "easeOut" }}
-                    className="absolute w-3 h-0.5 bg-cyan-300 mix-blend-screen"
-                    style={{ 
-                      left: "-1.5px", top: "-1px",
-                      transformOrigin: "left center",
-                      rotate: `${Math.random() * 360}deg`,
-                      boxShadow: "0 0 10px 2px #22d3ee"
-                    }}
-                  />
-                ))}
-              </motion.div>
-              {/* Milestone emojis with bounce */}
-              {milestoneEmojis.map((emoji, i) => {
-                if (i === 0) return null;
-                const position = (i / 9) * 100;
-                const reached = step >= i;
-                const justReached = step === i;
-                return (
-                  <div
-                    key={i}
-                    className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 text-xs z-10"
-                    style={{ left: `${position}%` }}
-                  >
-                    <motion.span
-                      key={`m-${i}`}
-                      initial={false}
-                      animate={
-                        justReached
-                          ? {
-                              scale: [1, 1.6, 0.85, 1.2, 1],
-                              y: [0, -10, 0, -5, 0],
-                            }
-                          : { scale: 1, y: 0 }
-                      }
-                      transition={{ duration: 0.6, ease: "easeOut" }}
-                      className={`transition-opacity duration-300 ${reached ? "opacity-100 drop-shadow-sm" : "opacity-25"}`}
-                    >
-                      {emoji}
-                    </motion.span>
+          <div className="rounded-2xl border border-white/10 bg-card/70 p-4 shadow-2xl shadow-emerald-500/5 sm:p-6">
+            {!submitted ? (
+              <>
+                <div className="mb-6">
+                  <div className="mb-3 flex items-center justify-between text-xs text-muted-foreground">
+                    <span>Paso {step + 1} de {totalSteps}</span>
+                    <span>{Math.round(((step + 1) / totalSteps) * 100)}%</span>
                   </div>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
-
-        {/* ─── Form card with animated gradient border ─── */}
-        <motion.div
-           animate={{ y: [0, -6, 0] }}
-           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-           className={`relative ${step > 0 && !submitted ? "flex-1 flex flex-col min-h-0" : ""}`}
-        >
-          <div className={`gradient-border-animated rounded-[18px] p-[2px] ${step > 0 && !submitted ? "flex-1 flex flex-col min-h-0" : ""}`}>
-          <div className={`relative rounded-2xl border border-white/10 bg-card sm:bg-card/50 sm:backdrop-blur-sm p-2 sm:p-8 overflow-y-auto overflow-x-hidden sm:overflow-visible min-h-0 sm:min-h-[420px] ${step > 0 && !submitted ? "flex-1 flex flex-col min-h-0 scrollbar-hide" : ""}`}>
-          <SparkleBurst key={sparkleKey} active={showSparkle} />
-
-          <AnimatePresence mode="wait" custom={direction}>
-            {/* ═══════════════════ STEP 0: Welcome ═══════════════════ */}
-            {step === 0 && (
-              <motion.div
-                key="step-0"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                className="flex flex-col items-center justify-center py-8 text-center flex-1 flex flex-col min-h-0"
-              >
-                {/* Floating orbs for visual depth */}
-                <FloatingOrbs />
-
-                {/* Content on top of orbs */}
-                <div className="relative z-10">
-                  <motion.div
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 15,
-                      delay: 0.1,
-                    }}
-                    className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-2 sm:mb-6 shadow-xl shadow-emerald-500/25"
-                  >
-                    <Rocket className="w-10 h-10 text-white" />
-                  </motion.div>
-
-                  <p className="text-xl sm:text-2xl font-semibold mb-2 min-h-[3rem] flex items-center justify-center">
-                    {typedText}
-                    <span className="animate-pulse ml-1 text-emerald-400">|</span>
-                  </p>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.5 }}
-                    className="mt-4"
-                  >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-muted-foreground">
-                      <Clock className="w-4 h-4 text-emerald-400" />
-                      En promedio, respondo en menos de 6 horas
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 2 }}
-                    className="mt-8"
-                  >
-                    <Button
-                      onClick={nextStep}
-                      size="lg"
-                      className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl px-8 py-6 text-lg font-semibold group shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      Comenzar
-                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </motion.div>
-
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 2.5 }}
-                    className="text-xs text-muted-foreground mt-4"
-                  >
-                    Solo 9 preguntas rápidas · Sin compromiso
-                  </motion.p>
+                  <div className="h-2 overflow-hidden rounded-full bg-white/5">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-300"
+                      style={{ width: `${((step + 1) / totalSteps) * 100}%` }}
+                    />
+                  </div>
                 </div>
-              </motion.div>
-            )}
 
-            {/* ═══════════════════ STEP 1: Project Type ═══════════════════ */}
-            {step === 1 && (
-              <motion.div
-                key="step-1"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-               className="flex-1 flex flex-col min-h-0">
-                <h3 className="text-xl font-semibold mb-1">
-                  ¿Qué tipo de proyecto necesitás? 🚀
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
-                  Elegí la opción que mejor describe tu idea.
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 flex-1 min-h-0 py-1">
-                  {projectTypes.map((type) => {
-                    const Icon = type.icon;
-                    const isSelected = formData.projectType === type.id;
-                    return (
-                      <RippleCard
-                        key={type.id}
-                        onClick={() =>
-                          setFormData({ ...formData, projectType: type.id })
-                        }
-                        className={`relative p-2 sm:p-4 rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
-                          isSelected
-                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
-                            : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
-                        }`}
-                      >
-                                            <div className="flex items-center gap-3 w-full">
-                        <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                          <Icon className={`w-5 h-5 transition-colors duration-200 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />
+                <AnimatePresence mode="wait">
+                  {step === 0 && (
+                    <motion.div key="step-0" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} className="space-y-4">
+                      <div className="mb-2 flex items-center gap-2 text-emerald-400">
+                        <User className="h-4 w-4" />
+                        <h3 className="font-semibold">Datos basicos</h3>
+                      </div>
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="space-y-2">
+                          <FieldLabel>Nombre y apellido *</FieldLabel>
+                          <Input value={formData.name} onChange={(event) => updateField("name", event.target.value)} placeholder="Tu nombre" />
                         </div>
-                        <div className="flex-1 min-w-0 flex flex-col justify-center">
-                          <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">
-                            {type.label}
-                          </span>
-                          <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
-                            {type.tagline}
-                          </span>
+                        <div className="space-y-2">
+                          <FieldLabel>Email *</FieldLabel>
+                          <Input type="email" value={formData.email} onChange={(event) => updateField("email", event.target.value)} placeholder="tu@email.com" />
+                        </div>
+                        <div className="space-y-2">
+                          <FieldLabel>WhatsApp</FieldLabel>
+                          <Input value={formData.whatsapp} onChange={(event) => updateField("whatsapp", event.target.value)} placeholder="+598..." />
+                        </div>
+                        <div className="space-y-2">
+                          <FieldLabel>Empresa o proyecto *</FieldLabel>
+                          <Input value={formData.company} onChange={(event) => updateField("company", event.target.value)} placeholder="Nombre del negocio" />
+                        </div>
+                        <div className="space-y-2">
+                          <FieldLabel>Web o red social</FieldLabel>
+                          <Input value={formData.website} onChange={(event) => updateField("website", event.target.value)} placeholder="https://..." />
+                        </div>
+                        <div className="space-y-2">
+                          <FieldLabel>Rol *</FieldLabel>
+                          <Input value={formData.role} onChange={(event) => updateField("role", event.target.value)} placeholder="Founder, gerente, marketing..." />
                         </div>
                       </div>
-                        {/* Selected glow overlay */}
-                        {isSelected && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="absolute inset-0 rounded-xl bg-gradient-to-br from-emerald-500/5 to-teal-500/5 pointer-events-none"
-                          />
-                        )}
-                      </RippleCard>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            )}
-
-            {/* ═══════════════════ STEP 2: Problem Solved ═══════════════════ */}
-            {step === 2 && (
-              <motion.div
-                key="step-2"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-               className="flex-1 flex flex-col min-h-0">
-                <h3 className="text-xl font-semibold mb-1">
-                  ¿Qué problema resuelve? 🎯
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
-                  Elegí el objetivo principal de tu proyecto.
-                </p>
-                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
-                  {problemOptions.map((opt) => {
-                    const Icon = opt.icon;
-                    const isSelected = formData.problemSolved === opt.id;
-                    return (
-                      <RippleCard
-                        key={opt.id}
-                        onClick={() =>
-                          setFormData({ ...formData, problemSolved: opt.id })
-                        }
-                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
-                          isSelected
-                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
-                            : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 w-full p-2.5">
-                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {opt.icon && <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
-                            {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
-                          </div>
-                          <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
-                            {(opt.tagline || opt.desc || opt.description) && (
-                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
-                                {opt.tagline || opt.desc || opt.description}
-                              </span>
-                            )}
-                          </div>
-                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
-                        </div>
-                      </RippleCard>
-                    );
-                  })}
-                </div>
-                {formData.problemSolved === "otro-problema" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="mt-4"
-                  >
-                    <Input
-                      placeholder="Contame qué problema querés resolver..."
-                      value={formData.problemSolvedOther}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          problemSolvedOther: e.target.value,
-                        })
-                      }
-                      className="bg-white/5 border-white/10 focus:border-emerald-500/50 rounded-xl h-12 shadow-[0_0_20px_rgba(16,185,129,0.12),0_0_4px_rgba(16,185,129,0.2)] focus:shadow-[0_0_20px_rgba(16,185,129,0.12),0_0_4px_rgba(16,185,129,0.2)]"
-                    />
-                  </motion.div>
-                )}
-              </motion.div>
-            )}
-
-            {/* ═══════════════════ STEP 3: Target Users ═══════════════════ */}
-            {step === 3 && (
-              <motion.div
-                key="step-3"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-               className="flex-1 flex flex-col min-h-0">
-                <h3 className="text-xl font-semibold mb-1">
-                  ¿Quiénes son tus usuarios? 👥
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
-                  ¿Quiénes van a usar lo que vamos a construir?
-                </p>
-                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
-                  {targetUsersOptions.map((opt) => {
-                    const Icon = opt.icon;
-                    const isSelected = formData.targetUsers === opt.id;
-                    return (
-                      <RippleCard
-                        key={opt.id}
-                        onClick={() =>
-                          setFormData({ ...formData, targetUsers: opt.id })
-                        }
-                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
-                          isSelected
-                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
-                            : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 w-full p-2.5">
-                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {opt.icon && <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
-                            {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
-                          </div>
-                          <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
-                            {(opt.tagline || opt.desc || opt.description) && (
-                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
-                                {opt.tagline || opt.desc || opt.description}
-                              </span>
-                            )}
-                          </div>
-                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
-                        </div>
-                      </RippleCard>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            )}
-
-            {/* ═══════════════════ STEP 4: Design Status ═══════════════════ */}
-            {step === 4 && (
-              <motion.div
-                key="step-4"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-               className="flex-1 flex flex-col min-h-0">
-                <h3 className="text-xl font-semibold mb-1">
-                  ¿Tenés diseños o referencias? 🎨
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
-                  No worries si no tenés nada, ¡eso es parte del proceso!
-                </p>
-                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
-                  {designStatusOptions.map((opt) => {
-                    const isSelected = formData.designStatus === opt.id;
-                    return (
-                      <RippleCard
-                        key={opt.id}
-                        onClick={() =>
-                          setFormData({ ...formData, designStatus: opt.id })
-                        }
-                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
-                          isSelected
-                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
-                            : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 w-full p-2.5">
-                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {opt.icon && <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
-                            {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
-                          </div>
-                          <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
-                            {(opt.tagline || opt.desc || opt.description) && (
-                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
-                                {opt.tagline || opt.desc || opt.description}
-                              </span>
-                            )}
-                          </div>
-                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
-                        </div>
-                      </RippleCard>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            )}
-
-            {/* ═══════════════════ STEP 5: Timeline ═══════════════════ */}
-            {step === 5 && (
-              <motion.div
-                key="step-5"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-               className="flex-1 flex flex-col min-h-0">
-                <h3 className="text-xl font-semibold mb-1">
-                  ¿Cuándo lo necesitás? ⏰
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
-                  ¿Cuándo te gustaría tener tu producto listo?
-                </p>
-                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
-                  {timelineOptions.map((opt) => {
-                    const Icon = opt.icon;
-                    const isSelected = formData.timeline === opt.id;
-                    return (
-                      <RippleCard
-                        key={opt.id}
-                        onClick={() =>
-                          setFormData({ ...formData, timeline: opt.id })
-                        }
-                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
-                          isSelected
-                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
-                            : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 w-full p-2.5">
-                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {opt.icon && <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
-                            {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
-                          </div>
-                          <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
-                            {(opt.tagline || opt.desc || opt.description) && (
-                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
-                                {opt.tagline || opt.desc || opt.description}
-                              </span>
-                            )}
-                          </div>
-                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
-                        </div>
-                      </RippleCard>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            )}
-
-            {/* ═══════════════════ STEP 6: Budget ═══════════════════ */}
-            {step === 6 && (
-              <motion.div
-                key="step-6"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-               className="flex-1 flex flex-col min-h-0">
-                <h3 className="text-xl font-semibold mb-1">
-                  ¿Cuál es tu presupuesto? 💰
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
-                  Esto me ayuda a dimensionar la mejor solución para vos. ¡Cotizaciones
-                  sin compromiso!
-                </p>
-                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
-                  {budgetOptions.map((opt) => {
-                    const isSelected = formData.budget === opt.id;
-                    return (
-                      <RippleCard
-                        key={opt.id}
-                        onClick={() =>
-                          setFormData({ ...formData, budget: opt.id })
-                        }
-                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
-                          isSelected
-                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
-                            : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 w-full p-2.5">
-                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {opt.icon ? (
-                              <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />
-                            ) : (
-                              <span className="text-xl">{opt.emoji}</span>
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
-                            {(opt.tagline || opt.desc || opt.description) && (
-                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
-                                {opt.tagline || opt.desc || opt.description}
-                              </span>
-                            )}
-                          </div>
-                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
-                        </div>
-                      </RippleCard>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            )}
-
-            {/* ═══════════════════ STEP 7: Content Needs (Multi-select) ═══════════════════ */}
-            {step === 7 && (
-              <motion.div
-                key="step-7"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-               className="flex-1 flex flex-col min-h-0">
-                <h3 className="text-xl font-semibold mb-1">
-                  ¿Necesitás contenido también? 📱
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Podemos incluir generación de contenido con IA en tu proyecto.
-                </p>
-                <p className="text-xs text-muted-foreground/60 mb-5">
-                  Elegí todas las que apliquen — o skipeá si no necesitás.
-                </p>
-                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
-                  {contentNeedsOptions.map((opt) => {
-                    const Icon = opt.icon;
-                    const isSelected = formData.contentNeeds.includes(opt.id);
-                    return (
-                      <RippleCard
-                        key={opt.id}
-                        onClick={() => {
-                          setFormData({
-                            ...formData,
-                            contentNeeds: isSelected
-                              ? formData.contentNeeds.filter((id) => id !== opt.id)
-                              : [...formData.contentNeeds, opt.id],
-                          });
-                        }}
-                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
-                          isSelected
-                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
-                            : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 w-full p-2.5">
-                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {opt.icon && <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />}
-                            {!opt.icon && opt.emoji && <span className="text-xl">{opt.emoji}</span>}
-                          </div>
-                          <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
-                            {(opt.tagline || opt.desc || opt.description) && (
-                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
-                                {opt.tagline || opt.desc || opt.description}
-                              </span>
-                            )}
-                          </div>
-                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
-                        </div>
-                      </RippleCard>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            )}
-
-            {/* ═══════════════════ STEP 8: Extra Features (Multi-select) ═══════════════════ */}
-            {step === 8 && (
-              <motion.div
-                key="step-8"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-               className="flex-1 flex flex-col min-h-0">
-                <h3 className="text-xl font-semibold mb-1">
-                  ¿Funcionalidades extra? 🔧
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Seleccioná las features que te gustaría incluir en tu producto.
-                </p>
-                <p className="text-xs text-muted-foreground/60 mb-5">
-                  Cuanta más info me des, más preciso será el demo que preparemos.
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
-                  {extraFeaturesOptions.map((opt) => {
-                    const isSelected = formData.extraFeatures.includes(opt.id);
-                    return (
-                      <RippleCard
-                        key={opt.id}
-                        onClick={() => {
-                          setFormData({
-                            ...formData,
-                            extraFeatures: isSelected
-                              ? formData.extraFeatures.filter((id) => id !== opt.id)
-                              : [...formData.extraFeatures, opt.id],
-                          });
-                        }}
-                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
-                          isSelected
-                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
-                            : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 w-full p-2.5">
-                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {opt.icon ? (
-                              <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />
-                            ) : (
-                              <span className="text-xl">{opt.emoji}</span>
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[11px] sm:text-xs font-semibold block leading-tight">{opt.label}</span>
-                          </div>
-                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
-                        </div>
-                      </RippleCard>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            )}
-
-            {/* ═══════════════════ STEP 9: Demo Goal ═══════════════════ */}
-            {step === 9 && (
-              <motion.div
-                key="step-9"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-               className="flex-1 flex flex-col min-h-0">
-                <h3 className="text-xl font-semibold mb-1">
-                  ¿Qué esperás como siguiente paso? 🎬
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
-                  Con esta info puedo prepararte un demo MVP para que veas tu producto en acción.
-                </p>
-                <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-hidden py-1">
-                  {demoGoalsOptions.map((opt) => {
-                    const Icon = opt.icon;
-                    const isSelected = formData.demoGoal === opt.id;
-                    return (
-                      <RippleCard
-                        key={opt.id}
-                        onClick={() =>
-                          setFormData({ ...formData, demoGoal: opt.id })
-                        }
-                        className={`relative rounded-xl border text-left transition-all duration-200 group flex-1 flex flex-col justify-center min-h-0 ${
-                          isSelected
-                            ? "border-emerald-500/60 bg-emerald-500/10 shadow-lg shadow-emerald-500/15 ring-1 ring-emerald-500/20"
-                            : "border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/5"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 w-full p-2.5">
-                          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                            {opt.icon ? (
-                              <opt.icon className={`w-5 h-5 ${isSelected ? "text-emerald-400" : "text-muted-foreground"}`} />
-                            ) : (
-                              <span className="text-xl">{opt.emoji}</span>
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0 flex flex-col justify-center">
-                            <span className="text-[13px] sm:text-sm font-semibold block leading-tight pb-0.5">{opt.label}</span>
-                            {(opt.tagline || opt.desc || opt.description) && (
-                              <span className="text-[9.5px] sm:text-[11px] text-muted-foreground leading-tight block">
-                                {opt.tagline || opt.desc || opt.description}
-                              </span>
-                            )}
-                          </div>
-                          {isSelected && <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
-                        </div>
-                      </RippleCard>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            )}
-
-            {/* ═══════════════════ STEP 10: Contact Info (Floating Labels) ═══════════════════ */}
-            {step === 10 && (
-              <motion.div
-                key="step-10"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              >
-                <h3 className="text-xl font-semibold mb-1">
-                  ¡Casi listo! Solo falta tu contacto 📬
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2 sm:mb-6">
-                  Te avisaré por WhatsApp cuando el demo esté listo para probar.
-                </p>
-                <div className="space-y-4">
-                  <FloatingInputField
-                    label="¿A quién contactamos?"
-                    icon={User}
-                    value={formData.name}
-                    onChange={(val) =>
-                      setFormData({ ...formData, name: val })
-                    }
-                    placeholder="Tu nombre completo"
-                    required
-                  />
-                  <FloatingInputField
-                    label="Email para enviar el presupuesto"
-                    icon={Mail}
-                    value={formData.email}
-                    onChange={(val) =>
-                      setFormData({ ...formData, email: val })
-                    }
-                    placeholder="tu@email.com"
-                    type="email"
-                    required
-                  />
-                  <div className="pt-2">
-                    <FloatingInputField
-                      label="WhatsApp (para contacto rápido)"
-                      icon={MessageSquare}
-                      value={formData.whatsapp}
-                      onChange={(val) =>
-                        setFormData({ ...formData, whatsapp: val })
-                      }
-                      placeholder="+598 9x xxx xxx"
-                      required
-                    />
-                    <p className="text-[10px] text-emerald-400/70 mt-2 flex items-center gap-1">
-                       <Zap className="w-3 h-3" /> Usaré este número solo para enviarte el demo o coordinar la llamada.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {/* ═══════════════════ SUCCESS (Confetti) ═══════════════════ */}
-            {submitted && (
-              <motion.div
-                key="step-success"
-                initial={{ scale: 0.85, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{
-                  duration: 0.5,
-                  ease: [0.25, 0.1, 0.25, 1],
-                }}
-                className="flex flex-col items-center justify-center py-10 text-center relative"
-              >
-                {/* Confetti celebration */}
-                <ConfettiEffect />
-
-                {/* Content above confetti */}
-                <div className="relative z-10 w-full max-w-md mx-auto">
-                  <motion.div
-                    initial={{ scale: 0, rotate: -90 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 200,
-                      delay: 0.2,
-                    }}
-                    className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-2 sm:mb-6 shadow-2xl shadow-emerald-500/30 mx-auto"
-                  >
-                    <Check
-                      className="w-10 h-10 text-white"
-                      strokeWidth={3}
-                    />
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                  >
-                    <h3 className="text-2xl sm:text-3xl font-bold mb-3 tracking-tight">
-                      ¡Tu proyecto está en marcha! 🎉
-                    </h3>
-                    <p className="text-muted-foreground mb-8 text-sm sm:text-base leading-relaxed">
-                      Recibimos tu solicitud con éxito. Para acelerar el proceso y tener tu presupuesto hoy mismo, <span className="text-emerald-400 font-semibold underline decoration-emerald-500/30 underline-offset-4">agendá una Sesión de Descubrimiento de 15 min</span> para conocernos.
-                    </p>
-                  </motion.div>
-
-                  {/* CALENDLY BUTTON - ACCIÓN PRINCIPAL */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
-                  >
-                    <Button
-                      size="lg"
-                      onClick={() => window.open("https://calendly.com/nicoprompt/15min", "_blank")}
-                      className="w-full bg-white text-black hover:bg-white/90 rounded-2xl h-14 text-base font-bold shadow-[0_0_30px_rgba(255,255,255,0.15)] group relative overflow-hidden"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <Calendar className="w-5 h-5 mr-3 text-emerald-600" />
-                      📅 Agendar Sesión de Descubrimiento (15 min)
-                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                    <p className="text-[10px] text-muted-foreground/60 mt-3 flex items-center justify-center gap-1">
-                      <Clock className="w-3 h-3" /> Solo te tomará 15 minutos
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2 }}
-                    className="flex flex-col items-center gap-4 mt-10"
-                  >
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
-                      <Zap className="w-5 h-5" />
-                      Te envié una confirmación a {formData.email}
-                    </div>
-                  </motion.div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* ─── Navigation buttons ─── */}
-          {step > 0 && step < 10 && !submitted && (
-            <div className="flex justify-between items-center mt-8">
-              {/* Subtle back button */}
-              <button
-                onClick={prevStep}
-                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-all duration-200 group px-3 py-1.5 rounded-lg hover:bg-white/5 -ml-1"
-              >
-                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform duration-200" />
-                <span>Atrás</span>
-              </button>
-
-              <motion.div whileTap={{ scale: 0.98 }}>
-                <Button
-                  onClick={nextStep}
-                  disabled={!canProceed()}
-                  className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl group disabled:opacity-50 transition-all duration-200 hover:shadow-lg hover:shadow-emerald-500/20"
-                >
-                  Continuar
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-                </Button>
-              </motion.div>
-            </div>
-          )}
-
-          {/* ─── Final Submit (Step 10) ─── */}
-          {step === 10 && !submitted && (
-            <div className="flex justify-between items-center mt-8">
-              {/* Subtle back button */}
-              <button
-                onClick={prevStep}
-                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-all duration-200 group px-3 py-1.5 rounded-lg hover:bg-white/5 -ml-1"
-              >
-                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform duration-200" />
-                <span>Atrás</span>
-              </button>
-              <motion.div whileTap={{ scale: 0.98 }}>
-                <Button
-                  onClick={handleSubmit}
-                  disabled={!canProceed() || loading}
-                  className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl px-6 group shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300"
-                >
-                  {loading ? (
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4 mr-2" />
-                      Enviar mi proyecto
-                      <ArrowUpRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
-                    </>
+                    </motion.div>
                   )}
+
+                  {step === 1 && (
+                    <motion.div key="step-1" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} className="space-y-5">
+                      <div className="flex items-center gap-2 text-emerald-400">
+                        <Briefcase className="h-4 w-4" />
+                        <h3 className="font-semibold">Negocio y area prioritaria</h3>
+                      </div>
+                      <div className="space-y-2">
+                        <FieldLabel>Que vende tu negocio? *</FieldLabel>
+                        <TextAreaField value={formData.businessContext} onChange={(value) => updateField("businessContext", value)} placeholder="Contame en simple que ofrecen y a quien ayudan." rows={3} />
+                      </div>
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="space-y-2">
+                          <FieldLabel>A quien le vendes?</FieldLabel>
+                          <Input value={formData.audience} onChange={(event) => updateField("audience", event.target.value)} placeholder="B2B, consumidores, restaurantes..." />
+                        </div>
+                        <div className="space-y-2">
+                          <FieldLabel>Etapa actual</FieldLabel>
+                          <Input value={formData.stage} onChange={(event) => updateField("stage", event.target.value)} placeholder="Ya vendo, equipo chico, validacion..." />
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <FieldLabel>Donde queres aplicar IA primero? *</FieldLabel>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                          {priorityAreas.map((area) => (
+                            <OptionButton key={area} selected={formData.priorityArea === area} onClick={() => updateField("priorityArea", area)}>
+                              {area}
+                            </OptionButton>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <FieldLabel>Que proceso queres mejorar primero? *</FieldLabel>
+                        <TextAreaField value={formData.processToImprove} onChange={(value) => updateField("processToImprove", value)} placeholder="Ejemplo: seguimiento de leads que entran por formulario, WhatsApp y referidos." />
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {step === 2 && (
+                    <motion.div key="step-2" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} className="space-y-5">
+                      <div className="flex items-center gap-2 text-emerald-400">
+                        <Target className="h-4 w-4" />
+                        <h3 className="font-semibold">Dolor y primera version valiosa</h3>
+                      </div>
+                      <div className="space-y-2">
+                        <FieldLabel>Que pasa hoy si ese proceso sigue igual? *</FieldLabel>
+                        <TextAreaField value={formData.painCost} onChange={(value) => updateField("painCost", value)} placeholder="Tiempo perdido, leads sin respuesta, errores, oportunidades que se caen..." />
+                      </div>
+                      <div className="space-y-2">
+                        <FieldLabel>Que seria una primera version valiosa en 14 dias? *</FieldLabel>
+                        <TextAreaField value={formData.firstValuableVersion} onChange={(value) => updateField("firstValuableVersion", value)} placeholder="Un flujo, prototipo, blueprint o sistema liviano que ya permita validar valor." />
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {step === 3 && (
+                    <motion.div key="step-3" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} className="space-y-5">
+                      <div className="flex items-center gap-2 text-emerald-400">
+                        <Database className="h-4 w-4" />
+                        <h3 className="font-semibold">Herramientas y datos</h3>
+                      </div>
+                      <div className="space-y-3">
+                        <FieldLabel>Que herramientas usan hoy? *</FieldLabel>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                          {tools.map((tool) => (
+                            <OptionButton key={tool} selected={formData.currentTools.includes(tool)} onClick={() => toggleTool(tool)}>
+                              {tool}
+                            </OptionButton>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <FieldLabel>Donde viven los datos principales? *</FieldLabel>
+                        <Input value={formData.dataLocation} onChange={(event) => updateField("dataLocation", event.target.value)} placeholder="Sheets, CRM, email, base de datos, WhatsApp..." />
+                      </div>
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="space-y-3">
+                          <FieldLabel>Hay datos sensibles? *</FieldLabel>
+                          <div className="grid gap-2">
+                            {["No", "Si", "No se todavia"].map((option) => (
+                              <OptionButton key={option} selected={formData.sensitiveData === option} onClick={() => updateField("sensitiveData", option)}>
+                                {option}
+                              </OptionButton>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <FieldLabel>Podemos trabajar con datos de ejemplo? *</FieldLabel>
+                          <div className="grid gap-2">
+                            {["Si", "No", "No se todavia"].map((option) => (
+                              <OptionButton key={option} selected={formData.sampleDataAvailable === option} onClick={() => updateField("sampleDataAvailable", option)}>
+                                {option}
+                              </OptionButton>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {step === 4 && (
+                    <motion.div key="step-4" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} className="space-y-5">
+                      <div className="flex items-center gap-2 text-emerald-400">
+                        <Clock className="h-4 w-4" />
+                        <h3 className="font-semibold">Urgencia, presupuesto y decision</h3>
+                      </div>
+                      <div className="grid gap-4 lg:grid-cols-3">
+                        <div className="space-y-3">
+                          <FieldLabel>Urgencia *</FieldLabel>
+                          <div className="grid gap-2">
+                            {urgencyOptions.map((option) => (
+                              <OptionButton key={option} selected={formData.urgency === option} onClick={() => updateField("urgency", option)}>
+                                {option}
+                              </OptionButton>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <FieldLabel>Presupuesto *</FieldLabel>
+                          <div className="grid gap-2">
+                            {budgetOptions.map((option) => (
+                              <OptionButton key={option} selected={formData.budget === option} onClick={() => updateField("budget", option)}>
+                                {option}
+                              </OptionButton>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <FieldLabel>Decision *</FieldLabel>
+                          <div className="grid gap-2">
+                            {authorityOptions.map((option) => (
+                              <OptionButton key={option} selected={formData.decisionAuthority === option} onClick={() => updateField("decisionAuthority", option)}>
+                                {option}
+                              </OptionButton>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <FieldLabel>Cuando te gustaria empezar?</FieldLabel>
+                        <Input value={formData.desiredStart} onChange={(event) => updateField("desiredStart", event.target.value)} placeholder="Este mes, despues de cerrar presupuesto, etc." />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => updateField("consentAccepted", !formData.consentAccepted)}
+                        className={`flex w-full gap-3 rounded-xl border p-4 text-left text-sm transition ${
+                          formData.consentAccepted
+                            ? "border-emerald-400/60 bg-emerald-500/10"
+                            : "border-white/10 bg-white/[0.03] hover:border-white/20"
+                        }`}
+                      >
+                        <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${formData.consentAccepted ? "border-emerald-400 bg-emerald-500 text-white" : "border-white/20"}`}>
+                          {formData.consentAccepted && <Check className="h-3.5 w-3.5" />}
+                        </span>
+                        <span className="text-muted-foreground">
+                          Entiendo que la consulta gratuita sirve para detectar oportunidad y fit. No incluye implementacion, blueprint completo, automatizacion terminada ni soporte posterior.
+                        </span>
+                      </button>
+                      <HelperText>Score interno estimado: {score.score}/14. Esto ayuda a preparar la llamada, no decide automaticamente.</HelperText>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={previousStep}
+                    disabled={step === 0}
+                    className="border-white/10 bg-white/[0.03]"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Volver
+                  </Button>
+
+                  {step < totalSteps - 1 ? (
+                    <Button type="button" onClick={nextStep} disabled={!canProceed()} className="bg-emerald-500 text-white hover:bg-emerald-600">
+                      Continuar
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  ) : (
+                    <Button type="button" onClick={handleSubmit} disabled={!canProceed() || loading} className="bg-emerald-500 text-white hover:bg-emerald-600">
+                      {loading ? "Enviando..." : "Enviar contexto"}
+                      <Send className="ml-2 h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              </>
+            ) : (
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="py-10 text-center">
+                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-xl shadow-emerald-500/25">
+                  <Check className="h-8 w-8" />
+                </div>
+                <h3 className="mb-3 text-2xl font-bold">Contexto recibido</h3>
+                <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-foreground">
+                  Ya tengo una primera foto de tu negocio, el proceso y el nivel de fit. El siguiente paso es agendar una Consulta IA Inicial gratuita para revisar tu caso.
+                </p>
+                <div className="mx-auto mb-6 max-w-md rounded-xl border border-white/10 bg-white/[0.03] p-4 text-left text-xs text-muted-foreground">
+                  <p className="mb-2 flex items-center gap-2 text-foreground">
+                    <FileText className="h-4 w-4 text-emerald-400" />
+                    Importante
+                  </p>
+                  <p>La llamada es breve y sirve para detectar oportunidad. No incluye implementacion, blueprint completo ni automatizacion terminada.</p>
+                </div>
+                <Button asChild className="h-12 rounded-xl bg-white px-6 font-semibold text-black hover:bg-white/90">
+                  <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+                    <Calendar className="mr-2 h-4 w-4 text-emerald-600" />
+                    Agendar Consulta IA Inicial gratuita
+                  </a>
                 </Button>
+                <p className="mt-3 flex items-center justify-center gap-1 text-xs text-muted-foreground/70">
+                  <Mail className="h-3.5 w-3.5" />
+                  Nico revisa tus respuestas antes de la llamada.
+                </p>
               </motion.div>
-            </div>
-          )}
+            )}
           </div>
-          </div>
-        </motion.div>
-
-        {/* Cierre de wrappers del modal móvil */}
         </div>
-        </div>
-
       </div>
     </section>
-  );
-}
-
-// ─── Animated Summary Row (Staggered) ───────────────────────
-
-function AnimatedSummaryRow({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <motion.div
-      variants={summaryItemVariants}
-      className="flex items-start gap-2 sm:gap-3 p-3 rounded-lg bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-colors duration-200"
-    >
-      <Badge
-        variant="outline"
-        className="bg-white/5 border-white/10 text-xs text-muted-foreground whitespace-nowrap mt-0.5"
-      >
-        {label}
-      </Badge>
-      <span className="text-sm font-medium">{value}</span>
-    </motion.div>
   );
 }

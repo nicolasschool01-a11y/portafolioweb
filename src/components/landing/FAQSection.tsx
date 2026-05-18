@@ -11,57 +11,57 @@ const categories: FAQCategory[] = ["Todos", "Proceso", "Garantías", "Tecnologí
 
 const faqs = [
   {
-    question: "¿Cuánto tarda un proyecto típico?",
+    question: "La consulta gratuita incluye implementacion?",
     answer:
-      "La mayoría de los MVPs se entregan entre 5 y 15 días hábiles, dependiendo de la complejidad. Proyectos más grandes pueden tomar 3-4 semanas. Siempre te doy una estimación clara antes de empezar.",
+      "No. La consulta sirve para detectar oportunidad, entender el proceso y decidir si tiene sentido avanzar. No incluye implementacion, blueprint completo ni automatizacion terminada.",
     category: "Proceso" as const,
   },
   {
-    question: "¿Trabajás con empresas de cualquier tamaño?",
+    question: "Que es el NicoPrompt IA Sprint?",
     answer:
-      "Sí, trabajo con emprendedores individuales, startups y empresas establecidas. Cada proyecto se adapta al presupuesto y necesidades del cliente, sin importar el tamaño.",
+      "Es una entrega acotada de hasta 14 dias para trabajar un proceso o area prioritaria. Puede dejar un blueprint, prototipo o sistema liviano para validar valor antes de una implementacion mas grande.",
     category: "General" as const,
   },
   {
-    question: "¿Qué tecnologías usás?",
+    question: "El Sprint automatiza toda mi empresa?",
     answer:
-      "Uso un stack moderno: Next.js, React, TypeScript, Node.js, Prisma, PostgreSQL y herramientas de IA. Elijo las mejores tecnologías para cada proyecto específico, priorizando escalabilidad y rendimiento.",
+      "No. El Sprint trabaja un proceso o area prioritaria. Si despues conviene avanzar, la Implementacion Fase 2 se cotiza segun alcance.",
+    category: "Proceso" as const,
+  },
+  {
+    question: "Tengo que tener todo ordenado antes?",
+    answer:
+      "No perfecto, pero si tenes que poder explicar el proceso, compartir contexto y responder feedback. Si hay datos sensibles, podemos empezar con datos de ejemplo.",
+    category: "General" as const,
+  },
+  {
+    question: "Que herramientas se pueden conectar?",
+    answer:
+      "Depende del caso. Puede incluir formularios, email, Google Sheets, CRM, bases de datos, herramientas de automatizacion o IA. En la primera fase evitamos integraciones profundas si no son necesarias.",
     category: "Tecnología" as const,
   },
   {
-    question: "¿El código es mío al final?",
+    question: "Cuanto cuesta?",
     answer:
-      "Absolutamente. Todo el código fuente, diseño y activos son 100% tuyos. Entrego documentación y acceso completo para que cualquier equipo pueda continuar el desarrollo si lo necesitás.",
-    category: "Garantías" as const,
-  },
-  {
-    question: "¿Ofrecés soporte después de la entrega?",
-    answer:
-      "Sí, incluyo 30 días de soporte post-entrega sin costo. También ofrezco planes de mantenimiento mensual para quienes necesitan soporte continuo, mejoras y nuevas funcionalidades.",
-    category: "Garantías" as const,
-  },
-  {
-    question: "¿Cómo es el proceso de pago?",
-    answer:
-      "Trabajo con un anticipo del 50% para empezar y el 50% restante al entregar. Para proyectos grandes, podemos dividir en hitos de pago. Acepto transferencias, MercadoPago y criptomonedas.",
+      "La consulta inicial es gratuita. Primeros casos estrategicos pueden estar entre USD 250-450. El Sprint inicial suele estar entre USD 600-750, y casos complejos desde USD 900+. Fase 2 se cotiza despues.",
     category: "Proceso" as const,
   },
   {
-    question: "¿Qué garantías tenés sobre el trabajo?",
+    question: "Pueden garantizar ventas o resultados?",
     answer:
-      "Trabajo con un acuerdo de satisfacción: si el resultado no cumple con lo acordado en la propuesta, hago las revisiones necesarias sin costo adicional. Mi reputación depende de la calidad de cada entrega, así que me comprometo al 100% con cada proyecto.",
+      "No. NicoPrompt puede ordenar procesos, disenar sistemas y prototipar soluciones con IA, pero ventas, adopcion y resultados dependen de factores del negocio.",
     category: "Garantías" as const,
   },
   {
-    question: "¿Podes trabajar con mi equipo de diseño?",
+    question: "Por que el formulario va antes del calendario?",
     answer:
-      "Sí, me encanta colaborar con equipos de diseño existentes. Puedo integrarme a tu flujo de trabajo en Figma, recibir assets y specs de diseño, y mantener comunicación directa con tus diseñadores para asegurar una implementación fiel al pixel.",
+      "Porque evita llamadas sin contexto, ayuda a preparar mejor la consulta y protege la llamada gratuita de convertirse en consultoria infinita.",
     category: "Proceso" as const,
   },
   {
-    question: "¿Qué pasa si necesito cambios después de la entrega?",
+    question: "Hay soporte despues del Sprint?",
     answer:
-      "Incluyo revisiones dentro del alcance original sin costo. Para cambios adicionales fuera del alcance, te presento una cotización transparente antes de empezar. También ofrezco planes de retainer mensual para quienes anticipan iteraciones continuas.",
+      "Puede haber soporte mensual opcional o una Implementacion Fase 2. No hay soporte ilimitado incluido por defecto.",
     category: "Garantías" as const,
   },
 ];
@@ -114,7 +114,7 @@ export function FAQSection() {
             <span className="gradient-text">preguntas</span>?
           </h2>
           <p className="text-muted-foreground text-lg">
-            Las respuestas mas comunes sobre como trabajamos.
+            Respuestas claras antes de agendar la Consulta IA Inicial.
           </p>
         </FadeInStagger>
 

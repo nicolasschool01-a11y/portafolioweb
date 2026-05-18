@@ -8,50 +8,50 @@ import { useState } from "react";
 const services = [
   {
     icon: Smartphone,
-    title: "Aplicaciones a medida",
+    title: "Consulta IA Inicial",
     description:
-      "Apps web y móviles adaptadas exactamente a tu negocio. Desde e-commerce hasta plataformas SaaS, construyo soluciones que escalan.",
+      "Llamada breve para entender tu contexto, detectar una oportunidad concreta y decidir si tiene sentido avanzar.",
     gradient: "from-emerald-500 to-teal-500",
     shadowColor: "shadow-emerald-500/20",
     glowColor: "hover:shadow-emerald-500/10",
-    features: ["Web & Mobile", "SaaS", "E-commerce"],
-    stat: { value: "12+", label: "Apps entregadas" },
+    features: ["20-30 min", "Sin implementacion", "Fit inicial"],
+    stat: { value: "0", label: "Costo inicial" },
     borderColor: "hover:border-emerald-500/30",
   },
   {
     icon: Settings,
-    title: "Sistemas internos",
+    title: "IA Sprint",
     description:
-      "Automatización, gestión, dashboards y CRMs personalizados. Conectá tus procesos y eliminá tareas repetitivas.",
+      "Sprint de hasta 14 dias para trabajar un proceso o area prioritaria con un blueprint, prototipo o sistema liviano.",
     gradient: "from-violet-500 to-purple-500",
     shadowColor: "shadow-violet-500/20",
     glowColor: "hover:shadow-violet-500/10",
-    features: ["CRM", "Dashboards", "Automatización"],
-    stat: { value: "847", label: "Automatizaciones" },
+    features: ["1 proceso", "Hasta 14 dias", "1 revision"],
+    stat: { value: "14", label: "Dias max." },
     borderColor: "hover:border-violet-500/30",
   },
   {
     icon: Layout,
-    title: "Webs de alto impacto",
+    title: "Sistema inicial",
     description:
-      "Diseño moderno con foco en conversión. Landing pages, sitios corporativos y plataformas que generan resultados.",
+      "Ordenamos el flujo, definimos datos, herramientas y una primera version para validar valor sin sobredisenar.",
     gradient: "from-amber-500 to-orange-500",
     shadowColor: "shadow-amber-500/20",
     glowColor: "hover:shadow-amber-500/10",
-    features: ["Landing pages", "Corporativas", "Conversión"],
-    stat: { value: "50+", label: "Sitios publicados" },
+    features: ["Blueprint", "Prototipo", "Workflow"],
+    stat: { value: "1", label: "Area foco" },
     borderColor: "hover:border-amber-500/30",
   },
   {
     icon: Code2,
-    title: "Automatización con IA",
+    title: "Implementacion Fase 2",
     description:
-      "Integraciones inteligentes, chatbots, procesamiento de datos y flujos automatizados que ahorran tiempo y dinero.",
+      "Si el Sprint valida valor, se cotiza una fase posterior para conectar herramientas y operar con mas robustez.",
     gradient: "from-cyan-500 to-blue-500",
     shadowColor: "shadow-cyan-500/20",
     glowColor: "hover:shadow-cyan-500/10",
-    features: ["Chatbots", "Integraciones", "Data pipelines"],
-    stat: { value: "30+", label: "Bots desplegados" },
+    features: ["Segun alcance", "Integraciones", "Soporte opcional"],
+    stat: { value: "2", label: "Fase posterior" },
     borderColor: "hover:border-cyan-500/30",
   },
 ];
@@ -161,14 +161,14 @@ export function ServicesSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-5">
-            🚀 Servicios
+            Oferta
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-5">
-            Todo lo que necesitás para{" "}
-            <span className="gradient-text">llevar tu negocio al siguiente nivel</span>
+            IA aplicada a{" "}
+            <span className="gradient-text">procesos concretos</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Soluciones de software completas, diseñadas para crecer con tu empresa.
+            Empezamos por claridad, contexto y un proceso prioritario. Despues decidimos si conviene construir.
           </p>
         </AnimateOnScroll>
 

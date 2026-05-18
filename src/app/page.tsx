@@ -1,24 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SectionDots } from "@/components/landing/SectionDots";
 import { Navbar } from "@/components/landing/Navbar";
 import { HeroSection } from "@/components/landing/HeroSection";
-import { ClientLogoMarquee } from "@/components/landing/ClientLogoMarquee";
-import { StatsBar } from "@/components/landing/StatsBar";
-import { ProjectSlotsWidget } from "@/components/landing/ProjectSlotsWidget";
-import { SocialProofSection } from "@/components/landing/SocialProofSection";
 import { ServicesSection } from "@/components/landing/ServicesSection";
-import { TechStackSection } from "@/components/landing/TechStackSection";
-import { DifferentialSection } from "@/components/landing/DifferentialSection";
 import { ProcessSection } from "@/components/landing/ProcessSection";
 import { IntermediateCTA } from "@/components/landing/IntermediateCTA";
-import { PortfolioSection } from "@/components/landing/PortfolioSection";
 import { PricingPreview } from "@/components/landing/PricingPreview";
-import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
-import { SEOSection } from "@/components/landing/SEOSection";
-import { EducationSection } from "@/components/landing/EducationSection";
-import { TrustSection } from "@/components/landing/TrustSection";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import dynamic from "next/dynamic";
@@ -27,13 +15,9 @@ const FAQSection = dynamic(() => import("@/components/landing/FAQSection").then(
 const LeadCaptureForm = dynamic(() => import("@/components/landing/LeadCaptureForm").then(mod => mod.LeadCaptureForm));
 
 import { StickyCTA } from "@/components/landing/StickyCTA";
-import { PresentationSection } from "@/components/landing/PresentationSection";
-
 import { TechTicker } from "@/components/landing/TechTicker";
 import { CookieConsent } from "@/components/landing/CookieConsent";
 import { CursorGlow } from "@/components/landing/CursorGlow";
-import { WhyMeStrip } from "@/components/landing/WhyMeStrip";
-import { QuickContactBar } from "@/components/landing/QuickContactBar";
 import { ScrollProgress, ScrollProgressTopLine } from "@/components/landing/Animations";
 import { NotificationProvider } from "@/components/landing/NotificationToast";
 
@@ -76,30 +60,7 @@ export default function Home() {
             </SectionReveal>
             <div className="section-glow" />
             <SectionReveal>
-              <ClientLogoMarquee />
-            </SectionReveal>
-            <SectionReveal>
-              <StatsBar />
-            </SectionReveal>
-            <div className="section-glow" />
-            <SectionReveal>
-              <ProjectSlotsWidget />
-            </SectionReveal>
-            <SectionReveal>
-              <SocialProofSection />
-            </SectionReveal>
-            <SectionReveal>
               <ServicesSection />
-            </SectionReveal>
-            <SectionReveal>
-              <WhyMeStrip />
-            </SectionReveal>
-            <SectionReveal>
-              <TechStackSection />
-            </SectionReveal>
-            <div className="section-glow" />
-            <SectionReveal>
-              <DifferentialSection />
             </SectionReveal>
             <SectionReveal>
               <ProcessSection />
@@ -109,32 +70,11 @@ export default function Home() {
             </SectionReveal>
             <div className="section-glow" />
             <SectionReveal>
-              <PresentationSection />
-            </SectionReveal>
-            <SectionReveal>
-              <PortfolioSection />
-            </SectionReveal>
-            <SectionReveal>
               <PricingPreview />
-            </SectionReveal>
-            <SectionReveal>
-              <TestimonialsSection />
             </SectionReveal>
             <div className="section-glow" />
             <SectionReveal>
-              <SEOSection />
-            </SectionReveal>
-            <SectionReveal>
-              <EducationSection />
-            </SectionReveal>
-            <SectionReveal>
               <FAQSection />
-            </SectionReveal>
-            <SectionReveal>
-              <TrustSection />
-            </SectionReveal>
-            <SectionReveal>
-              <QuickContactBar />
             </SectionReveal>
             <div className="relative z-[60]">
               <LeadCaptureForm />
@@ -149,7 +89,6 @@ export default function Home() {
 
           <StickyCTA />
           <CursorGlow />
-          <SectionDots />
         </div>
       </div>
     </NotificationProvider>

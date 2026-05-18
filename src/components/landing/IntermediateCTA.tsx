@@ -74,13 +74,12 @@ export function IntermediateCTA() {
               </motion.div>
 
               <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight mb-4 leading-[1.15]">
-                Si podés imaginarlo,{" "}
-                <span className="gradient-text">podemos construirlo</span>
+                La IA sirve cuando apunta a{" "}
+                <span className="gradient-text">un proceso concreto</span>
               </h2>
 
               <p className="text-muted-foreground text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-                No importa si es una app, un sistema interno, una web o algo que todavía no existe.
-                Lo creamos juntos.
+                Primero detectamos donde hay una oportunidad real. Si hay fit, avanzamos a un IA Sprint acotado.
               </p>
 
               <Button
@@ -89,7 +88,7 @@ export function IntermediateCTA() {
                 className="cta-breathing-btn bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 rounded-xl px-8 py-6 text-base font-semibold group"
               >
                 <Sparkles className="w-4 h-4 mr-2" />
-                Empezar ahora
+                Agendar consulta IA gratuita
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
 
@@ -106,7 +105,7 @@ export function IntermediateCTA() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
                 <Eye className="w-3 h-3" />
-                <span>3 personas están viendo esto</span>
+                <span>Formulario antes del calendario para llegar con contexto</span>
               </motion.div>
             </div>
           </div>

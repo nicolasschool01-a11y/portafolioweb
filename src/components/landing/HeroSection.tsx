@@ -29,27 +29,27 @@ import {
 import { ParticleField } from "./ParticleField";
 
 const dashboardStats = [
-  { label: "Proyectos Activos", value: 12, change: "+3", icon: Code2, color: "text-emerald-400", bgColor: "bg-emerald-500/10", borderColor: "border-emerald-500/20" },
-  { label: "Automatizaciones", value: 847, change: "+124", icon: Bot, color: "text-violet-400", bgColor: "bg-violet-500/10", borderColor: "border-violet-500/20" },
-  { label: "Uptime", value: 99.9, change: "↑", icon: Activity, color: "text-cyan-400", bgColor: "bg-cyan-500/10", borderColor: "border-cyan-500/20", suffix: "%", isFloat: true },
+  { label: "Proceso Prioritario", value: 1, change: "foco", icon: Code2, color: "text-emerald-400", bgColor: "bg-emerald-500/10", borderColor: "border-emerald-500/20" },
+  { label: "Dias de Sprint", value: 14, change: "max", icon: Bot, color: "text-violet-400", bgColor: "bg-violet-500/10", borderColor: "border-violet-500/20" },
+  { label: "Revision", value: 1, change: "ronda", icon: Activity, color: "text-cyan-400", bgColor: "bg-cyan-500/10", borderColor: "border-cyan-500/20" },
 ];
 
 const recentActivity = [
-  { text: "App FoodExpress deployada", time: "hace 2h", status: "success", icon: RocketIcon },
-  { text: "CRM PropManager actualizado", time: "hace 5h", status: "success", icon: CheckCircle2 },
-  { text: "Bot de soporte activado", time: "hace 1d", status: "success", icon: Bot },
+  { text: "Proceso de leads mapeado", time: "dia 1", status: "success", icon: RocketIcon },
+  { text: "Prototipo IA definido", time: "dia 7", status: "success", icon: CheckCircle2 },
+  { text: "Roadmap fase 2 listo", time: "dia 14", status: "success", icon: Bot },
 ];
 
 const chartPoints = [20, 35, 28, 45, 42, 55, 48, 62, 58, 75, 70, 85, 80, 92];
 const chartLabels = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul"];
 
 const serviceBenefits = [
-  { icon: Smartphone, label: "Apps Nativas", desc: "iOS & Android", color: "text-emerald-400" },
-  { icon: Bot, label: "IA & Chatbots", desc: "Automatización", color: "text-violet-400" },
-  { icon: BarChart3, label: "Dashboards", desc: "Analytics Live", color: "text-cyan-400" },
-  { icon: Zap, label: "APIs", desc: "Integraciones", color: "text-amber-400" },
-  { icon: Globe, label: "Web Apps", desc: "Full-Stack", color: "text-rose-400" },
-  { icon: Shield, label: "Seguridad", desc: "Auth & Data", color: "text-teal-400" },
+  { icon: Smartphone, label: "Formulario", desc: "Contexto previo", color: "text-emerald-400" },
+  { icon: Bot, label: "IA Sprint", desc: "Hasta 14 dias", color: "text-violet-400" },
+  { icon: BarChart3, label: "Sistema Inicial", desc: "Blueprint o prototipo", color: "text-cyan-400" },
+  { icon: Zap, label: "Proceso", desc: "1 area prioritaria", color: "text-amber-400" },
+  { icon: Globe, label: "Fase 2", desc: "Segun alcance", color: "text-rose-400" },
+  { icon: Shield, label: "Limites", desc: "Sin promesas magicas", color: "text-teal-400" },
 ];
 
 function RocketIcon({ className }: { className?: string }) {
@@ -132,10 +132,10 @@ function DashboardStatCard({
 }
 
 const trustIndicators = [
-  { icon: Rocket, value: 50, suffix: "+", label: "Proyectos entregados", color: "text-emerald-400" },
-  { icon: ThumbsUp, value: 98, suffix: "%", label: "Clientes satisfechos", color: "text-teal-400" },
-  { icon: Clock, value: 15, prefix: "~", suffix: " días", label: "Promedio de entrega", color: "text-cyan-400" },
-  { icon: Headphones, value: 24, suffix: "/7", label: "Soporte post-entrega", color: "text-violet-400" },
+  { icon: Rocket, value: 14, suffix: " dias", label: "Sprint acotado", color: "text-emerald-400" },
+  { icon: ThumbsUp, value: 1, suffix: " proceso", label: "Foco realista", color: "text-teal-400" },
+  { icon: Clock, value: 30, prefix: "~", suffix: " min", label: "Consulta breve", color: "text-cyan-400" },
+  { icon: Headphones, value: 1, suffix: " revision", label: "Ronda incluida", color: "text-violet-400" },
 ];
 
 function TrustBar() {
@@ -223,7 +223,7 @@ export function HeroSection() {
 
   // Typing effect for subheadline
   const [typedText, setTypedText] = useState("");
-  const fullText = "Desarrollo aplicaciones, sistemas y webs a medida usando inteligencia artificial para lanzar MVPs rápidos, funcionales y listos para escalar.";
+  const fullText = "NicoPrompt ayuda a founders, pymes y equipos a detectar donde tiene sentido aplicar IA, prototipar un primer sistema y decidir si conviene avanzar a una implementacion real.";
   const typingStarted = useRef(false);
 
   useEffect(() => {
@@ -298,9 +298,8 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08] mb-8"
           >
-            Convertí tu idea en una{" "}
-            <span className="gradient-text-animated">app real</span>{" "}
-            en días, no meses
+            IA aplicada para ordenar procesos, ahorrar tiempo y construir{" "}
+            <span className="gradient-text-animated">sistemas simples</span>
           </motion.h1>
 
           {/* Subheadline with typing effect */}
@@ -334,7 +333,7 @@ export function HeroSection() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 live-dot" />
               </span>
               <span className="text-xs sm:text-sm text-emerald-400/90 font-medium">
-                Disponible para nuevos proyectos
+                Consulta IA Inicial gratuita
               </span>
             </motion.div>
           </motion.div>
@@ -351,7 +350,7 @@ export function HeroSection() {
               size="lg"
               className="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:shadow-2xl transition-all duration-300 rounded-xl px-8 py-6 text-base font-semibold group"
             >
-              Crear mi proyecto
+              Agendar consulta IA gratuita
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button
@@ -361,7 +360,7 @@ export function HeroSection() {
               className="w-full sm:w-auto border-white/[0.12] bg-white/[0.05] hover:bg-white/[0.1] hover:border-white/[0.2] rounded-xl px-8 py-6 text-base group backdrop-blur-sm text-foreground/90 hover:text-foreground"
             >
               <Play className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform text-emerald-400" />
-              Ver cómo funciona
+              Ver como funciona el IA Sprint
             </Button>
           </motion.div>
         </div>
@@ -391,7 +390,7 @@ export function HeroSection() {
               <div className="flex-1 flex justify-center">
                 <div className="flex items-center gap-2 px-4 py-1 rounded-full bg-white/[0.04] text-[11px] text-muted-foreground/60 font-mono">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  app.nicoprompt.com/dashboard
+                  nicoprompt.com/ia-sprint
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -425,8 +424,8 @@ export function HeroSection() {
                 >
                   <div className="flex items-center justify-between mb-4 sm:mb-6">
                     <div>
-                      <h3 className="text-sm sm:text-base font-semibold">Proyectos entregados</h3>
-                      <p className="text-[10px] sm:text-xs text-muted-foreground/60">Últimos 12 meses</p>
+                      <h3 className="text-sm sm:text-base font-semibold">Proceso priorizado</h3>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground/60">Del formulario al Sprint</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-400">
