@@ -618,13 +618,11 @@ export function LeadCaptureForm() {
                   </p>
                   <p>La llamada es breve y sirve para detectar oportunidad. No incluye implementacion, blueprint completo ni automatizacion terminada.</p>
                 </div>
-                <Button
-                  type="button"
-                  onClick={() => window.open(CALENDLY_URL, "_blank")}
-                  className="h-12 rounded-xl bg-white px-6 font-semibold text-black hover:bg-white/90"
-                >
-                  <Calendar className="mr-2 h-4 w-4 text-emerald-600" />
-                  Agendar Consulta IA Inicial gratuita
+                <Button asChild className="h-12 rounded-xl bg-white px-6 font-semibold text-black hover:bg-white/90">
+                  <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+                    <Calendar className="mr-2 h-4 w-4 text-emerald-600" />
+                    Agendar Consulta IA Inicial gratuita
+                  </a>
                 </Button>
                 <p className="mt-3 flex items-center justify-center gap-1 text-xs text-muted-foreground/70">
                   <Mail className="h-3.5 w-3.5" />
