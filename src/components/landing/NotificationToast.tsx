@@ -264,17 +264,17 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         {
           type: "social-proof" as const,
           title: "¡Nueva solicitud!",
-          description: `${avatar} de ${city} solicitó una cotización hace ${min} minutos`,
+          description: `${avatar} de ${city} completó el formulario de Consulta IA hace ${min} minutos`,
         },
         {
           type: "social-proof" as const,
           title: "Actividad reciente",
-          description: `${avatar} de ${city} acaba de pedir su presupuesto`,
+          description: `${avatar} de ${city} está revisando si aplica a un IA Sprint`,
         },
         {
           type: "social-proof" as const,
           title: "¡Mucho movimiento!",
-          description: `${avatar} de ${city} acaba de agendar una demo gratuita`,
+          description: `${avatar} de ${city} acaba de agendar una Consulta IA Inicial`,
         },
         {
           type: "info" as const,
@@ -284,7 +284,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         {
           type: "tip" as const,
           title: "💡 Consejo útil",
-          description: "La mayoría de los MVPs bien armados se validan en su primer mes de vida",
+          description: "La IA funciona mejor cuando empieza por un proceso concreto, no por toda la empresa",
         },
         {
           type: "tip" as const,
@@ -293,13 +293,13 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         },
         {
           type: "success" as const,
-          title: "✅ Proyecto entregado",
-          description: `Un sistema a medida fue deployado con éxito en ${min} días esta semana`,
+          title: "✅ Sprint definido",
+          description: `Un proceso fue priorizado para Sprint en menos de ${min} días esta semana`,
         },
         {
           type: "info" as const,
-          title: "🚀 Escalabilidad",
-          description: "Construimos arquitecturas Cloud nativas listas para soportar miles de usuarios",
+          title: "🚀 Foco",
+          description: "Primero se valida valor; la implementacion completa viene despues si hay fit",
         }
       ];
       

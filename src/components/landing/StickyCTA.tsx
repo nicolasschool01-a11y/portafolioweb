@@ -133,7 +133,7 @@ export function StickyCTA() {
         )}
       </AnimatePresence>
 
-      {/* Main CTA stack: Crear mi proyecto + Contactame — hide at footer */}
+      {/* Main CTA stack: consulta + contacto — hide at footer */}
       <AnimatePresence>
         {visible && !atFooter && (
           <motion.div
@@ -143,7 +143,7 @@ export function StickyCTA() {
             transition={{ duration: 0.3 }}
             className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3"
           >
-            {/* Main CTA: Crear mi proyecto */}
+            {/* Main CTA: Consulta IA */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -156,7 +156,7 @@ export function StickyCTA() {
               <span className="absolute inset-0 rounded-full animate-ping bg-emerald-500/20 pointer-events-none" style={{ animationDuration: '2.5s' }} />
 
               <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>Crear mi proyecto</span>
+              <span>Consulta IA gratuita</span>
 
               {/* Scroll percentage tooltip */}
               <AnimatePresence>

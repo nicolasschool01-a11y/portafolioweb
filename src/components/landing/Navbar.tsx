@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -8,11 +8,15 @@ import { Zap, Menu, X, ArrowRight, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const navLinks = [
-  { label: "Servicios", href: "#servicios" },
+  { label: "Oferta", href: "#servicios" },
   { label: "Proceso", href: "#proceso" },
-  { label: "Proyectos", href: "#proyectos" },
+  { label: "Sprint", href: "#servicios" },
   { label: "Contacto", href: "#contacto" },
 ];
+
+const subscribeToClientMount = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -20,11 +24,7 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState("");
   const [scrollProgress, setScrollProgress] = useState(0);
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(subscribeToClientMount, getClientSnapshot, getServerSnapshot);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,7 +42,7 @@ export function Navbar() {
 
   // Active section detection using IntersectionObserver
   useEffect(() => {
-    const sectionIds = ["hero", "servicios", "proceso", "proyectos", "contacto"];
+    const sectionIds = ["hero", "servicios", "proceso", "contacto"];
     const observers: IntersectionObserver[] = [];
 
     sectionIds.forEach((id) => {
@@ -191,7 +191,7 @@ export function Navbar() {
               onClick={() => scrollTo("#contacto")}
               className="relative overflow-hidden bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/35 transition-all duration-300 rounded-lg text-sm font-medium group/cta"
             >
-              <span className="relative z-10">Crear mi proyecto</span>
+              <span className="relative z-10">Agendar consulta</span>
               {/* Shimmer overlay on hover */}
               <span className="absolute inset-0 -translate-x-full group-hover/cta:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/15 to-transparent skew-x-12" />
             </Button>
@@ -241,7 +241,7 @@ export function Navbar() {
                     onClick={() => scrollTo("#contacto")}
                     className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-lg shadow-emerald-500/20 rounded-xl h-12 text-sm font-medium"
                   >
-                    Crear mi proyecto
+                    Agendar consulta
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </motion.div>

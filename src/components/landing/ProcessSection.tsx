@@ -19,9 +19,9 @@ const steps = [
   {
     number: 1,
     icon: MessageSquare,
-    title: "Compartís tu idea",
+    title: "Completas el formulario",
     description:
-      "Contame tu proyecto sin jerga técnica, solo tu visión y objetivos.",
+      "Dejas contexto sobre negocio, proceso, herramientas, urgencia y presupuesto.",
     color: "emerald",
     gradient: "from-emerald-400 to-teal-400",
     glowColor: "shadow-emerald-500/30",
@@ -30,15 +30,15 @@ const steps = [
     textColor: "text-emerald-400",
     dotColor: "bg-emerald-400",
     lineColor: "from-emerald-400 to-cyan-400",
-    duration: "5 min",
+    duration: "5-8 min",
     entryDelay: 0,
   },
   {
     number: 2,
     icon: Search,
-    title: "Analizo requerimientos",
+    title: "Reviso el fit",
     description:
-      "Investigo tu mercado, competencia y necesidades a fondo.",
+      "Nico llega a la llamada con una hipotesis clara, sin improvisar una consultoria abierta.",
     color: "cyan",
     gradient: "from-cyan-400 to-sky-400",
     glowColor: "shadow-cyan-500/30",
@@ -47,15 +47,15 @@ const steps = [
     textColor: "text-cyan-400",
     dotColor: "bg-cyan-400",
     lineColor: "from-cyan-400 to-violet-400",
-    duration: "24 hs",
+    duration: "previo",
     entryDelay: 0.15,
   },
   {
     number: 3,
     icon: FileText,
-    title: "Propuesta detallada",
+    title: "Consulta IA Inicial",
     description:
-      "Te presento un plan claro con timeline, costo y alcance.",
+      "Llamada breve para detectar oportunidad. No incluye implementacion ni blueprint completo.",
     color: "violet",
     gradient: "from-violet-400 to-purple-400",
     glowColor: "shadow-violet-500/30",
@@ -64,15 +64,15 @@ const steps = [
     textColor: "text-violet-400",
     dotColor: "bg-violet-400",
     lineColor: "from-violet-400 to-amber-400",
-    duration: "2-3 días",
+    duration: "breve",
     entryDelay: 0.3,
   },
   {
     number: 4,
     icon: Handshake,
-    title: "Ajustamos juntos",
+    title: "Propuesta de Sprint",
     description:
-      "Revisamos cada detalle para que todo quede perfecto.",
+      "Si hay fit, se define un IA Sprint acotado a un proceso o area prioritaria.",
     color: "amber",
     gradient: "from-amber-400 to-orange-400",
     glowColor: "shadow-amber-500/30",
@@ -81,14 +81,14 @@ const steps = [
     textColor: "text-amber-400",
     dotColor: "bg-amber-400",
     lineColor: "from-amber-400 to-rose-400",
-    duration: "1 día",
+    duration: "simple",
     entryDelay: 0.45,
   },
   {
     number: 5,
     icon: Rocket,
-    title: "¡Arrancamos!",
-    description: "Damos inicio al desarrollo y creamos tu MVP.",
+    title: "Sprint o Fase 2",
+    description: "El Sprint valida valor. La implementacion completa se cotiza despues segun alcance.",
     color: "rose",
     gradient: "from-rose-400 to-pink-400",
     glowColor: "shadow-rose-500/30",
@@ -97,7 +97,7 @@ const steps = [
     textColor: "text-rose-400",
     dotColor: "bg-rose-400",
     lineColor: "from-rose-400 to-pink-400",
-    duration: "15 días",
+    duration: "14 dias",
     entryDelay: 0.6,
   },
 ];
@@ -150,15 +150,14 @@ export function ProcessSection() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-5">
             <GitBranch className="w-3.5 h-3.5" />
-            Proceso de Cotización
+            Proceso del funnel
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-5">
-            Así transformamos tu idea en{" "}
-            <span className="gradient-text">software real</span>
+            De una duda sobre IA a{" "}
+            <span className="gradient-text">un proceso priorizado</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Un proceso claro, transparente y diseñado para resultados.
-            Cada paso conectado como un roadmap de desarrollo.
+            Un flujo simple: formulario, consulta, decision de fit y Sprint acotado si realmente tiene sentido.
           </p>
         </motion.div>
 

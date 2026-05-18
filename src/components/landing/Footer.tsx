@@ -8,29 +8,29 @@ import { useToast } from "@/hooks/use-toast";
 
 const footerLinks = {
   servicios: [
-    { label: "Apps a medida", href: "#servicios" },
-    { label: "Sistemas internos", href: "#servicios" },
-    { label: "Webs de alto impacto", href: "#servicios" },
-    { label: "Automatización con IA", href: "#servicios" },
+    { label: "Consulta IA Inicial", href: "#contacto" },
+    { label: "IA Sprint", href: "#servicios" },
+    { label: "Sistema inicial", href: "#servicios" },
+    { label: "Implementacion Fase 2", href: "#servicios" },
   ],
   empresa: [
     { label: "Proceso", href: "#proceso" },
-    { label: "Proyectos", href: "#proyectos" },
-    { label: "Testimonios", href: "#testimonios" },
+    { label: "Precios", href: "#contacto" },
+    { label: "FAQ", href: "#contacto" },
     { label: "Contacto", href: "#contacto" },
   ],
   recursos: [
-    { label: "Restaurantes", href: "#servicios" },
-    { label: "Inmobiliarias", href: "#servicios" },
-    { label: "Clínicas", href: "#servicios" },
-    { label: "E-commerce", href: "#servicios" },
+    { label: "Ventas / leads", href: "#servicios" },
+    { label: "Atencion al cliente", href: "#servicios" },
+    { label: "Operaciones internas", href: "#servicios" },
+    { label: "CRM / datos", href: "#servicios" },
   ],
 };
 
 const trustBadges = [
-  { icon: Shield, text: "Código 100% tuyo" },
-  { icon: Clock, text: "Entrega en días" },
-  { icon: Code2, text: "Soporte incluido" },
+  { icon: Shield, text: "Alcance claro" },
+  { icon: Clock, text: "Sprint hasta 14 dias" },
+  { icon: Code2, text: "1 proceso primero" },
 ];
 
 const socialLinks = [
@@ -129,8 +129,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-sm text-muted-foreground max-w-sm leading-relaxed mb-6">
-              Desarrollo de software a medida potenciado por inteligencia artificial.
-              Convirtiendo ideas en productos reales en tiempo récord.
+              IA aplicada para ordenar procesos, ahorrar tiempo y construir sistemas simples para negocios.
             </p>
 
             {/* Newsletter mini-form */}
@@ -239,7 +238,7 @@ export function Footer() {
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 shadow-[0_0_6px_oklch(0.72_0.19_163/50%)]" />
                 </span>
                 <span className="text-emerald-400/80 text-xs font-medium">
-                  Disponible para proyectos
+                  Disponible para consultas IA
                 </span>
               </div>
             </div>
@@ -313,15 +312,15 @@ export function Footer() {
             <div className="absolute -top-16 -left-16 w-48 h-48 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none" />
             <div className="absolute -bottom-12 -right-12 w-40 h-40 bg-teal-500/10 rounded-full blur-[70px] pointer-events-none" />
 
-            <h3 className="text-lg sm:text-xl font-bold mb-2 relative z-10">¿Listo para empezar tu proyecto?</h3>
+            <h3 className="text-lg sm:text-xl font-bold mb-2 relative z-10">¿Tenes un proceso que queres ordenar con IA?</h3>
             <p className="text-sm text-muted-foreground mb-5 relative z-10">
-              La primera consulta es gratis y sin compromiso. Te respondo en menos de 24hs.
+              Completá el formulario, agendá una Consulta IA Inicial gratuita y vemos si hay fit para un Sprint.
             </p>
             {/* Response guarantee badges */}
             <div className="flex flex-wrap items-center justify-center gap-3 mb-5 relative z-10">
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/15">
                 <Clock className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="text-[11px] text-emerald-400/90 font-medium">Respuesta en menos de 6hs</span>
+                <span className="text-[11px] text-emerald-400/90 font-medium">Contexto antes de la llamada</span>
               </div>
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08]">
                 <Shield className="w-3.5 h-3.5 text-muted-foreground" />
@@ -329,7 +328,7 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08]">
                 <Zap className="w-3.5 h-3.5 text-amber-400" />
-                <span className="text-[11px] text-muted-foreground/80 font-medium">Cotización gratuita</span>
+                <span className="text-[11px] text-muted-foreground/80 font-medium">Sin blueprint gratis</span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 justify-center relative z-10">

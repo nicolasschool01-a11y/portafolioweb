@@ -14,9 +14,9 @@ export function FinalCTA() {
 
   const trustPoints = [
     { icon: MessageSquare, text: "Primera consulta gratis" },
-    { icon: Clock, text: "Respuesta en menos de 24hs" },
-    { icon: Shield, text: "Código 100% tuyo" },
-    { icon: Sparkles, text: "MVP funcional en días" },
+    { icon: Clock, text: "Llamada breve con contexto" },
+    { icon: Shield, text: "Alcance acotado" },
+    { icon: Sparkles, text: "Sprint hasta 14 dias" },
   ];
 
   // Generate floating particles around the CTA
@@ -128,12 +128,12 @@ export function FinalCTA() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight mb-5 leading-[1.15] relative z-10"
               >
-                Podés seguir dependiendo de{" "}
-                <span className="text-muted-foreground/60">herramientas genéricas</span>
+                Podés seguir probando{" "}
+                <span className="text-muted-foreground/60">herramientas sueltas</span>
                 ...
                 <br />
                 <span className="gradient-text-animated text-[1.1em]">
-                  o tener un sistema hecho exactamente para tu negocio.
+                  o empezar por el proceso que realmente conviene ordenar.
                 </span>
               </motion.h2>
 
@@ -144,8 +144,7 @@ export function FinalCTA() {
                 transition={{ duration: 0.6, delay: 0.35 }}
                 className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto mb-8 leading-relaxed relative z-10"
               >
-                El primer paso es el más importante. Contame tu idea y te muestro cómo la convertimos
-                en realidad.
+                Completá el formulario, agendá una Consulta IA Inicial gratuita y vemos si tiene sentido avanzar a un IA Sprint.
               </motion.p>
 
               <motion.div
@@ -163,7 +162,7 @@ export function FinalCTA() {
                   {/* Shimmer overlay */}
                   <div className="absolute inset-0 animate-shimmer pointer-events-none" />
                   <Zap className="w-5 h-5 mr-2 relative z-10" />
-                  <span className="relative z-10">Crear mi app ahora</span>
+                  <span className="relative z-10">Agendar consulta IA gratuita</span>
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform relative z-10" />
                 </Button>
               </motion.div>

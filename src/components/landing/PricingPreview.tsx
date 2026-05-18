@@ -30,43 +30,43 @@ const hoverGlowColors = [
 const pricingFactors = [
   {
     icon: Smartphone,
-    title: "Tipo de proyecto",
-    description: "App móvil, web app, SaaS, automatización, e-commerce, landing page — cada formato tiene su propia complejidad.",
+    title: "Consulta IA Inicial",
+    description: "Gratis. Sirve para detectar oportunidad y fit; no incluye implementacion ni blueprint completo.",
     gradient: "from-emerald-500 to-teal-500",
     glowColor: "bg-emerald-500/[0.06]",
   },
   {
     icon: Cpu,
-    title: "Complejidad técnica",
-    description: "Integraciones con APIs externas, inteligencia artificial, autenticación avanzada, tiempo real, microservicios.",
+    title: "Primeros casos",
+    description: "USD 250-450 solo para casos estrategicos o testimonios, sin ampliar alcance del Sprint.",
     gradient: "from-violet-500 to-purple-500",
     glowColor: "bg-violet-500/[0.06]",
   },
   {
     icon: Layers,
-    title: "Alcance funcional",
-    description: "Cantidad de features, módulos, pantallas, roles de usuario y flujos de negocio que necesita tu producto.",
+    title: "IA Sprint inicial",
+    description: "USD 600-750 para trabajar un proceso o area prioritaria durante hasta 14 dias.",
     gradient: "from-cyan-500 to-sky-500",
     glowColor: "bg-cyan-500/[0.06]",
   },
   {
     icon: Clock,
-    title: "Plazo de entrega",
-    description: "Un timeline ajustado puede requerir más recursos. Se trabaja en base a la urgencia y prioridad del proyecto.",
+    title: "IA Sprint complejo",
+    description: "USD 900+ si hay mas riesgo tecnico, integraciones, datos sensibles o urgencia alta.",
     gradient: "from-amber-500 to-orange-500",
     glowColor: "bg-amber-500/[0.06]",
   },
   {
     icon: Code2,
-    title: "Stack tecnológico",
-    description: "Las tecnologías específicas que necesites influyen en el desarrollo. Trabajo con Next.js, React Native, IA y más.",
+    title: "Implementacion Fase 2",
+    description: "Desde USD 700-1500 para version liviana; USD 1500-5000+ si el sistema requiere mas operacion.",
     gradient: "from-rose-500 to-pink-500",
     glowColor: "bg-rose-500/[0.06]",
   },
   {
     icon: Headset,
-    title: "Soporte post-lanzamiento",
-    description: "Meses de mantenimiento, corrección de bugs, nuevas features y soporte técnico continuo después del deploy.",
+    title: "Soporte mensual",
+    description: "Desde USD 150-300/mes para mejoras, seguimiento y soporte acotado despues de una entrega.",
     gradient: "from-teal-500 to-emerald-600",
     glowColor: "bg-teal-500/[0.06]",
   },
@@ -79,11 +79,11 @@ const trustBadges = [
   },
   {
     icon: Zap,
-    label: "Propuesta en 24hs",
+    label: "Sprint hasta 14 dias",
   },
   {
     icon: Banknote,
-    label: "Pago por milestones",
+    label: "Fase 2 segun alcance",
   },
 ];
 
@@ -126,20 +126,19 @@ export function PricingPreview() {
             variant="outline"
             className="mb-5 px-4 py-1.5 text-xs border-emerald-500/30 bg-emerald-500/5 text-emerald-400"
           >
-            💰 Inversión
+            Inversion orientativa
           </Badge>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-5">
-            Inversión adaptada{" "}
-            <span className="gradient-text">a tu proyecto</span>
+            Precios claros para{" "}
+            <span className="gradient-text">validar sin sobredisenar</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Cada proyecto es único. El precio depende del tipo de solución, la complejidad técnica,
-            el alcance funcional, los plazos y el stack. Sin sorpresas — siempre con transparencia.
+            La consulta es gratuita. El Sprint se cotiza segun alcance, integraciones, riesgo, urgencia y soporte.
           </p>
           {/* Animated factor counter */}
           <div ref={counterRef} className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.06]">
             <span className="text-2xl font-bold gradient-text-emerald">{factorCount}</span>
-            <span className="text-sm text-muted-foreground">factores que definen tu inversión</span>
+            <span className="text-sm text-muted-foreground">rangos para decidir con claridad</span>
           </div>
         </AnimateOnScroll>
 
@@ -204,11 +203,11 @@ export function PricingPreview() {
               className="relative h-13 px-8 text-base font-semibold rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:shadow-2xl transition-all duration-300 group/btn overflow-hidden"
             >
               <div className="absolute inset-0 animate-shimmer pointer-events-none" />
-              Solicitar cotización gratuita
+              Agendar consulta IA gratuita
               <ArrowRight className="w-5 h-5 ml-2 group-hover/btn:translate-x-1 transition-transform relative z-10" />
             </Button>
             <p className="text-xs text-muted-foreground/50 mt-4 max-w-md mx-auto">
-              Respondo en menos de 24 horas. Sin compromisos ni costos ocultos.
+              Primero completás el formulario para llegar a la llamada con contexto.
             </p>
           </div>
         </AnimateOnScroll>
